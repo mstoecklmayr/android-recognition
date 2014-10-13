@@ -155,7 +155,7 @@ final class OcrInitAsyncTask extends AsyncTask<String, String, Boolean> {
       //TODO
       String tesseractFileName = "tesseract-ocr.tar.bin";
       InputStream inputStream = null;
-      File tesseract_data = new File();
+//      File tesseract_data = new File();
       try {
           Log.i("Assets list", Arrays.toString(context.getAssets().list("")));
           AssetManager manager = context.getAssets();
@@ -166,10 +166,10 @@ final class OcrInitAsyncTask extends AsyncTask<String, String, Boolean> {
           inputStream.read(buffer);
           inputStream.close();
 
-
-          FileOutputStream fos = new FileOutputStream(tesseract_data);
-          fos.write(buffer);
-          fos.close();
+//
+//          FileOutputStream fos = new FileOutputStream(tesseract_data);
+//          fos.write(buffer);
+//          fos.close();
 
       } catch (IOException e) {
           e.printStackTrace();
