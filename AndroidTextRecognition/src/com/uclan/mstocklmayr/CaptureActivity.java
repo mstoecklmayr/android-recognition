@@ -24,6 +24,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.*;
 import android.os.Bundle;
 import android.os.Environment;
@@ -560,9 +562,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
   /** Sets the necessary language code values for the given OCR language. */
   private boolean setSourceLanguage(String languageCode) {
-//    sourceLanguageCodeOcr = languageCode;
-//    sourceLanguageCodeTranslation = LanguageCodeHelper.mapLanguageCode(languageCode);
-//    sourceLanguageReadable = LanguageCodeHelper.getOcrLanguageName(this, languageCode);
+    sourceLanguageCodeOcr = languageCode;
+    sourceLanguageCodeTranslation = LanguageCodeHelper.mapLanguageCode(languageCode);
+    sourceLanguageReadable = LanguageCodeHelper.getOcrLanguageName(this, languageCode);
     return true;
   }
 
@@ -1011,18 +1013,18 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
    * it to a value stored as a preference.
    */
   private boolean checkFirstLaunch() {
-//    try {
-//      PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
-//      int currentVersion = info.versionCode;
-//      SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//      int lastVersion = prefs.getInt(PreferencesActivity.KEY_HELP_VERSION_SHOWN, 0);
-//      if (lastVersion == 0) {
-//        isFirstLaunch = true;
-//      } else {
-//        isFirstLaunch = false;
-//      }
-//      if (currentVersion > lastVersion) {
-//
+    try {
+      PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
+      int currentVersion = info.versionCode;
+      SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+      int lastVersion = prefs.getInt(PreferencesActivity.KEY_HELP_VERSION_SHOWN, 0);
+      if (lastVersion == 0) {
+        isFirstLaunch = true;
+      } else {
+        isFirstLaunch = false;
+      }
+      if (currentVersion > lastVersion) {
+
 //        // Record the last version for which we last displayed the What's New (Help) page
 //        prefs.edit().putInt(PreferencesActivity.KEY_HELP_VERSION_SHOWN, currentVersion).commit();
 //        Intent intent = new Intent(this, HelpActivity.class);
@@ -1032,11 +1034,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 //        String page = lastVersion == 0 ? HelpActivity.DEFAULT_PAGE : HelpActivity.WHATS_NEW_PAGE;
 //        intent.putExtra(HelpActivity.REQUESTED_PAGE_KEY, page);
 //        startActivity(intent);
-//        return true;
-//      }
-//    } catch (PackageManager.NameNotFoundException e) {
-//      Log.w(TAG, e);
-//    }
+      }
+    return false;
+    } catch (PackageManager.NameNotFoundException e) {
+      Log.w(TAG, e);
+    }
     return false;
   }
   

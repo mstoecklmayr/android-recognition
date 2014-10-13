@@ -148,18 +148,19 @@ final class OcrInitAsyncTask extends AsyncTask<String, String, Boolean> {
     }
 
     // Check whether all Cube data files have already been installed
-    boolean isAllCubeDataInstalled = false;
-    if (isCubeSupported) {
-      boolean isAFileMissing = false;
-      File dataFile;
-      for (String s : CUBE_DATA_FILES) {
-        dataFile = new File(tessdataDir.toString() + File.separator + languageCode + s);
-        if (!dataFile.exists()) {
-          isAFileMissing = true;
-        }
-      }
-      isAllCubeDataInstalled = !isAFileMissing;
-    }
+    boolean isAllCubeDataInstalled = true;
+//    boolean isAllCubeDataInstalled = false;
+//    if (isCubeSupported) {
+//      boolean isAFileMissing = false;
+//      File dataFile;
+//      for (String s : CUBE_DATA_FILES) {
+//        dataFile = new File(tessdataDir.toString() + File.separator + languageCode + s);
+//        if (!dataFile.exists()) {
+//          isAFileMissing = true;
+//        }
+//      }
+//      isAllCubeDataInstalled = !isAFileMissing;
+//    }
 
     // If language data files are not present, install them
     boolean installSuccess = false;
