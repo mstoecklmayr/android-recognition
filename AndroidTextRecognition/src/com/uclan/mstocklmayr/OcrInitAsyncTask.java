@@ -17,6 +17,7 @@ package com.uclan.mstocklmayr;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.googlecode.tesseract.android.TessBaseAPI;
@@ -27,6 +28,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -147,6 +149,40 @@ final class OcrInitAsyncTask extends AsyncTask<String, String, Boolean> {
       deleteCubeDataFiles(tessdataDir);
     }
 
+
+      //install file from assets
+      //gunzip and untar it
+      //TODO
+      String tesseractFileName = "tesseract-ocr.tar.bin";
+      InputStream inputStream = null;
+      File tesseract_data = new File();
+      try {
+          Log.i("Assets list", Arrays.toString(context.getAssets().list("")));
+          AssetManager manager = context.getAssets();
+          inputStream = manager.open(tesseractFileName);
+
+          int size = inputStream.available();
+          byte[] buffer = new byte[size];
+          inputStream.read(buffer);
+          inputStream.close();
+
+
+          FileOutputStream fos = new FileOutputStream(tesseract_data);
+          fos.write(buffer);
+          fos.close();
+
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+
+
+
+//        gunzip(tempFile,
+//                new File(tempFile.toString().replace(".gz.download", "")));
+
+
+
+
     // Check whether all Cube data files have already been installed
     boolean isAllCubeDataInstalled = true;
 //    boolean isAllCubeDataInstalled = false;
@@ -169,7 +205,15 @@ final class OcrInitAsyncTask extends AsyncTask<String, String, Boolean> {
       Log.d(TAG, "Language data for " + languageCode + " not found in " + tessdataDir.toString());
       deleteCubeDataFiles(tessdataDir);
 
-      // Check assets for language data to install. If not present, download from Internet
+        try {
+            installFromAssets(destinationFilenameBase + ".zip", tessdataDir,
+                    downloadFile);
+        } catch (IOException e) {
+            Log.e(TAG, "IOException", e);
+        }
+
+
+        // Check assets for language data to install. If not present, download from Internet
       try {
         Log.d(TAG, "Checking for language data (" + destinationFilenameBase
             + ".zip) in application assets...");
