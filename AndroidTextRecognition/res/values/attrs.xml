@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (C) 2010 ZXing authors
- Copyright 2011 Robert Theis
+ Copyright (C) 2008 ZXing authors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,5 +15,6 @@
  limitations under the License.
  -->
 <resources>
-    <string name="app_name">OCR Test</string>
+  <declare-styleable name="ViewfinderView">
+  </declare-styleable>
 </resources>
