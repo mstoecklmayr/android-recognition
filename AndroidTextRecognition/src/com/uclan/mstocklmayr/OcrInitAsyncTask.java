@@ -113,9 +113,6 @@ final class OcrInitAsyncTask extends AsyncTask<String, String, Boolean> {
    *          [0] Pathname for the directory for storing language data files to the SD card
    */
   protected Boolean doInBackground(String... params) {
-    // Check whether we need Cube data or Tesseract data.
-    // Example Cube data filename: "tesseract-ocr-3.01.eng.tar"
-    // Example Tesseract data filename: "eng.traineddata"
     String destinationFilenameBase = languageCode + ".traineddata";
     boolean isCubeSupported = false;
     for (String s : CaptureActivity.CUBE_SUPPORTED_LANGUAGES) {
@@ -123,7 +120,7 @@ final class OcrInitAsyncTask extends AsyncTask<String, String, Boolean> {
         isCubeSupported = true;   
       }
     }
-    destinationFilenameBase = "tesseract-ocr-3.02." + languageCode + ".tar";   
+    destinationFilenameBase = "tesseract-ocr.zip";
 
     // Check for, and create if necessary, folder to hold model data
     String destinationDirBase = params[0]; // The storage directory, minus the
@@ -139,67 +136,23 @@ final class OcrInitAsyncTask extends AsyncTask<String, String, Boolean> {
 
     // Check if an incomplete download is present. If a *.download file is there, delete it and
     // any (possibly half-unzipped) Tesseract and Cube data files that may be there.
-    File incomplete = new File(tessdataDir, destinationFilenameBase + ".download");
-    File tesseractTestFile = new File(tessdataDir, languageCode + ".traineddata");
-    if (incomplete.exists()) {
-      incomplete.delete();
-      if (tesseractTestFile.exists()) {
-        tesseractTestFile.delete();
-      }
-      deleteCubeDataFiles(tessdataDir);
-    }
-
+//    File incomplete = new File(tessdataDir, destinationFilenameBase + ".download");
+       File tesseractTestFile = new File(tessdataDir, languageCode + ".traineddata");
 
       //install file from assets
-      //gunzip and untar it
-      //TODO
-      String tesseractFileName = "tesseract-ocr.tar.bin";
-      InputStream inputStream = null;
-//      File tesseract_data = new File();
+      Boolean installSuccess = false;
       try {
-          Log.i("Assets list", Arrays.toString(context.getAssets().list("")));
-          AssetManager manager = context.getAssets();
-          inputStream = manager.open(tesseractFileName);
+          Log.i("info","Install tesseract-ocr.zip from assets");
 
-          int size = inputStream.available();
-          byte[] buffer = new byte[size];
-          inputStream.read(buffer);
-          inputStream.close();
-
-//
-//          FileOutputStream fos = new FileOutputStream(tesseract_data);
-//          fos.write(buffer);
-//          fos.close();
+          installSuccess = installFromAssets(destinationFilenameBase, tessdataDir,
+                  downloadFile);
 
       } catch (IOException e) {
           e.printStackTrace();
       }
 
-
-
-//        gunzip(tempFile,
-//                new File(tempFile.toString().replace(".gz.download", "")));
-
-
-
-
-    // Check whether all Cube data files have already been installed
+    // Check whether all Cube data files have already been installed (contained in tesseract-ocr.zip)
     boolean isAllCubeDataInstalled = true;
-//    boolean isAllCubeDataInstalled = false;
-//    if (isCubeSupported) {
-//      boolean isAFileMissing = false;
-//      File dataFile;
-//      for (String s : CUBE_DATA_FILES) {
-//        dataFile = new File(tessdataDir.toString() + File.separator + languageCode + s);
-//        if (!dataFile.exists()) {
-//          isAFileMissing = true;
-//        }
-//      }
-//      isAllCubeDataInstalled = !isAFileMissing;
-//    }
-
-    // If language data files are not present, install them
-    boolean installSuccess = false;
     if (!tesseractTestFile.exists()
         || (isCubeSupported && !isAllCubeDataInstalled)) {
       Log.d(TAG, "Language data for " + languageCode + " not found in " + tessdataDir.toString());
@@ -516,7 +469,7 @@ final class OcrInitAsyncTask extends AsyncTask<String, String, Boolean> {
   /**
    * Returns the uncompressed size for a Gzipped file.
    *
-   * @param file
+   * @param zipFile
    *          Gzipped file to get the size for
    * @return Size when uncompressed, in bytes
    * @throws java.io.IOException
