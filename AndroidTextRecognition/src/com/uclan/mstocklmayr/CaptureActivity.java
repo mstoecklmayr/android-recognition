@@ -39,6 +39,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,12 @@ import com.uclan.mstocklmayr.camera.CameraManager;
 import com.uclan.mstocklmayr.camera.ShutterButton;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
 
 /**
  * This activity opens the camera and does the actual scanning on a background thread. It draws a
@@ -191,8 +197,13 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
   CameraManager getCameraManager() {
     return cameraManager;
   }
-  
-  @Override
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+    }
+
+    @Override
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
     
@@ -230,6 +241,15 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     registerForContextMenu(ocrResultView);
     translationView = (TextView) findViewById(R.id.translation_text_view);
     registerForContextMenu(translationView);
+
+    Button historyButton = (Button) findViewById(R.id.btnHistory);
+    registerForContextMenu(historyButton);
+    historyButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast toast = Toast.makeText(v.getContext(), "history button clicked. show history", Toast.LENGTH_LONG);
+        }
+    });
     
     progressView = (View) findViewById(R.id.indeterminate_progress_indicator_view);
 
@@ -720,6 +740,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     viewfinderView.setVisibility(View.GONE);
     resultView.setVisibility(View.VISIBLE);
 
+
     ImageView bitmapImageView = (ImageView) findViewById(R.id.image_view);
     lastBitmap = ocrResult.getBitmap();
     if (lastBitmap == null) {
@@ -728,6 +749,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     } else {
       bitmapImageView.setImageBitmap(lastBitmap);
     }
+
+    //save bitmap to sdcard
+    saveImage(lastBitmap);
 
     // Display the recognized text
     TextView sourceLanguageTextView = (TextView) findViewById(R.id.source_language_text_view);
@@ -741,28 +765,12 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     TextView translationLanguageLabelTextView = (TextView) findViewById(R.id.translation_language_label_text_view);
     TextView translationLanguageTextView = (TextView) findViewById(R.id.translation_language_text_view);
     TextView translationTextView = (TextView) findViewById(R.id.translation_text_view);
-    if (isTranslationActive) {
-      // Handle translation text fields
-      translationLanguageLabelTextView.setVisibility(View.VISIBLE);
-      translationLanguageTextView.setText(targetLanguageReadable);
-      translationLanguageTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL), Typeface.NORMAL);
-      translationLanguageTextView.setVisibility(View.VISIBLE);
 
-      // Activate/re-activate the indeterminate progress indicator
-      translationTextView.setVisibility(View.GONE);
-      progressView.setVisibility(View.VISIBLE);
-      setProgressBarVisibility(true);
-      
-      // Get the translation asynchronously
-//      new TranslateAsyncTask(this, sourceLanguageCodeTranslation, targetLanguageCodeTranslation,
-//          ocrResult.getText()).execute();
-    } else {
-      translationLanguageLabelTextView.setVisibility(View.GONE);
-      translationLanguageTextView.setVisibility(View.GONE);
-      translationTextView.setVisibility(View.GONE);
-      progressView.setVisibility(View.GONE);
-      setProgressBarVisibility(false);
-    }
+    translationLanguageLabelTextView.setVisibility(View.GONE);
+    translationLanguageTextView.setVisibility(View.GONE);
+    translationTextView.setVisibility(View.GONE);
+    progressView.setVisibility(View.GONE);
+    setProgressBarVisibility(false);
     return true;
   }
   
@@ -1069,8 +1077,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
       // Retrieve from preferences, and set in this Activity, the language preferences
       PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
       setSourceLanguage(prefs.getString(PreferencesActivity.KEY_SOURCE_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE));
-      setTargetLanguage(prefs.getString(PreferencesActivity.KEY_TARGET_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_TARGET_LANGUAGE_CODE));
-      isTranslationActive = prefs.getBoolean(PreferencesActivity.KEY_TOGGLE_TRANSLATION, false);
       
       // Retrieve from preferences, and set in this Activity, the capture mode preference
       if (prefs.getBoolean(PreferencesActivity.KEY_CONTINUOUS_PREVIEW, CaptureActivity.DEFAULT_TOGGLE_CONTINUOUS)) {
@@ -1202,4 +1208,26 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 	    .setPositiveButton( "Done", new FinishListener(this))
 	    .show();
   }
+
+    private void saveImage(Bitmap finalBitmap) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/Recognitions");
+        myDir.mkdirs();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm");
+        String date = sdf.format(new Date());
+        String fname = "IMG_"+ date +".jpg";
+        File file = new File (myDir, fname);
+        if (file.exists ()) file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

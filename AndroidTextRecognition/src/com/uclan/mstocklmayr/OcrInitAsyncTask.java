@@ -142,10 +142,12 @@ final class OcrInitAsyncTask extends AsyncTask<String, String, Boolean> {
       //install file from assets
       Boolean installSuccess = false;
       try {
-          Log.i("info","Install tesseract-ocr.zip from assets");
+          if (!tesseractTestFile.exists()){
+              Log.i("info","Install tesseract-ocr.zip from assets");
 
-          installSuccess = installFromAssets(destinationFilenameBase, tessdataDir,
-                  downloadFile);
+              installSuccess = installFromAssets(destinationFilenameBase, tessdataDir,
+                      downloadFile);
+          }
 
       } catch (IOException e) {
           e.printStackTrace();
