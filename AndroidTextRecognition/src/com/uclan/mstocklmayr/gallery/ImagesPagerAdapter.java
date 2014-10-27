@@ -31,6 +31,11 @@ public class ImagesPagerAdapter extends FragmentPagerAdapter{
     }
 
     @Override
+    public int getItemPosition(Object object){
+        return ImagesPagerAdapter.POSITION_NONE;
+    }
+
+    @Override
     public int getCount() {
         return imagePathList.size();
     }

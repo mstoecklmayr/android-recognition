@@ -1234,7 +1234,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         File myDir = new File(root + "/Recognitions");
         myDir.mkdirs();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String date = sdf.format(new Date());
         String fname = "IMG_"+ date +".jpg";
         File file = new File (myDir, fname);
