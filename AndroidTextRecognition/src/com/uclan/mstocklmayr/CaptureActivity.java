@@ -46,6 +46,7 @@ import android.widget.Toast;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.uclan.mstocklmayr.camera.CameraManager;
 import com.uclan.mstocklmayr.camera.ShutterButton;
+import com.uclan.mstocklmayr.gallery.SingleViewActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -176,6 +177,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
   private String characterBlacklist;
   private String characterWhitelist;
   private ShutterButton shutterButton;
+  private ImageView historyButton;
   private boolean isTranslationActive; // Whether we want to show translations
   private boolean isContinuousModeActive; // Whether we are doing OCR in continuous mode
   private SharedPreferences prefs;
@@ -231,10 +233,19 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     hasSurface = false;
     beepManager = new BeepManager(this);
     
-    // Camera shutter button
+    // Camera shutter button & history button
     if (DISPLAY_SHUTTER_BUTTON) {
       shutterButton = (ShutterButton) findViewById(R.id.shutter_button);
       shutterButton.setOnShutterButtonListener(this);
+      historyButton = (ImageView) findViewById(R.id.history_button);
+      historyButton.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              Intent intent = new Intent(CaptureActivity.this, SingleViewActivity.class);
+              intent.putExtra("id", 0);
+              startActivity(intent);
+          }
+      });
     }
    
     ocrResultView = (TextView) findViewById(R.id.ocr_result_text_view);
@@ -248,6 +259,10 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         @Override
         public void onClick(View v) {
             Toast toast = Toast.makeText(v.getContext(), "history button clicked. show history", Toast.LENGTH_LONG);
+            toast.show();
+            Intent intent = new Intent(CaptureActivity.this, SingleViewActivity.class);
+            intent.putExtra("id", 0);
+            startActivity(intent);
         }
     });
     
@@ -428,8 +443,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     setStatusViewForContinuous();
     DecodeHandler.resetDecodeState();
     handler.resetState();
-    if (shutterButton != null && DISPLAY_SHUTTER_BUTTON) {
+    if (shutterButton != null && DISPLAY_SHUTTER_BUTTON && historyButton != null) {
       shutterButton.setVisibility(View.VISIBLE);
+      historyButton.setVisibility(View.VISIBLE);
     }
   }
 
@@ -963,10 +979,13 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
   
   @SuppressWarnings("unused")
   void setButtonVisibility(boolean visible) {
-    if (shutterButton != null && visible == true && DISPLAY_SHUTTER_BUTTON) {
+    if (shutterButton != null && visible == true && DISPLAY_SHUTTER_BUTTON
+            && historyButton != null) {
       shutterButton.setVisibility(View.VISIBLE);
+      historyButton.setVisibility(View.VISIBLE);
     } else if (shutterButton != null) {
       shutterButton.setVisibility(View.GONE);
+      historyButton.setVisibility(View.GONE);
     }
   }
   
