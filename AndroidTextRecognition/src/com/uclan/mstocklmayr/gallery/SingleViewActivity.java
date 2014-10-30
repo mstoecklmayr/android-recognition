@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 import com.uclan.mstocklmayr.R;
 
@@ -40,6 +41,18 @@ public class SingleViewActivity extends FragmentActivity implements ViewPager.On
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_discard:
+                deleteImage();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     void deleteImage(){
