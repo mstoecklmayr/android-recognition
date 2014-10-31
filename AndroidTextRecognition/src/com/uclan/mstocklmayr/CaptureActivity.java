@@ -767,7 +767,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     }
 
     //save bitmap to sdcard
-    saveImage(lastBitmap);
+    saveImage(ocrResult.getBitmapWithoutBounding());
 
     // Display the recognized text
     TextView sourceLanguageTextView = (TextView) findViewById(R.id.source_language_text_view);

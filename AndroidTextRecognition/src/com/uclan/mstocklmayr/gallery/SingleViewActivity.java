@@ -1,5 +1,6 @@
 package com.uclan.mstocklmayr.gallery;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
@@ -24,13 +25,16 @@ public class SingleViewActivity extends FragmentActivity implements ViewPager.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gallery_viewpager);
 
+        ActionBar ab = getActionBar();
+        ab.show();
+
         // Selected image id
         int position = 0;
-        ImagesPagerAdapter adapter = new ImagesPagerAdapter(getSupportFragmentManager(), this);
+        adapter = new ImagesPagerAdapter(getSupportFragmentManager(), this);
         AsyncTaskLoadFiles alf = new AsyncTaskLoadFiles(this, adapter, imagePath);
         alf.execute();
 
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setCurrentItem(position);
         pager.setOnPageChangeListener(this);

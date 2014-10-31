@@ -146,6 +146,7 @@
                     android:textSize="14sp"
                     android:clickable="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_margin="10dip"
                     />
            
           <LinearLayout android:id="@+id/indeterminate_progress_indicator_view"

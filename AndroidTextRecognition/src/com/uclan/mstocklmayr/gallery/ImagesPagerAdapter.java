@@ -5,11 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 
 
-public class ImagesPagerAdapter extends FragmentPagerAdapter{
+public class ImagesPagerAdapter extends FragmentStatePagerAdapter {
 
     public Context ctx;
     ArrayList<String> imagePathList = new ArrayList<String>();

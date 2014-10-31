@@ -72,22 +72,26 @@ public class OcrResult {
   }
 
   public Bitmap getBitmap() {
-    return getAnnotatedBitmap();
+    return getAnnotatedBitmap(true);
   }
+
+  public Bitmap getBitmapWithoutBounding(){return getAnnotatedBitmap(false);}
   
-  private Bitmap getAnnotatedBitmap() {
-    Canvas canvas = new Canvas(bitmap);
-    
-    // Draw bounding boxes around each word
-    for (int i = 0; i < wordBoundingBoxes.size(); i++) {
-      paint.setAlpha(0xFF);
-      paint.setColor(0xFF00CCFF);
-      paint.setStyle(Style.STROKE);
-      paint.setStrokeWidth(2);
-      Rect r = wordBoundingBoxes.get(i);
-      canvas.drawRect(r, paint);
-    }    
-    
+  private Bitmap getAnnotatedBitmap(Boolean withBoundingBox) {
+    if(withBoundingBox){
+        Canvas canvas = new Canvas(bitmap);
+
+        // Draw bounding boxes around each word
+        for (int i = 0; i < wordBoundingBoxes.size(); i++) {
+        paint.setAlpha(0xFF);
+        paint.setColor(0xFF00CCFF);
+        paint.setStyle(Style.STROKE);
+        paint.setStrokeWidth(2);
+        Rect r = wordBoundingBoxes.get(i);
+        canvas.drawRect(r, paint);
+        }
+    }
+
 //    // Draw bounding boxes around each character
 //    for (int i = 0; i < characterBoundingBoxes.size(); i++) {
 //      paint.setAlpha(0xA0);
