@@ -17,11 +17,17 @@ package com.uclan.mstocklmayr;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import com.googlecode.leptonica.android.ReadFile;
 import com.googlecode.tesseract.android.TessBaseAPI;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Class to send OCR requests to the OCR engine in a separate thread, send a success/failure message,
@@ -53,6 +59,7 @@ final class OcrRecognizeAsyncTask extends AsyncTask<Void, Void, Boolean> {
   protected Boolean doInBackground(Void... arg0) {
     long start = System.currentTimeMillis();
     Bitmap bitmap = activity.getCameraManager().buildLuminanceSource(data, width, height).renderCroppedGreyscaleBitmap();
+    saveImage(bitmap);
     String textResult;
 
     //      if (PERFORM_FISHER_THRESHOLDING) {
@@ -126,4 +133,26 @@ final class OcrRecognizeAsyncTask extends AsyncTask<Void, Void, Boolean> {
       baseApi.clear();
     }
   }
+
+    private void saveImage(Bitmap finalBitmap) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/Recognitions");
+        myDir.mkdirs();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String date = sdf.format(new Date());
+        String fname = "OCR"+date+".jpg";
+        File file = new File (myDir, fname);
+        if (file.exists ()) file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

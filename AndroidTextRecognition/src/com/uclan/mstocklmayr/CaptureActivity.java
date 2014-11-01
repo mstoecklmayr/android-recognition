@@ -46,6 +46,7 @@ import android.widget.Toast;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.uclan.mstocklmayr.camera.CameraManager;
 import com.uclan.mstocklmayr.camera.ShutterButton;
+import com.uclan.mstocklmayr.contacts.AddContact;
 import com.uclan.mstocklmayr.gallery.SingleViewActivity;
 
 import java.io.File;
@@ -246,6 +247,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
               startActivity(intent);
           }
       });
+
     }
    
     ocrResultView = (TextView) findViewById(R.id.ocr_result_text_view);
@@ -265,7 +267,18 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             startActivity(intent);
         }
     });
-    
+
+    Button addContactButton = (Button) findViewById(R.id.btnAddContact);
+    addContactButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast toast = Toast.makeText(v.getContext(), "add contact button clicked. show history", Toast.LENGTH_LONG);
+                toast.show();
+                Intent intent = new Intent(CaptureActivity.this, AddContact.class);
+                startActivity(intent);
+        }
+    });
+
     progressView = (View) findViewById(R.id.indeterminate_progress_indicator_view);
 
     cameraManager = new CameraManager(getApplication());
@@ -756,9 +769,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     viewfinderView.setVisibility(View.GONE);
     resultView.setVisibility(View.VISIBLE);
 
+    lastBitmap = ocrResult.getBitmapWithoutBounding();
+    //save bitmap to sdcard
+    saveImage(lastBitmap);
 
     ImageView bitmapImageView = (ImageView) findViewById(R.id.image_view);
-    lastBitmap = ocrResult.getBitmap();
     if (lastBitmap == null) {
       bitmapImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(),
           R.drawable.ic_launcher));
@@ -766,8 +781,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
       bitmapImageView.setImageBitmap(lastBitmap);
     }
 
-    //save bitmap to sdcard
-    saveImage(ocrResult.getBitmapWithoutBounding());
 
     // Display the recognized text
     TextView sourceLanguageTextView = (TextView) findViewById(R.id.source_language_text_view);
