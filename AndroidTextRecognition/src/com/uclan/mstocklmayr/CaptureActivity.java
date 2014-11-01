@@ -27,7 +27,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -52,10 +55,8 @@ import com.uclan.mstocklmayr.gallery.SingleViewActivity;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
 
 /**
  * This activity opens the camera and does the actual scanning on a background thread. It draws a
@@ -76,11 +77,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
   
   /** ISO 639-1 language code indicating the default target language for translation. */
   public static final String DEFAULT_TARGET_LANGUAGE_CODE = "es";
-  
-  /** The default online machine translation service to use. */
-  public static final String DEFAULT_TRANSLATOR = "Google Translate";
-  
-  /** The default OCR engine to use. */
+
+    /** The default OCR engine to use. */
   public static final String DEFAULT_OCR_ENGINE_MODE = "Tesseract";
   
   /** The default page segmentation mode to use. */
@@ -614,13 +612,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     sourceLanguageCodeOcr = languageCode;
     sourceLanguageCodeTranslation = LanguageCodeHelper.mapLanguageCode(languageCode);
     sourceLanguageReadable = LanguageCodeHelper.getOcrLanguageName(this, languageCode);
-    return true;
-  }
-
-  /** Sets the necessary language code values for the translation target language. */
-  private boolean setTargetLanguage(String languageCode) {
-    targetLanguageCodeTranslation = languageCode;
-//    targetLanguageReadable = LanguageCodeHelper.getTranslationLanguageName(this, languageCode);
     return true;
   }
 
