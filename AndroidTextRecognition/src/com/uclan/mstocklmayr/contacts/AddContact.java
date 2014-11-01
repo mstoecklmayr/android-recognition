@@ -12,7 +12,6 @@ import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.RawContacts;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -26,7 +25,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.addContact);
+        setContentView(R.layout.add_contact);
 
 
         // Creating a button click listener for the "Add Contact" button

@@ -58,7 +58,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@id/mobilePhoneSpinner"
                 android:inputType="phone"
-                android:hint="@string/hnt_et_mobile_phone"/>
+                android:hint="@string/mobilePhone"/>
 
         <Spinner
                 android:id="@+id/privatePhoneSpinner"
@@ -75,7 +75,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@id/privatePhoneSpinner"
                 android:inputType="phone"
-                android:hint="@string/hnt_et_home_phone" android:layout_alignRight="@+id/privateEmail"/>
+                android:hint="@string/homePhone" android:layout_alignRight="@+id/privateEmail"/>
 
 
         <Spinner
@@ -92,7 +92,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@id/privateEmailSpinner"
                 android:inputType="textEmailAddress"
-                android:hint="@string/hnt_et_work_email"/>
+                android:hint="@string/workEmail"/>
 
         <Spinner
                 android:id="@+id/workEmailSpinner"
@@ -110,7 +110,7 @@
                 android:layout_toLeftOf="@id/workEmailSpinner"
                 android:layout_alignParentLeft="true"
                 android:inputType="textEmailAddress"
-                android:hint="@string/hnt_et_home_email"/>
+                android:hint="@string/homeEmail"/>
 
         <Spinner
                 android:id="@+id/addressSpinner"
@@ -153,7 +153,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/company"
-                android:text="@string/str_btn_add"/>
+                android:text="@string/addButton"/>
 
 
     </RelativeLayout>
