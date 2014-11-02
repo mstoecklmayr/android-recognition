@@ -260,6 +260,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         public void onClick(View v) {
             Toast toast = Toast.makeText(v.getContext(), "history button clicked. show history", Toast.LENGTH_LONG);
             toast.show();
+
+            //TODO use startActivity for Result, because its better than getting back with a new intent
+
             Intent intent = new Intent(CaptureActivity.this, SingleViewActivity.class);
             intent.putExtra("id", 0);
             startActivity(intent);
