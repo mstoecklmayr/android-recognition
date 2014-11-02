@@ -270,6 +270,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     addContactButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            //TODO add recognition data for contact creation
             Toast toast = Toast.makeText(v.getContext(), "add contact button clicked. show history", Toast.LENGTH_LONG);
                 toast.show();
                 Intent intent = new Intent(CaptureActivity.this, AddContact.class);
@@ -454,7 +455,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     setStatusViewForContinuous();
     DecodeHandler.resetDecodeState();
     handler.resetState();
-    if (shutterButton != null && DISPLAY_SHUTTER_BUTTON && historyButton != null) {
+    if (shutterButton != null && historyButton != null) {
       shutterButton.setVisibility(View.VISIBLE);
       historyButton.setVisibility(View.VISIBLE);
     }
@@ -684,7 +685,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         if (s.equals(languageCode)) {
           ocrEngineMode = TessBaseAPI.OEM_CUBE_ONLY;
           SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-          prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, getOcrEngineModeName()).commit();
+          prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, getOcrEngineModeName()).apply();
         }
       }
     }
@@ -700,7 +701,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
       if (!cubeOk) {
         ocrEngineMode = TessBaseAPI.OEM_TESSERACT_ONLY;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, getOcrEngineModeName()).commit();
+        prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, getOcrEngineModeName()).apply();
       }
     }
     
