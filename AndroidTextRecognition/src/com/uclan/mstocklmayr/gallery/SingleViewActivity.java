@@ -1,6 +1,8 @@
 package com.uclan.mstocklmayr.gallery;
 
 import android.app.ActionBar;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
@@ -54,6 +56,9 @@ public class SingleViewActivity extends FragmentActivity implements ViewPager.On
             case R.id.action_discard:
                 deleteImage();
                 return true;
+            case R.id.action_share:
+                shareRecognition();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -74,6 +79,17 @@ public class SingleViewActivity extends FragmentActivity implements ViewPager.On
         }else{
             Toast.makeText(this, "error. no image path set", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void shareRecognition() {
+        String path = adapter.imagePathList.get(this.currentImageIndex);
+        File file = new File(path);
+        Uri uriToImage = Uri.fromFile(file);
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
+        shareIntent.setType("image/jpeg");
+        startActivity(Intent.createChooser(shareIntent, "Share image via"));
     }
 
     @Override
