@@ -765,8 +765,12 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     resultView.setVisibility(View.VISIBLE);
 
     lastBitmap = ocrResult.getBitmapWithoutBounding();
+
+    //TODO only save when image is ok for the user (when he clicks contacts button)
     //save bitmap to sdcard
-    saveImage(lastBitmap);
+    String fileName = saveImage(lastBitmap);
+    //save preferences in JSON file like name, notes, gps etc
+    JSONHandler.addImage(this, fileName);
 
     ImageView bitmapImageView = (ImageView) findViewById(R.id.image_view);
     if (lastBitmap == null) {
@@ -1212,7 +1216,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 	    .show();
   }
 
-    private void saveImage(Bitmap finalBitmap) {
+    private String saveImage(Bitmap finalBitmap) {
 
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/Recognitions");
@@ -1232,5 +1236,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return fname;
     }
 }
