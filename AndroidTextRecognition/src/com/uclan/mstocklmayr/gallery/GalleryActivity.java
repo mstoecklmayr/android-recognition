@@ -15,7 +15,7 @@ import com.uclan.mstocklmayr.R;
 
 import java.io.File;
 
-public class SingleViewActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {
+public class GalleryActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {
     public static final String imagePath = Environment.getExternalStorageDirectory().toString() + "/Recognitions";
 
     private int currentImageIndex = 0;

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class ImagesPagerAdapter extends FragmentStatePagerAdapter {
         Bundle args = new Bundle();
         args.putString("imagePath", imagePathList.get(i));
 
-        SingleViewFragment fragment = new SingleViewFragment();
+        GalleryFragment fragment = new GalleryFragment();
         fragment.setArguments(args);
 
         return fragment;

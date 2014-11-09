@@ -20,8 +20,9 @@
                   android:configChanges="orientation|keyboardHidden|screenSize"
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
                   android:windowSoftInputMode="stateAlwaysHidden">
+
         </activity>
-        <activity android:name=".gallery.SingleViewActivity"
+        <activity android:name=".gallery.GalleryActivity"
                   android:screenOrientation="landscape"
                   android:configChanges="orientation|keyboardHidden|screenSize"
                   android:theme="@android:style/Theme.Holo">
