@@ -30,6 +30,9 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
 
         ActionBar ab = getActionBar();
         ab.show();
+        ab.setDisplayShowHomeEnabled(false);
+        ab.setDisplayShowTitleEnabled(false);
+        ab.setDisplayUseLogoEnabled(false);
 
         // Selected image id
         int position = 0;

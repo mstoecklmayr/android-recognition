@@ -987,9 +987,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
      * Displays a pop-up message showing the name of the current OCR source language.
      */
     void showLanguageName() {
-        Toast toast = Toast.makeText(this, "OCR: " + sourceLanguageReadable, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.TOP, 0, 0);
-        toast.show();
+//        Toast toast = Toast.makeText(this, "OCR: " + sourceLanguageReadable, Toast.LENGTH_LONG);
+//        toast.setGravity(Gravity.TOP, 0, 0);
+//        toast.show();
     }
 
     /**
