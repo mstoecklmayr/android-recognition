@@ -61,7 +61,7 @@
                    android:adjustViewBounds="true"
                    android:scaleType="centerInside"/>
 
-        <LinearLayout
+        <!--LinearLayout
           android:orientation="horizontal"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content">
@@ -82,9 +82,9 @@
                     android:textColor="@color/result_minor_text"
                     android:textSize="14sp"/>
 
-        </LinearLayout>
+        </LinearLayout-->
 
-        <LinearLayout
+        <!--LinearLayout
           android:orientation="horizontal"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content">
@@ -106,7 +106,7 @@
                     android:textSize="14sp"
                     android:text="[Target language]"/>
 
-        </LinearLayout>
+        </LinearLayout-->
 
       </LinearLayout>
 
@@ -129,7 +129,7 @@
                     android:paddingRight="12dip"
                     android:autoLink="web"/>
         
-          <TextView android:id="@+id/translation_text_view"
+          <!--TextView android:id="@+id/translation_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/translation_text"
@@ -138,7 +138,11 @@
                     android:paddingLeft="12dip"
                     android:paddingRight="12dip"
                     android:autoLink="web"
-                    android:clickable="true"/>
+                    android:clickable="true"/-->
+          <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="horizontal">
 
             <Button android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -160,12 +164,14 @@
                     android:layout_margin="10dip"
                     />
 
+          </LinearLayout>
+
           <LinearLayout android:id="@+id/indeterminate_progress_indicator_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         >
             
-              <ProgressBar android:id="@+android:id/progress_small"
+              <ProgressBar android:id="@+id/progress_small"
 		                   style="?android:attr/progressBarStyleSmall" 
 		                   android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
@@ -178,6 +184,7 @@
         </LinearLayout>
 
       </ScrollView>
+
 
     </LinearLayout>
 
