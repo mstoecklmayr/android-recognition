@@ -59,7 +59,7 @@ final class OcrRecognizeAsyncTask extends AsyncTask<Void, Void, Boolean> {
   protected Boolean doInBackground(Void... arg0) {
     long start = System.currentTimeMillis();
     Bitmap bitmap = activity.getCameraManager().buildLuminanceSource(data, width, height).renderCroppedGreyscaleBitmap();
-    saveImage(bitmap);
+    //saveImage(bitmap);
     String textResult;
 
     //      if (PERFORM_FISHER_THRESHOLDING) {

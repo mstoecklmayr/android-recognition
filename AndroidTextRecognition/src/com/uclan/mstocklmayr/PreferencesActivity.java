@@ -114,8 +114,8 @@ public class PreferencesActivity extends PreferenceActivity implements
       String whitelist = OcrCharacterHelper.getWhitelist(sharedPreferences, listPreferenceSourceLanguage.getValue());
       
       // Save the character blacklist/whitelist to preferences
-      sharedPreferences.edit().putString(KEY_CHARACTER_BLACKLIST, blacklist).apply();
-      sharedPreferences.edit().putString(KEY_CHARACTER_WHITELIST, whitelist).apply();
+      sharedPreferences.edit().putString(KEY_CHARACTER_BLACKLIST, blacklist).commit();
+      sharedPreferences.edit().putString(KEY_CHARACTER_WHITELIST, whitelist).commit();
       
       // Set the blacklist/whitelist summary text
       editTextPreferenceCharacterBlacklist.setSummary(blacklist);

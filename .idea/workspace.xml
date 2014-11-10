@@ -39,8 +39,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="15a77301-e6ea-4343-a3ed-34ffd212032f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidTextRecognition/proguard-project.txt" afterPath="$PROJECT_DIR$/AndroidTextRecognition/proguard-project.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidTextRecognition/project.properties" afterPath="$PROJECT_DIR$/AndroidTextRecognition/project.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/CaptureActivity.java" afterPath="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/CaptureActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrRecognizeAsyncTask.java" afterPath="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrRecognizeAsyncTask.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/PreferencesActivity.java" afterPath="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/PreferencesActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="android-recognition.iws" />
@@ -64,73 +65,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="CaptureActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="CaptureActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/CaptureActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.407408" vertical-offset="2788" max-vertical-offset="18450">
-              <caret line="266" column="36" selection-start-line="266" selection-start-column="36" selection-end-line="266" selection-end-column="36" />
+            <state vertical-scroll-proportion="0.5530643" vertical-offset="4910" max-vertical-offset="18450">
+              <caret line="423" column="0" selection-start-line="423" selection-start-column="0" selection-end-line="423" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="capture.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/res/layout/capture.xml">
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
+      <file leaf-file-name="OcrRecognizeAsyncTask.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrRecognizeAsyncTask.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.8846154" vertical-offset="837" max-vertical-offset="3270">
-              <caret line="109" column="0" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
-              <folding>
-                <element signature="e#2424#3367#0" expanded="false" />
-                <element signature="e#3377#4389#0" expanded="false" />
-                <element signature="e#5184#5714#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AddContact.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/contacts/AddContact.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2757" max-vertical-offset="3480">
-              <caret line="217" column="0" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1446#1745#0" expanded="true" />
-                <element signature="e#1740#1741#0" expanded="true" />
-                <element signature="e#5212#5238#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/AndroidManifest.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="675">
-              <caret line="30" column="18" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="117" max-vertical-offset="2070">
+              <caret line="49" column="16" selection-start-line="49" selection-start-column="2" selection-end-line="49" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="proguard-project.txt" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/proguard-project.txt">
+      <file leaf-file-name="DecodeHandler.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/DecodeHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="630">
-              <caret line="0" column="61" selection-start-line="0" selection-start-column="2" selection-end-line="0" selection-end-column="61" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="301" max-vertical-offset="2880">
+              <caret line="50" column="27" selection-start-line="50" selection-start-column="14" selection-end-line="50" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="project.properties" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/project.properties">
+      <file leaf-file-name="ReadFile.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../compiled_library/tess-two/src/com/googlecode/leptonica/android/ReadFile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.16741072" vertical-offset="0" max-vertical-offset="896">
-              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2745">
+              <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -175,24 +144,24 @@
         <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/HistoryButton.java" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrResult.java" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/gallery/ImagesPagerAdapter.java" />
-        <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrRecognizeAsyncTask.java" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/res/layout/addContact.xml" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/gallery/SingleViewActivity.java" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/res/menu/main.xml" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/gallery/SingleViewFragment.java" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/MyActivity.java" />
-        <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/PreferencesActivity.java" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/gallery/GalleryActivity.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/.idea/workspace.xml" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/JSONHandler.java" />
-        <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/CaptureActivity.java" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/res/layout/capture.xml" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/contacts/AddContact.java" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/proguard-project.txt" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/project.properties" />
+        <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrRecognizeAsyncTask.java" />
+        <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/PreferencesActivity.java" />
+        <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/CaptureActivity.java" />
       </list>
     </option>
   </component>
@@ -387,7 +356,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -434,6 +402,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mstocklmayr" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android-recognition" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android-recognition" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidTextRecognition" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="res" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -462,6 +452,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -488,6 +479,22 @@
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
     <property name="LayoutCode.rearrangeEntriesXML" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="223" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="232" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="239" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="1141" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="223" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="232" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="239" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="1141" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -778,7 +785,11 @@
       <created>1415634685206</created>
       <updated>1415634685206</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="proguard enabled">
+      <created>1415634918849</created>
+      <updated>1415634918849</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -808,29 +819,29 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25568798" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960597" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32936078" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19393283" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33044422" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32936078" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5016251" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32827735" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22968581" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5007342" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18743229" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23185265" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23185265" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25893825" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23588924" sideWeight="0.49837488" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32936078" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32936078" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960597" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -872,7 +883,8 @@
     <MESSAGE value="gitignore" />
     <MESSAGE value="JSON handling update" />
     <MESSAGE value="Google play service integration" />
-    <option name="LAST_COMMIT_MESSAGE" value="Google play service integration" />
+    <MESSAGE value="proguard enabled" />
+    <option name="LAST_COMMIT_MESSAGE" value="proguard enabled" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -889,8 +901,14 @@
           <properties />
           <option name="timeStamp" value="58" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/DecodeHandler.java</url>
+          <line>51</line>
+          <properties />
+          <option name="timeStamp" value="97" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="95" />
+      <option name="time" value="98" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -898,123 +916,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/Applications/sdk/sources/android-19/android/widget/Toast.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="5925">
-          <caret line="68" column="28" selection-start-line="68" selection-start-column="28" selection-end-line="68" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/CaptureActivityHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="315" max-vertical-offset="3210">
-          <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrInitAsyncTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.3990827" vertical-offset="6234" max-vertical-offset="10365">
-          <caret line="325" column="18" selection-start-line="325" selection-start-column="18" selection-end-line="325" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../compiled_library/tess-two/src/com/googlecode/tesseract/android/TessBaseAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.53975534" vertical-offset="5752" max-vertical-offset="7680">
-          <caret line="454" column="16" selection-start-line="454" selection-start-column="16" selection-end-line="454" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrResultText.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="990">
-          <caret line="25" column="32" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/res/layout/gallery_viewpager.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="848">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/res/layout/gallery_single_view.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="848">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/camera/CameraConfigurationManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2505721" vertical-offset="306" max-vertical-offset="3150">
-          <caret line="62" column="23" selection-start-line="62" selection-start-column="23" selection-end-line="62" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/res/drawable/shutter_button.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="570">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/res/drawable/history_button.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="570">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/camera/ShutterButton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43235704" vertical-offset="65" max-vertical-offset="1575">
-          <caret line="43" column="33" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/DecodeThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="675">
-          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Applications/sdk/sources/android-19/android/app/Instrumentation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="15172" max-vertical-offset="25545">
-          <caret line="1097" column="0" selection-start-line="1097" selection-start-column="0" selection-end-line="1097" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/AndroidTextRecognition/libs/android-support-v4.jar!/android/support/v4/app/Fragment.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.92" vertical-offset="3042" max-vertical-offset="4080">
-          <caret line="217" column="22" selection-start-line="217" selection-start-column="22" selection-end-line="217" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/AndroidTextRecognition/libs/android-support-v4.jar!/android/support/v4/app/BackStackRecord.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.4" vertical-offset="1395" max-vertical-offset="2070">
-          <caret line="108" column="16" selection-start-line="108" selection-start-column="16" selection-end-line="108" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/AndroidTextRecognition/libs/android-support-v4.jar!/android/support/v4/app/FragmentManagerImpl.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-7.92" vertical-offset="1902" max-vertical-offset="3045">
@@ -1128,28 +1029,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/camera/PreviewCallback.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="103" max-vertical-offset="735">
-          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/DecodeHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334" vertical-offset="232" max-vertical-offset="2880">
-          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrRecognizeAsyncTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.55947137" vertical-offset="1779" max-vertical-offset="2460">
-          <caret line="144" column="33" selection-start-line="144" selection-start-column="33" selection-end-line="144" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.37444934" vertical-offset="0" max-vertical-offset="681">
@@ -1179,23 +1058,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="375" max-vertical-offset="2865">
           <caret line="41" column="32" selection-start-line="41" selection-start-column="32" selection-end-line="41" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="718" max-vertical-offset="2175">
-          <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/PreferencesActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.2355605" vertical-offset="349" max-vertical-offset="2475">
-          <caret line="117" column="82" selection-start-line="117" selection-start-column="82" selection-end-line="117" selection-end-column="82" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1203,7 +1065,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="717">
           <caret line="0" column="19" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1211,7 +1072,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07670455" vertical-offset="2316" max-vertical-offset="20220">
           <caret line="158" column="86" selection-start-line="158" selection-start-column="86" selection-end-line="158" selection-end-column="86" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1219,6 +1079,121 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="19" max-vertical-offset="1725">
           <caret line="32" column="10" selection-start-line="32" selection-start-column="10" selection-end-line="32" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/ViewfinderView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.5953078" vertical-offset="0" max-vertical-offset="5445">
+          <caret line="144" column="44" selection-start-line="144" selection-start-column="34" selection-end-line="144" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/project.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16741072" vertical-offset="0" max-vertical-offset="896">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/proguard-project.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="630">
+          <caret line="0" column="61" selection-start-line="0" selection-start-column="2" selection-end-line="0" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.50223213" vertical-offset="0" max-vertical-offset="896">
+          <caret line="30" column="18" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/contacts/AddContact.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.81584823" vertical-offset="2464" max-vertical-offset="3420">
+          <caret line="217" column="0" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#5212#5238#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/res/layout/capture.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1635" max-vertical-offset="4050">
+          <caret line="109" column="0" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/CaptureActivityHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3210">
+          <caret line="37" column="34" selection-start-line="37" selection-start-column="34" selection-end-line="37" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/camera/AutoFocusManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1410">
+          <caret line="30" column="19" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/camera/CameraConfigurationManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="3150">
+          <caret line="62" column="23" selection-start-line="62" selection-start-column="23" selection-end-line="62" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/camera/CameraManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3810">
+          <caret line="41" column="24" selection-start-line="41" selection-start-column="24" selection-end-line="41" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/camera/PreviewCallback.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="735">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/camera/ShutterButton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="89" max-vertical-offset="1515">
+          <caret line="43" column="33" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/DecodeThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="13" max-vertical-offset="675">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/FinishListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
+          <caret line="27" column="12" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
           <folding />
         </state>
       </provider>
@@ -1233,70 +1208,106 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/ViewfinderView.java">
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/LanguageCodeHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.5953078" vertical-offset="0" max-vertical-offset="5445">
-          <caret line="144" column="44" selection-start-line="144" selection-start-column="34" selection-end-line="144" selection-end-column="44" />
+        <state vertical-scroll-proportion="0.19736843" vertical-offset="0" max-vertical-offset="3300">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/res/layout/capture.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/LuminanceSource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.8846154" vertical-offset="837" max-vertical-offset="3270">
-          <caret line="109" column="0" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
-          <folding>
-            <element signature="e#2424#3367#0" expanded="false" />
-            <element signature="e#3377#4389#0" expanded="false" />
-            <element signature="e#5184#5714#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.2631579" vertical-offset="0" max-vertical-offset="1440">
+          <caret line="27" column="22" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrCharacterHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.1754386" vertical-offset="0" max-vertical-offset="7455">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrInitAsyncTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.7105263" vertical-offset="1305" max-vertical-offset="10125">
+          <caret line="39" column="12" selection-start-line="39" selection-start-column="12" selection-end-line="39" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="583" max-vertical-offset="2175">
+          <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrResultFailure.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="420">
+          <caret line="20" column="19" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrResultText.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="990">
+          <caret line="25" column="32" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/PlanarYUVLuminanceSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2205">
+          <caret line="38" column="40" selection-start-line="38" selection-start-column="40" selection-end-line="38" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/PreferencesActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.2548435" vertical-offset="598" max-vertical-offset="2475">
+          <caret line="117" column="83" selection-start-line="117" selection-start-column="83" selection-end-line="117" selection-end-column="83" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../compiled_library/tess-two/src/com/googlecode/leptonica/android/ReadFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2745">
+          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/OcrRecognizeAsyncTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="117" max-vertical-offset="2070">
+          <caret line="49" column="16" selection-start-line="49" selection-start-column="2" selection-end-line="49" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/DecodeHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="301" max-vertical-offset="2880">
+          <caret line="50" column="27" selection-start-line="50" selection-start-column="14" selection-end-line="50" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/CaptureActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.407408" vertical-offset="2788" max-vertical-offset="18450">
-          <caret line="266" column="36" selection-start-line="266" selection-start-column="36" selection-end-line="266" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/contacts/AddContact.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2757" max-vertical-offset="3480">
-          <caret line="217" column="0" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1446#1745#0" expanded="true" />
-            <element signature="e#1740#1741#0" expanded="true" />
-            <element signature="e#5212#5238#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="675">
-          <caret line="30" column="18" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/proguard-project.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="630">
-          <caret line="0" column="61" selection-start-line="0" selection-start-column="2" selection-end-line="0" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/project.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16741072" vertical-offset="0" max-vertical-offset="896">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.5530643" vertical-offset="4910" max-vertical-offset="18450">
+          <caret line="423" column="0" selection-start-line="423" selection-start-column="0" selection-end-line="423" selection-end-column="0" />
           <folding />
         </state>
       </provider>

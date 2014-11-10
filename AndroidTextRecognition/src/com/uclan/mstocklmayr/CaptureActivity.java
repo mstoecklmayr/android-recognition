@@ -144,7 +144,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     static final String OSD_FILENAME_BASE = "osd.traineddata";
 
     // Minimum mean confidence score necessary to not reject single-shot OCR result. Currently unused.
-    //static final int MINIMUM_MEAN_CONFIDENCE = 0; // 0 means don't reject any scored results
+    static final int MINIMUM_MEAN_CONFIDENCE = 0; // 0 means don't reject any scored results
 
     /* Request code for activity response from gallery activity */
     static final int GALLERY_REQUEST_CODE = 0;
@@ -419,7 +419,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         surfaceHolder = surfaceView.getHolder();
         if (!hasSurface) {
             surfaceHolder.addCallback(this);
-            //surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+            surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         }
 
         // Comment out the following block to test non-OCR functions without an SD card
@@ -732,7 +732,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 if (s.equals(languageCode)) {
                     ocrEngineMode = TessBaseAPI.OEM_CUBE_ONLY;
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                    prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, getOcrEngineModeName()).apply();
+                    prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, getOcrEngineModeName()).commit();
                 }
             }
         }
@@ -748,7 +748,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             if (!cubeOk) {
                 ocrEngineMode = TessBaseAPI.OEM_TESSERACT_ONLY;
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, getOcrEngineModeName()).apply();
+                prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, getOcrEngineModeName()).commit();
             }
         }
 
@@ -1184,45 +1184,45 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Continuous preview
-        prefs.edit().putBoolean(PreferencesActivity.KEY_CONTINUOUS_PREVIEW, CaptureActivity.DEFAULT_TOGGLE_CONTINUOUS).apply();
+        prefs.edit().putBoolean(PreferencesActivity.KEY_CONTINUOUS_PREVIEW, CaptureActivity.DEFAULT_TOGGLE_CONTINUOUS).commit();
 
         // Recognition language
-        prefs.edit().putString(PreferencesActivity.KEY_SOURCE_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE).apply();
+        prefs.edit().putString(PreferencesActivity.KEY_SOURCE_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE).commit();
 
         // Translation
-        prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_TRANSLATION, CaptureActivity.DEFAULT_TOGGLE_TRANSLATION).apply();
+        prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_TRANSLATION, CaptureActivity.DEFAULT_TOGGLE_TRANSLATION).commit();
 
         // Translation target language
-        prefs.edit().putString(PreferencesActivity.KEY_TARGET_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_TARGET_LANGUAGE_CODE).apply();
+        prefs.edit().putString(PreferencesActivity.KEY_TARGET_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_TARGET_LANGUAGE_CODE).commit();
 
         // OCR Engine
-        prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, CaptureActivity.DEFAULT_OCR_ENGINE_MODE).apply();
+        prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, CaptureActivity.DEFAULT_OCR_ENGINE_MODE).commit();
 
         // Autofocus
-        prefs.edit().putBoolean(PreferencesActivity.KEY_AUTO_FOCUS, CaptureActivity.DEFAULT_TOGGLE_AUTO_FOCUS).apply();
+        prefs.edit().putBoolean(PreferencesActivity.KEY_AUTO_FOCUS, CaptureActivity.DEFAULT_TOGGLE_AUTO_FOCUS).commit();
 
         // Disable problematic focus modes
-        prefs.edit().putBoolean(PreferencesActivity.KEY_DISABLE_CONTINUOUS_FOCUS, CaptureActivity.DEFAULT_DISABLE_CONTINUOUS_FOCUS).apply();
+        prefs.edit().putBoolean(PreferencesActivity.KEY_DISABLE_CONTINUOUS_FOCUS, CaptureActivity.DEFAULT_DISABLE_CONTINUOUS_FOCUS).commit();
 
         // Beep
-        prefs.edit().putBoolean(PreferencesActivity.KEY_PLAY_BEEP, CaptureActivity.DEFAULT_TOGGLE_BEEP).apply();
+        prefs.edit().putBoolean(PreferencesActivity.KEY_PLAY_BEEP, CaptureActivity.DEFAULT_TOGGLE_BEEP).commit();
 
         // Character blacklist
         prefs.edit().putString(PreferencesActivity.KEY_CHARACTER_BLACKLIST,
-                OcrCharacterHelper.getDefaultBlacklist(CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)).apply();
+                OcrCharacterHelper.getDefaultBlacklist(CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)).commit();
 
         // Character whitelist
         prefs.edit().putString(PreferencesActivity.KEY_CHARACTER_WHITELIST,
-                OcrCharacterHelper.getDefaultWhitelist(CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)).apply();
+                OcrCharacterHelper.getDefaultWhitelist(CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)).commit();
 
         // Page segmentation mode
-        prefs.edit().putString(PreferencesActivity.KEY_PAGE_SEGMENTATION_MODE, CaptureActivity.DEFAULT_PAGE_SEGMENTATION_MODE).apply();
+        prefs.edit().putString(PreferencesActivity.KEY_PAGE_SEGMENTATION_MODE, CaptureActivity.DEFAULT_PAGE_SEGMENTATION_MODE).commit();
 
         // Reversed camera image
-        prefs.edit().putBoolean(PreferencesActivity.KEY_REVERSE_IMAGE, CaptureActivity.DEFAULT_TOGGLE_REVERSED_IMAGE).apply();
+        prefs.edit().putBoolean(PreferencesActivity.KEY_REVERSE_IMAGE, CaptureActivity.DEFAULT_TOGGLE_REVERSED_IMAGE).commit();
 
         // Light
-        prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, CaptureActivity.DEFAULT_TOGGLE_LIGHT).apply();
+        prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, CaptureActivity.DEFAULT_TOGGLE_LIGHT).commit();
     }
 
     void displayProgressDialog() {
