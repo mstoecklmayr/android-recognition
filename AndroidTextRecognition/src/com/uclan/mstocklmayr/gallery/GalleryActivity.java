@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+import com.uclan.mstocklmayr.CaptureActivity;
 import com.uclan.mstocklmayr.R;
 
 import java.io.File;
@@ -59,12 +60,16 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
             case R.id.action_share:
                 shareRecognition();
                 return true;
+            //TODO add reprocess feature
+//            case R.id.action_reprocess:
+//                reprocessImage();
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    void deleteImage(){
+    private void deleteImage(){
         String path = adapter.imagePathList.get(this.currentImageIndex);
         Toast.makeText(this, path + "deleted ", Toast.LENGTH_LONG).show();
         if(path != null){
@@ -90,6 +95,14 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
         shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
         shareIntent.setType("image/jpeg");
         startActivity(Intent.createChooser(shareIntent, "Share image via"));
+    }
+
+    private void reprocessImage(){
+        String path = adapter.imagePathList.get(this.currentImageIndex);
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(CaptureActivity.FILE_PATH, path);
+        setResult(RESULT_OK, returnIntent);
+        finish();
     }
 
     @Override

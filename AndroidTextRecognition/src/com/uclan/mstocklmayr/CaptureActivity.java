@@ -115,6 +115,13 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     // Flag to enable display of the on-screen shutter button.
     private static final boolean DISPLAY_SHUTTER_BUTTON = true;
 
+    //Intent parameter for the file path
+    public static final String FILE_PATH = "path";
+
+    //Intent parameter for the text result
+    public static final String TEXT_RESULT = "text";
+
+
     // Languages for which Cube data is available.
     static final String[] CUBE_SUPPORTED_LANGUAGES = {
             "ara", // Arabic
@@ -296,8 +303,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                     Toast toast = Toast.makeText(v.getContext(), "add contact button clicked. show history", Toast.LENGTH_LONG);
                     toast.show();
                     Intent intent = new Intent(CaptureActivity.this, AddContact.class);
-                    intent.putExtra("text", textResult);
-                    startActivity(intent);
+                    intent.putExtra(TEXT_RESULT, textResult);
+                    intent.putExtra(FILE_PATH, fileName);
+                    startActivityForResult(intent, CONTACT_REQUEST_CODE);
                 } else {
                     Toast toast = Toast.makeText(v.getContext(), "Error processing the image", Toast.LENGTH_LONG);
                     toast.show();
@@ -1174,45 +1182,45 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Continuous preview
-        prefs.edit().putBoolean(PreferencesActivity.KEY_CONTINUOUS_PREVIEW, CaptureActivity.DEFAULT_TOGGLE_CONTINUOUS).commit();
+        prefs.edit().putBoolean(PreferencesActivity.KEY_CONTINUOUS_PREVIEW, CaptureActivity.DEFAULT_TOGGLE_CONTINUOUS).apply();
 
         // Recognition language
-        prefs.edit().putString(PreferencesActivity.KEY_SOURCE_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE).commit();
+        prefs.edit().putString(PreferencesActivity.KEY_SOURCE_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE).apply();
 
         // Translation
-        prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_TRANSLATION, CaptureActivity.DEFAULT_TOGGLE_TRANSLATION).commit();
+        prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_TRANSLATION, CaptureActivity.DEFAULT_TOGGLE_TRANSLATION).apply();
 
         // Translation target language
-        prefs.edit().putString(PreferencesActivity.KEY_TARGET_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_TARGET_LANGUAGE_CODE).commit();
+        prefs.edit().putString(PreferencesActivity.KEY_TARGET_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_TARGET_LANGUAGE_CODE).apply();
 
         // OCR Engine
-        prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, CaptureActivity.DEFAULT_OCR_ENGINE_MODE).commit();
+        prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, CaptureActivity.DEFAULT_OCR_ENGINE_MODE).apply();
 
         // Autofocus
-        prefs.edit().putBoolean(PreferencesActivity.KEY_AUTO_FOCUS, CaptureActivity.DEFAULT_TOGGLE_AUTO_FOCUS).commit();
+        prefs.edit().putBoolean(PreferencesActivity.KEY_AUTO_FOCUS, CaptureActivity.DEFAULT_TOGGLE_AUTO_FOCUS).apply();
 
         // Disable problematic focus modes
-        prefs.edit().putBoolean(PreferencesActivity.KEY_DISABLE_CONTINUOUS_FOCUS, CaptureActivity.DEFAULT_DISABLE_CONTINUOUS_FOCUS).commit();
+        prefs.edit().putBoolean(PreferencesActivity.KEY_DISABLE_CONTINUOUS_FOCUS, CaptureActivity.DEFAULT_DISABLE_CONTINUOUS_FOCUS).apply();
 
         // Beep
-        prefs.edit().putBoolean(PreferencesActivity.KEY_PLAY_BEEP, CaptureActivity.DEFAULT_TOGGLE_BEEP).commit();
+        prefs.edit().putBoolean(PreferencesActivity.KEY_PLAY_BEEP, CaptureActivity.DEFAULT_TOGGLE_BEEP).apply();
 
         // Character blacklist
         prefs.edit().putString(PreferencesActivity.KEY_CHARACTER_BLACKLIST,
-                OcrCharacterHelper.getDefaultBlacklist(CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)).commit();
+                OcrCharacterHelper.getDefaultBlacklist(CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)).apply();
 
         // Character whitelist
         prefs.edit().putString(PreferencesActivity.KEY_CHARACTER_WHITELIST,
-                OcrCharacterHelper.getDefaultWhitelist(CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)).commit();
+                OcrCharacterHelper.getDefaultWhitelist(CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)).apply();
 
         // Page segmentation mode
-        prefs.edit().putString(PreferencesActivity.KEY_PAGE_SEGMENTATION_MODE, CaptureActivity.DEFAULT_PAGE_SEGMENTATION_MODE).commit();
+        prefs.edit().putString(PreferencesActivity.KEY_PAGE_SEGMENTATION_MODE, CaptureActivity.DEFAULT_PAGE_SEGMENTATION_MODE).apply();
 
         // Reversed camera image
-        prefs.edit().putBoolean(PreferencesActivity.KEY_REVERSE_IMAGE, CaptureActivity.DEFAULT_TOGGLE_REVERSED_IMAGE).commit();
+        prefs.edit().putBoolean(PreferencesActivity.KEY_REVERSE_IMAGE, CaptureActivity.DEFAULT_TOGGLE_REVERSED_IMAGE).apply();
 
         // Light
-        prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, CaptureActivity.DEFAULT_TOGGLE_LIGHT).commit();
+        prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, CaptureActivity.DEFAULT_TOGGLE_LIGHT).apply();
     }
 
     void displayProgressDialog() {
@@ -1258,7 +1266,10 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         String date = sdf.format(new Date());
         String fname = "IMG_" + date + ".jpg";
         File file = new File(myDir, fname);
-        if (file.exists()) file.delete();
+        if (file.exists()){
+            file.delete();
+        }
+
         try {
             FileOutputStream out = new FileOutputStream(file);
             finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
@@ -1269,5 +1280,26 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             e.printStackTrace();
         }
         return fname;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case GALLERY_REQUEST_CODE:
+                if(resultCode == RESULT_OK){
+                    //TODO maybe other actions can be executed too
+                    //reprocess image
+                    String path = data.getExtras().getString(FILE_PATH);
+
+                }
+                break;
+            case CONTACT_REQUEST_CODE:
+                if(resultCode == RESULT_OK){
+                    //do stuff
+                }
+                break;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

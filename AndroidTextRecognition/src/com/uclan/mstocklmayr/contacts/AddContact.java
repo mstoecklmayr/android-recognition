@@ -15,17 +15,25 @@ import android.provider.ContactsContract.RawContacts;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import com.uclan.mstocklmayr.CaptureActivity;
 import com.uclan.mstocklmayr.R;
 
 import java.util.ArrayList;
 
 public class AddContact extends Activity implements AdapterView.OnItemSelectedListener {
+    private String path;
+    private String text;
+
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle bundle) {
 
-        super.onCreate(savedInstanceState);
+        super.onCreate(bundle);
         setContentView(R.layout.add_contact);
+
+        Bundle extras = this.getIntent().getExtras();
+        this.path = extras.getString(CaptureActivity.FILE_PATH);
+        this.text = extras.getString(CaptureActivity.TEXT_RESULT);
 
 
         // Creating a button click listener for the "Add Contact" button
@@ -135,6 +143,10 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 				}catch (OperationApplicationException e) {
 					e.printStackTrace();
 				}
+
+                Intent returnIntent = new Intent();
+                setResult(RESULT_OK, returnIntent);
+                finish();
 			}
 		};
 		
