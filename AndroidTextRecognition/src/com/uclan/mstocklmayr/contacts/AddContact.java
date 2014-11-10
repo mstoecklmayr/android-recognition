@@ -216,12 +216,12 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
             e.printStackTrace();
         }
 
-
         //TODO write email to picture if existing
         //JSONHandler.addRecordForFile(this, this.path,"","");
 
         Intent returnIntent = new Intent();
         setResult(RESULT_OK, returnIntent);
         finish();
+
     }
 }
