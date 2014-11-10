@@ -39,12 +39,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="15a77301-e6ea-4343-a3ed-34ffd212032f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/google_play_services.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/google_play_services1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/contacts/AddContact.java" afterPath="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/contacts/AddContact.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidTextRecognition/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidTextRecognition/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidTextRecognition/AndroidTextRecognition.iml" afterPath="$PROJECT_DIR$/AndroidTextRecognition/AndroidTextRecognition.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidTextRecognition/proguard-project.txt" afterPath="$PROJECT_DIR$/AndroidTextRecognition/proguard-project.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidTextRecognition/project.properties" afterPath="$PROJECT_DIR$/AndroidTextRecognition/project.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -111,11 +106,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.62240666" vertical-offset="0" max-vertical-offset="723">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="675">
               <caret line="30" column="18" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="proguard-project.txt" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/proguard-project.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="630">
+              <caret line="0" column="61" selection-start-line="0" selection-start-column="2" selection-end-line="0" selection-end-column="61" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="project.properties" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/project.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.16741072" vertical-offset="0" max-vertical-offset="896">
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -176,6 +191,8 @@
         <option value="$PROJECT_DIR$/AndroidTextRecognition/res/layout/capture.xml" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/AndroidTextRecognition/src/com/uclan/mstocklmayr/contacts/AddContact.java" />
+        <option value="$PROJECT_DIR$/AndroidTextRecognition/proguard-project.txt" />
+        <option value="$PROJECT_DIR$/AndroidTextRecognition/project.properties" />
       </list>
     </option>
   </component>
@@ -757,7 +774,11 @@
       <created>1415631577229</created>
       <updated>1415631577229</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Google play service integration">
+      <created>1415634685206</created>
+      <updated>1415634685206</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -797,14 +818,14 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5016251" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32827735" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5007342" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18743229" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18743229" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23185265" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25893825" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23588924" sideWeight="0.49837488" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23588924" sideWeight="0.49837488" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32936078" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32936078" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -850,7 +871,8 @@
     <MESSAGE value="activity for result updated&#10;image updated" />
     <MESSAGE value="gitignore" />
     <MESSAGE value="JSON handling update" />
-    <option name="LAST_COMMIT_MESSAGE" value="JSON handling update" />
+    <MESSAGE value="Google play service integration" />
+    <option name="LAST_COMMIT_MESSAGE" value="Google play service integration" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -962,13 +984,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.43235704" vertical-offset="65" max-vertical-offset="1575">
           <caret line="43" column="33" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/project.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="570">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1264,8 +1279,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.62240666" vertical-offset="0" max-vertical-offset="723">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="675">
           <caret line="30" column="18" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/proguard-project.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="630">
+          <caret line="0" column="61" selection-start-line="0" selection-start-column="2" selection-end-line="0" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidTextRecognition/project.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16741072" vertical-offset="0" max-vertical-offset="896">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding />
         </state>
       </provider>
