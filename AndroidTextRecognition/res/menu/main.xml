@@ -11,4 +11,8 @@
           android:icon="@drawable/ic_action_share"
           android:title="Share"
           android:showAsAction="always"/>
+    <item android:id="@+id/action_location"
+          android:icon="@drawable/ic_action_place"
+          android:title="Location"
+          android:showAsAction="always"/>
 </menu>

@@ -45,4 +45,11 @@ GitIgnore added but I think it's not working properly.
 
 16.11.2014
 
-added handbook into git
+Added handbook into git
+
+Try to change from a grey scaled image to a color image. (http://stackoverflow.com/questions/7620401/how-to-convert-byte-array-to-bitmap)
+
+Location service implemented after https://developer.android.com/training/location/retrieve-current.html
+Longitude and latitude, tested with google
+
+Write lat long added to JSON, get general property added, get location added to JSON

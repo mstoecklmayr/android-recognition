@@ -19,11 +19,9 @@ package com.uclan.mstocklmayr;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -31,10 +29,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.SpannableStringBuilder;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
@@ -46,6 +47,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.LocationClient;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.uclan.mstocklmayr.camera.CameraManager;
 import com.uclan.mstocklmayr.camera.ShutterButton;
@@ -65,8 +70,8 @@ import java.util.Date;
  * <p/>
  * The code for this class was adapted from the ZXing project: http://code.google.com/p/zxing/
  */
-public final class CaptureActivity extends Activity implements SurfaceHolder.Callback,
-        ShutterButton.OnShutterButtonListener {
+public final class CaptureActivity extends FragmentActivity implements SurfaceHolder.Callback,
+        ShutterButton.OnShutterButtonListener, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener{
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
 
@@ -201,6 +206,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private boolean isPaused;
     private static boolean isFirstLaunch; // True if this is the first time the app is being run
 
+    //TODO encapsulate field
+    public LocationClient mLocationClient;
+
     Handler getHandler() {
         return handler;
     }
@@ -217,6 +225,13 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Connect the client.
+        mLocationClient.connect();
+       }
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -293,8 +308,13 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 //save bitmap to sdcard
                 if (lastBitmap != null) {
                     String fileName = saveImage(lastBitmap);
+
+                    Location location = mLocationClient.getLastLocation();
+                    Toast.makeText(v.getContext(), "Last longitude: "+location.getLongitude()+" ||| last latitude: "+location.getLatitude(), Toast.LENGTH_LONG).show();
+
+
                     //save preferences in JSON file like name, notes, gps etc
-                    JSONHandler.addImage(v.getContext(), fileName);
+                    JSONHandler.addImage(v.getContext(), fileName, location);
 
                     String textResult = "";
                     if (lastResult.getText() != null) {
@@ -314,6 +334,12 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
             }
         });
+
+        /*
+         * Create a new location client, using the enclosing class to
+         * handle callbacks.
+         */
+        mLocationClient = new LocationClient(this, this, this);
 
         progressView = (View) findViewById(R.id.indeterminate_progress_indicator_view);
 
@@ -941,6 +967,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         if (v.equals(ocrResultView)) {
             menu.add(Menu.NONE, OPTIONS_COPY_RECOGNIZED_TEXT_ID, Menu.NONE, "Copy recognized text");
         }
+
     }
 
     @Override
@@ -1285,6 +1312,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         return fname;
     }
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode){
@@ -1301,8 +1330,135 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                     //do stuff
                 }
                 break;
+            case CONNECTION_FAILURE_RESOLUTION_REQUEST :
+            /*
+             * If the result code is Activity.RESULT_OK, try
+             * to connect again
+             */
+                //TODO handle missing google play service
+                switch (resultCode) {
+                    case Activity.RESULT_OK :
+                    /*
+                     * Try the request again
+                     */
+                        break;
+                }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    // Global constants
+    /*
+     * Define a request code to send to Google Play services
+     * This code is returned in Activity.onActivityResult
+     */
+    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        // Display the connection status
+        Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+    }
+
+    /*
+     * Called by Location Services if the connection to the
+     * location client drops because of an error.
+     */
+    @Override
+    public void onDisconnected() {
+        // Display the connection status
+        Toast.makeText(this, "Disconnected. Please re-connect.",
+                Toast.LENGTH_SHORT).show();
+    }
+    /*
+         * Called by Location Services if the attempt to
+         * Location Services fails.
+         */
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        /*
+         * Google Play services can resolve some errors it detects.
+         * If the error has a resolution, try sending an Intent to
+         * start a Google Play services activity that can resolve
+         * error.
+         */
+        if (connectionResult.hasResolution()) {
+            try {
+                // Start an Activity that tries to resolve the error
+                connectionResult.startResolutionForResult(
+                        this,
+                        CONNECTION_FAILURE_RESOLUTION_REQUEST);
+                /*
+                 * Thrown if Google Play services canceled the original
+                 * PendingIntent
+                 */
+            } catch (IntentSender.SendIntentException e) {
+                // Log the error
+                e.printStackTrace();
+            }
+        } else {
+            /*
+             * If no resolution is available, display a dialog to the
+             * user with the error.
+             */
+            //showErrorDialog(connectionResult.getErrorCode());
+        }
+    }
+
+    // Define a DialogFragment that displays the error dialog
+    public static class ErrorDialogFragment extends DialogFragment {
+        // Global field to contain the error dialog
+        private Dialog mDialog;
+        // Default constructor. Sets the dialog field to null
+        public ErrorDialogFragment() {
+            super();
+            mDialog = null;
+        }
+        // Set the dialog to display
+        public void setDialog(Dialog dialog) {
+            mDialog = dialog;
+        }
+        // Return a Dialog to the DialogFragment.
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return mDialog;
+        }
+    }
+
+    private boolean servicesConnected() {
+        // Check that Google Play services is available
+        int resultCode =
+                GooglePlayServicesUtil.
+                        isGooglePlayServicesAvailable(this);
+        // If Google Play services is available
+        if (ConnectionResult.SUCCESS == resultCode) {
+            // In debug mode, log the status
+            Log.d("Location Updates",
+                    "Google Play services is available.");
+            // Continue
+            return true;
+            // Google Play services was not available for some reason.
+            // resultCode holds the error code.
+        } else {
+            // Get the error dialog from Google Play services
+            Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(
+                    resultCode,
+                    this,
+                    CONNECTION_FAILURE_RESOLUTION_REQUEST);
+
+            // If Google Play services can provide an error dialog
+            if (errorDialog != null) {
+                // Create a new DialogFragment for the error dialog
+                ErrorDialogFragment errorFragment =
+                        new ErrorDialogFragment();
+                // Set the dialog in the DialogFragment
+                errorFragment.setDialog(errorDialog);
+                // Show the error dialog in the DialogFragment
+                errorFragment.show(getSupportFragmentManager(),
+                        "Location Updates");
+            }
+        }
+        return false;
     }
 }

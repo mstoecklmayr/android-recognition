@@ -17,6 +17,7 @@
 package com.uclan.mstocklmayr;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 /**
  * This object extends LuminanceSource around an array of YUV data returned from the camera driver,
@@ -140,6 +141,10 @@ public final class PlanarYUVLuminanceSource extends LuminanceSource {
 
     Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
     bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+
+    // TODO should return colorful image.. not working atm
+    //Bitmap bitmap = BitmapFactory.decodeByteArray(yuv, 0, yuv.length);
+
     return bitmap;
   }
 
