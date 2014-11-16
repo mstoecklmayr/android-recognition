@@ -1,0 +1,48 @@
+13.10.2014
+
+Tessdata files stored in /Assets
+File initially named to foo.tar.gz but Android aapt removes gz ending. So the file has been renamed to foo.tar.bin to prevent aapt doing this.
+Ref: http://banachowski.com/deprogramming/2012/06/android-assets-where-did-you-go/
+
+15.10.2014
+
+Tessdata file renamed to tesseract-ocr.zip. Zip is now extracted and checked afterwards. If something happended during the installation, the file
+is downloaded (should not happen normally, just a fallback)
+
+20.10.2014
+External gallery app created for the history.
+History button added to project app
+Save picture feature added (saved to sdcard /Recognitions) as IMG_date+time
+
+27.10.2014
+Gallery app included into project app
+Action bar added to project bar (problem with PageView and Fragments, when a fragment was deleted, it was still shown in the 'gallery'. Seached for about 3 hours to solve the problem but it didn't work. Found out in the end that the 'getItemPosition' method of the 'FragmentStatePagerAdapter' has to be overwritten in order to reinitialize the dataset of the view pager. 'adapter.notifyDataSetChanged' was not enough although it always worked for the first time but afterwards it got buggy.
+
+I had a short look at the contact creation but the Fragment problem was so annoying that I couldn't leave it undone.
+
+27.10-15.11.2014
+
+Forgot to write handbook. Add contact feature added. Spinners added but they look ugly. 
+Share action button added to gallery - intent blablabla
+
+Looked through storage options. These are XML, JSON and SqlLite-Database. Watched video on Lynda regarding this. 
+I thought about using xml but it is too much overhead for so little data. 
+
+I have chosen to store it in one file in the internal storage. It is just a little information about each picture so splitting it up into smaller pieces (one file per image) would not make sense IMHO.
+
+Added new JSON field "email" to the stored file when a contact is added. 
+
+Gallery and AddContact are called as "startActivityForResult". Request codes have been added to the caller class (CaptureActivity).
+
+The JSON handling has been adapted, one method for reading and one for writing.
+
+Google Play services have been added. (https://developer.android.com/google/play-services/setup.html)
+This only enables to store it in Google Drive. I forgot the name of the other option. But it only works after 4.x. I have to look this up.
+
+Proguard enabled
+
+GitIgnore added but I think it's not working properly.
+
+16.11.2014
+
+added handbook into git
