@@ -808,7 +808,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         viewfinderView.setVisibility(View.GONE);
         resultView.setVisibility(View.VISIBLE);
 
-        lastBitmap = ocrResult.getBitmapWithoutBounding();
+        //lastBitmap = ocrResult.getBitmapWithoutBounding();
+        lastBitmap = ocrResult.getBitmap();
 
         ImageView bitmapImageView = (ImageView) findViewById(R.id.image_view);
         if (lastBitmap == null) {
