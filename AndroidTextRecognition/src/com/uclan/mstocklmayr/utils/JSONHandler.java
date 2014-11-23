@@ -1,4 +1,4 @@
-package com.uclan.mstocklmayr;
+package com.uclan.mstocklmayr.utils;
 
 import android.content.Context;
 import android.location.Location;

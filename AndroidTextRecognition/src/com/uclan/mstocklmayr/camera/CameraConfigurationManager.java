@@ -110,6 +110,7 @@ final class CameraConfigurationManager {
     }
 
     parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
+    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
     camera.setParameters(parameters);
   }
 

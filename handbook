@@ -1,3 +1,15 @@
+23.11.2014
+
+Splitter class added to split up the recognition text. Result of the splitting will be stored in a map<string,string>. The key will be one out of NAME, EMAIL, PHONE or OTHER + a number.
+The first part of the text result is most probably the name. The email address can also be recognised because of the @-character and the phone address can also be determined. What if there are
+two phone numbers?
+
+Add contact part copied to main app.
+
+Flash support added as parameter. The configuration of this would be better and more intuitive in a settings menu.
+
+Removed the "continuous" parts from the CaptureActivity class.
+
 22.11.2014
 
 Add contact adapted:

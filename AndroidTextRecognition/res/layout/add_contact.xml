@@ -9,151 +9,83 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
             >
-
-        <Spinner
+        <TextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Name"
+                android:paddingLeft="7dp"
+                android:textSize="22dp"
+                android:background="@drawable/textview_border"
+                />
+        <!--Spinner
                 android:id="@+id/firstNameSpinner"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                />
+                android:layout_below="@id/name"
+                /-->
 
         <EditText
-                android:id="@+id/firstName"
-                android:layout_width="0dp"
+                android:id="@+id/etName"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:inputType="text"
-                android:layout_toLeftOf="@id/firstNameSpinner"
-                android:hint="@string/firstName"/>
+                android:hint="@string/firstName"
+                android:layout_below="@id/tvName"/>
 
-        <Spinner
-                android:id="@+id/lastNameSpinner"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/firstName"
-                android:layout_alignParentRight="true"
+        <TextView
+                android:id="@+id/tvMobilePhone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Mobile phone"
+                android:paddingLeft="7dp"
+                android:textSize="22dp"
+                android:background="@drawable/textview_border"
+                android:layout_below="@id/etName"
                 />
-        <EditText
-                android:id="@+id/lastName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/firstName"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@id/lastNameSpinner"
-                android:inputType="text"
-                android:hint="@string/lastName"/>
 
-        <Spinner
-                android:id="@+id/mobilePhoneSpinner"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/lastName"
-                android:layout_alignParentRight="true"/>
 
         <EditText
-                android:id="@+id/mobilePhone"
-                android:layout_width="0dp"
+                android:id="@+id/etMobilePhone"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/lastName"
+                android:layout_below="@id/tvMobilePhone"
                 android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@id/mobilePhoneSpinner"
                 android:inputType="phone"
                 android:hint="@string/mobilePhone"/>
 
-        <Spinner
-                android:id="@+id/privatePhoneSpinner"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/mobilePhone"
-                android:layout_alignParentRight="true"/>
+
+        <TextView
+                android:id="@+id/tvPrivateEmail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Email"
+                android:paddingLeft="7dp"
+                android:textSize="22dp"
+                android:background="@drawable/textview_border"
+                android:layout_below="@id/etMobilePhone"
+                />
 
         <EditText
-                android:id="@+id/privatePhone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/mobilePhone"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@id/privatePhoneSpinner"
-                android:inputType="phone"
-                android:hint="@string/homePhone" android:layout_alignRight="@+id/privateEmail"/>
-
-
-        <Spinner
-                android:id="@+id/privateEmailSpinner"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/privatePhone"
-                android:layout_alignParentRight="true"/>
-        <EditText
-                android:id="@+id/privateEmail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/privatePhone"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@id/privateEmailSpinner"
-                android:inputType="textEmailAddress"
-                android:hint="@string/workEmail"/>
-
-        <Spinner
-                android:id="@+id/workEmailSpinner"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/privateEmail"
-                android:layout_alignParentRight="true"/>
-
-
-        <EditText
-                android:id="@+id/et_home_email"
+                android:id="@+id/etPrivateEmail"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/privateEmail"
-                android:layout_toLeftOf="@id/workEmailSpinner"
+                android:layout_below="@id/tvPrivateEmail"
                 android:layout_alignParentLeft="true"
                 android:inputType="textEmailAddress"
                 android:hint="@string/homeEmail"/>
 
-        <Spinner
-                android:id="@+id/addressSpinner"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/workEmailSpinner"
-                android:layout_alignParentRight="true"/>
 
+        <TextView
+                android:id="@+id/tvSpacer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/textview_border"
+                android:layout_below="@id/etPrivateEmail"
+                />
 
-        <EditText
-                android:id="@+id/address"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/workEmailSpinner"
-                android:layout_toLeftOf="@id/addressSpinner"
-                android:layout_alignParentLeft="true"
-                android:inputType="text"
-                android:hint="@string/address"/>
-
-        <Spinner
-                android:id="@+id/companySpinner"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/address"
-                android:layout_alignParentRight="true"/>
-
-
-        <EditText
-                android:id="@+id/company"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/address"
-                android:layout_toLeftOf="@id/companySpinner"
-                android:layout_alignParentLeft="true"
-                android:inputType="text"
-                android:hint="@string/company"/>
-
-        <Button
-                android:id="@+id/btn_add"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/company"
-                android:text="@string/addButton"/>
 
 
     </RelativeLayout>

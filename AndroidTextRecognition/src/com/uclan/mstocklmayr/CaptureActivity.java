@@ -36,6 +36,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.test.mock.MockApplication;
 import android.text.SpannableStringBuilder;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
@@ -56,12 +57,15 @@ import com.uclan.mstocklmayr.camera.CameraManager;
 import com.uclan.mstocklmayr.camera.ShutterButton;
 import com.uclan.mstocklmayr.contacts.AddContact;
 import com.uclan.mstocklmayr.gallery.GalleryActivity;
+import com.uclan.mstocklmayr.utils.JSONHandler;
+import com.uclan.mstocklmayr.utils.TextSplitter;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * This activity opens the camera and does the actual scanning on a background thread. It draws a
@@ -205,6 +209,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     private boolean isEngineReady;
     private boolean isPaused;
     private static boolean isFirstLaunch; // True if this is the first time the app is being run
+    public static Map<String, String> textResultMap; //map containing the split up text
 
     //TODO encapsulate field
     public LocationClient mLocationClient;
@@ -271,7 +276,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                 public void onClick(View v) {
                     Intent intent = new Intent(CaptureActivity.this, GalleryActivity.class);
                     intent.putExtra("id", 0);
-                    startActivity(intent);
+                    startActivityForResult(intent, CONTACT_REQUEST_CODE);
                 }
             });
 
@@ -320,6 +325,11 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                     if (lastResult.getText() != null) {
                         textResult = lastResult.getText();
                     }
+
+                    //TODO split up text result here
+                    TextSplitter splitter = new TextSplitter(textResult);
+                    textResultMap = splitter.getResult();
+
 
                     Toast toast = Toast.makeText(v.getContext(), "add contact button clicked. show history", Toast.LENGTH_LONG);
                     toast.show();
@@ -495,38 +505,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         }
     }
 
-    /**
-     * Called when the shutter button is pressed in continuous mode.
-     */
-    void onShutterButtonPressContinuous() {
-        isPaused = true;
-        handler.stop();
-        beepManager.playBeepSoundAndVibrate();
-        if (lastResult != null) {
-            handleOcrDecode(lastResult);
-        } else {
-            Toast toast = Toast.makeText(this, "OCR failed. Please try again.", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.TOP, 0, 0);
-            toast.show();
-            resumeContinuousDecoding();
-        }
-    }
 
-    /**
-     * Called to resume recognition after translation in continuous mode.
-     */
-    @SuppressWarnings("unused")
-    void resumeContinuousDecoding() {
-        isPaused = false;
-        resetStatusView();
-        setStatusViewForContinuous();
-        DecodeHandler.resetDecodeState();
-        handler.resetState();
-        if (shutterButton != null && historyButton != null) {
-            shutterButton.setVisibility(View.VISIBLE);
-            historyButton.setVisibility(View.VISIBLE);
-        }
-    }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -604,13 +583,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-            // First check if we're paused in continuous mode, and if so, just unpause.
-            if (isPaused) {
-                Log.d(TAG, "only resuming continuous recognition, not quitting...");
-                resumeContinuousDecoding();
-                return true;
-            }
-
             // Exit the app if we're not viewing an OCR result.
             if (lastResult == null) {
                 setResult(RESULT_CANCELED);
@@ -625,11 +597,8 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                 return true;
             }
         } else if (keyCode == KeyEvent.KEYCODE_CAMERA) {
-            if (isContinuousModeActive) {
-                onShutterButtonPressContinuous();
-            } else {
+
                 handler.hardwareShutterButtonClick();
-            }
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_FOCUS) {
             // Only perform autofocus if user is not holding down the button.
@@ -1063,13 +1032,11 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
     @Override
     public void onShutterButtonClick(ShutterButton b) {
-        if (isContinuousModeActive) {
-            onShutterButtonPressContinuous();
-        } else {
+
             if (handler != null) {
                 handler.shutterButtonClick();
             }
-        }
+
     }
 
     @Override
