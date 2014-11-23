@@ -1,3 +1,14 @@
+22.11.2014
+
+Add contact adapted:
+-xml for finish button added. Accessible with "inflater". I used this approach and not the creation of it programmatically because I only need it once and without parameters. So it seemed to be easier this way.
+
+Created the dynamic creation of new items (e.g. if the recognition has a company name on it, then you could add this field)
+
+Hide standard fields if not needed (e.g. mobile phone). I have to think about if I should create the whole view programmatically...
+
+Context menu for add contact added
+
 17.11.2014
 
 Start GUI adaptions of the add contact view.
