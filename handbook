@@ -1,0 +1,98 @@
+24.11.2014
+
+
+
+23.11.2014
+
+Splitter class added to split up the recognition text. Result of the splitting will be stored in a map<string,string>. The key will be one out of NAME, EMAIL, PHONE or OTHER + a number.
+The first part of the text result is most probably the name. The email address can also be recognised because of the @-character and the phone address can also be determined. What if there are
+two phone numbers?
+
+Add contact part copied to main app.
+
+Flash support added as parameter. The configuration of this would be better and more intuitive in a settings menu.
+
+Removed the "continuous" parts from the CaptureActivity class.
+
+Image buttons instead of normal buttons used, when the recognition result is first displayed.
+
+22.11.2014
+
+Add contact adapted:
+-xml for finish button added. Accessible with "inflater". I used this approach and not the creation of it programmatically because I only need it once and without parameters. So it seemed to be easier this way.
+
+Created the dynamic creation of new items (e.g. if the recognition has a company name on it, then you could add this field)
+
+Hide standard fields if not needed (e.g. mobile phone). I have to think about if I should create the whole view programmatically...
+
+Context menu for add contact added
+
+17.11.2014
+
+Start GUI adaptions of the add contact view.
+Created a underline for a text view (harder than expected). Had to implement a xml-layer list in the drawable folder. Check comment from (http://stackoverflow.com/questions/2422120/open-sided-android-stroke) for details.
+
+Started to edit add customer. Action bar added but it is not possible to align a button to the left with the normal actionbar. I have to set a custom view to the action bar which is harder than expected.
+Managed to set an icon but is not looking good.
+
+16.11.2014
+
+Added handbook into git
+
+Try to change from a grey scaled image to a color image. (http://stackoverflow.com/questions/7620401/how-to-convert-byte-array-to-bitmap)
+
+Location service implemented after https://developer.android.com/training/location/retrieve-current.html
+Longitude and latitude, tested with google
+
+Write lat long added to JSON, get general property added, get location added to JSON
+
+27.10-15.11.2014
+
+Forgot to write handbook. Add contact feature added. Spinners added but they look ugly.
+Share action button added to gallery - intent blablabla
+
+Looked through storage options. These are XML, JSON and SqlLite-Database. Watched video on Lynda regarding this.
+I thought about using xml but it is too much overhead for so little data.
+
+I have chosen to store it in one file in the internal storage. It is just a little information about each picture so splitting it up into smaller pieces (one file per image) would not make sense IMHO.
+
+Added new JSON field "email" to the stored file when a contact is added.
+
+Gallery and AddContact are called as "startActivityForResult". Request codes have been added to the caller class (CaptureActivity).
+
+The JSON handling has been adapted, one method for reading and one for writing.
+
+Google Play services have been added. (https://developer.android.com/google/play-services/setup.html)
+This only enables to store it in Google Drive. I forgot the name of the other option. But it only works after 4.x. I have to look this up.
+
+Proguard enabled
+
+GitIgnore added but I think it's not working properly.
+
+27.10.2014
+Gallery app included into project app
+Action bar added to project bar (problem with PageView and Fragments, when a fragment was deleted, it was still shown in the 'gallery'. Seached for about 3 hours to solve the problem but it didn't work. Found out in the end that the 'getItemPosition' method of the 'FragmentStatePagerAdapter' has to be overwritten in order to reinitialize the dataset of the view pager. 'adapter.notifyDataSetChanged' was not enough although it always worked for the first time but afterwards it got buggy.
+
+I had a short look at the contact creation but the Fragment problem was so annoying that I couldn't leave it undone.
+
+15.10.2014
+
+Tessdata file renamed to tesseract-ocr.zip. Zip is now extracted and checked afterwards. If something happended during the installation, the file
+is downloaded (should not happen normally, just a fallback)
+
+20.10.2014
+External gallery app created for the history.
+History button added to project app
+Save picture feature added (saved to sdcard /Recognitions) as IMG_date+time
+
+
+13.10.2014
+
+Tessdata files stored in /Assets
+File initially named to foo.tar.gz but Android aapt removes gz ending. So the file has been renamed to foo.tar.bin to prevent aapt doing this.
+Ref: http://banachowski.com/deprogramming/2012/06/android-assets-where-did-you-go/
+
+<13.10.2014
+Wanted to build (compile) tess-two project by myself but the android ndk didn't work correctly so i took a precompiled version of the tess-two library in order to work
+
+Started to adapt tess-two project. Originally written by Robert Theiss. Has to be mention later on!

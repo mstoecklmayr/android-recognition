@@ -1,0 +1,93 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/ScrollView01"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+            >
+        <TextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Name"
+                android:paddingLeft="7dp"
+                android:textSize="22dp"
+                android:background="@drawable/textview_border"
+                />
+        <!--Spinner
+                android:id="@+id/firstNameSpinner"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/name"
+                /-->
+
+        <EditText
+                android:id="@+id/etName"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:inputType="text"
+                android:hint="@string/firstName"
+                android:layout_below="@id/tvName"/>
+
+        <TextView
+                android:id="@+id/tvMobilePhone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Mobile phone"
+                android:paddingLeft="7dp"
+                android:textSize="22dp"
+                android:background="@drawable/textview_border"
+                android:layout_below="@id/etName"
+                />
+
+
+        <EditText
+                android:id="@+id/etMobilePhone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvMobilePhone"
+                android:layout_alignParentLeft="true"
+                android:inputType="phone"
+                android:hint="@string/mobilePhone"/>
+
+
+        <TextView
+                android:id="@+id/tvPrivateEmail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Email"
+                android:paddingLeft="7dp"
+                android:textSize="22dp"
+                android:background="@drawable/textview_border"
+                android:layout_below="@id/etMobilePhone"
+                />
+
+        <EditText
+                android:id="@+id/etPrivateEmail"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvPrivateEmail"
+                android:layout_alignParentLeft="true"
+                android:inputType="textEmailAddress"
+                android:hint="@string/homeEmail"/>
+
+
+        <TextView
+                android:id="@+id/tvSpacer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/textview_border"
+                android:layout_below="@id/etPrivateEmail"
+                />
+
+
+
+    </RelativeLayout>
+
+</ScrollView>
