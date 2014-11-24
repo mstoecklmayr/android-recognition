@@ -1,7 +1,6 @@
 package com.uclan.mstocklmayr.utils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,22 +27,23 @@ public class TextSplitter {
     private void performTextAnalysis() {
         Pattern pattern = Pattern.compile(phoneRegex);
         Matcher matcher;
-        String[] parts = this.input.split("\\\\r?\\\\n");
-        this.result = new HashMap<String, String>();
+        String[] parts = this.input.split("\\n");
+        List<String> partList = new ArrayList<String>(Arrays.asList(parts));
 
-        //first line is most probably the name
-        this.result.put(NAME,parts[0]);
-
-        for(int i=1;i<parts.length;i++){
-            if(i+1<parts.length){
-                parts[i] = parts[i+1];
-            }else{
-             //set last element to null;
+        for (Iterator<String> iterator = partList.iterator(); iterator.hasNext();) {
+            String string = iterator.next();
+            if (string.isEmpty()) {
+                // Remove the current element from the iterator and the list.
+                iterator.remove();
             }
         }
+        this.result = new HashMap<String, String>();
 
-        for(int j=0; j<parts.length;j++){
-            String part = parts[j];
+        //first line is most probably the namey
+        this.result.put(NAME,partList.get(0));
+
+        for(int j=1; j<partList.size();j++){
+            String part = partList.get(j);
             //TODO what if there are more phone numbers or more emails?
             if(part.contains("@")){
                 this.result.put(EMAIL, part);

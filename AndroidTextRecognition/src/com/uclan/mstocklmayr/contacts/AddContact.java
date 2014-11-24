@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 import com.uclan.mstocklmayr.CaptureActivity;
 import com.uclan.mstocklmayr.R;
+import com.uclan.mstocklmayr.utils.RandomId;
 import com.uclan.mstocklmayr.utils.TextSplitter;
 import org.w3c.dom.Text;
 
@@ -41,6 +42,8 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         //get result map from capture activity
         this.values = CaptureActivity.textResultMap;
 
+        this.lastItemId = R.id.tvSpacer;
+
         //no mobile, hide relating text/input
         EditText etMobile = (EditText) findViewById(R.id.etMobilePhone);
         if(!this.values.containsKey(TextSplitter.PHONE)){
@@ -62,16 +65,21 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
             registerForContextMenu(findViewById(R.id.tvPrivateEmail));
         }
 
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.addContactLayout);
+        RandomId randomId = new RandomId();
+
         for(Map.Entry<String, String> entry : this.values.entrySet()){
             if(entry.getKey().equalsIgnoreCase(TextSplitter.NAME)){
                 EditText name = (EditText)findViewById(R.id.etName);
                 name.setText(entry.getValue());
+                continue;
             }
-
+            View viewToAdd = addUnknownItem(this, entry.getValue(), randomId.getIdFromKey(entry.getKey()), this.lastItemId);
+            this.lastItemId = viewToAdd.getId();
+            relativeLayout.addView(viewToAdd);
         }
 
         registerForContextMenu(findViewById(R.id.tvName));
-        registerForContextMenu(findViewById(R.id.tvSpacer));
 
         //add new items and register them for the context menu
 //        registerForContextMenu(View v);
@@ -301,11 +309,17 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         return linearLayout;
     }
 
-    private View addUnknownItem(Context ctx, String text, String id){
+    private View addUnknownItem(Context ctx, String text, int id, int belowId){
         TextView tv = new TextView(ctx);
         //id must not be unique - http://stackoverflow.com/questions/8460680/how-can-i-assign-an-id-to-a-view-programmatically
-        tv.setId(Integer.getInteger(id));
+        tv.setId(id);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        tv.setTextSize(22);
+        tv.setPadding(7,0,0,0);
+        params.addRule(RelativeLayout.BELOW, belowId);
         tv.setText(text);
+        tv.setLayoutParams(params);
         return tv;
     }
 }

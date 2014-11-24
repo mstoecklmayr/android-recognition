@@ -4,6 +4,9 @@ Missing add contact icon adapted. (I had problems with my filesystem this day an
 
 Use the map data in the add contact view.
 
+RandomId class added. Creates random id mapping between e.g. OTHER0 and an id. I previously attempted to create a int from a string but this only works if your string is a few digits long. Otherwise there are more string representations for a int. See (http://stackoverflow.com/questions/46160/getting-an-int-representation-of-a-string)
+
+
 23.11.2014
 
 Splitter class added to split up the recognition text. Result of the splitting will be stored in a map<string,string>. The key will be one out of NAME, EMAIL, PHONE or OTHER + a number.
