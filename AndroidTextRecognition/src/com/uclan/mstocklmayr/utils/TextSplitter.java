@@ -1,5 +1,6 @@
 package com.uclan.mstocklmayr.utils;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,6 +29,7 @@ public class TextSplitter {
         Pattern pattern = Pattern.compile(phoneRegex);
         Matcher matcher;
         String[] parts = this.input.split("\\\\r?\\\\n");
+        this.result = new HashMap<String, String>();
 
         //first line is most probably the name
         this.result.put(NAME,parts[0]);

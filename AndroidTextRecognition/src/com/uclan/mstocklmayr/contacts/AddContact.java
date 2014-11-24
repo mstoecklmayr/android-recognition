@@ -11,6 +11,8 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 import com.uclan.mstocklmayr.CaptureActivity;
 import com.uclan.mstocklmayr.R;
+import com.uclan.mstocklmayr.utils.TextSplitter;
+import org.w3c.dom.Text;
 
 import java.util.Map;
 
@@ -36,18 +38,39 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         ab.setCustomView(linearLayout);
         ab.show();
 
+        //get result map from capture activity
+        this.values = CaptureActivity.textResultMap;
 
-
-        //test, no mobile, hide relating text/input
-        TextView mobile = (TextView) findViewById(R.id.tvMobilePhone);
-        mobile.setVisibility(View.GONE);
+        //no mobile, hide relating text/input
         EditText etMobile = (EditText) findViewById(R.id.etMobilePhone);
-        etMobile.setVisibility(View.GONE);
+        if(!this.values.containsKey(TextSplitter.PHONE)){
+            TextView mobile = (TextView) findViewById(R.id.tvMobilePhone);
+            mobile.setVisibility(View.GONE);
+            etMobile.setVisibility(View.GONE);
+        }else{
+            etMobile.setText(this.values.get(TextSplitter.PHONE));
+            registerForContextMenu(findViewById(R.id.tvMobilePhone));
+        }
 
+        EditText etEmail = (EditText) findViewById(R.id.etPrivateEmail);
+        if(!this.values.containsKey(TextSplitter.EMAIL)){
+            TextView email = (TextView) findViewById(R.id.tvPrivateEmail);
+            email.setVisibility(View.GONE);
+            etEmail.setVisibility(View.GONE);
+        }else{
+            etEmail.setText(this.values.get(TextSplitter.EMAIL));
+            registerForContextMenu(findViewById(R.id.tvPrivateEmail));
+        }
+
+        for(Map.Entry<String, String> entry : this.values.entrySet()){
+            if(entry.getKey().equalsIgnoreCase(TextSplitter.NAME)){
+                EditText name = (EditText)findViewById(R.id.etName);
+                name.setText(entry.getValue());
+            }
+
+        }
 
         registerForContextMenu(findViewById(R.id.tvName));
-        registerForContextMenu(findViewById(R.id.tvMobilePhone));
-        registerForContextMenu(findViewById(R.id.tvPrivateEmail));
         registerForContextMenu(findViewById(R.id.tvSpacer));
 
         //add new items and register them for the context menu
