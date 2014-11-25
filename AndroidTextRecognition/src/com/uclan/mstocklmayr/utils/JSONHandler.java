@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.util.ArrayList;
 
 
 /**
@@ -127,6 +128,26 @@ public class JSONHandler {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void removeJSONObject(Context ctx, String fileName) {
+        try {
+            JSONArray appData = getJSONFile(ctx);
+            ArrayList<JSONObject> jsonList = new ArrayList<JSONObject>();
+            for (int i = 0; i < appData.length(); i++) {
+                if (!appData.getJSONObject(i).getString(FILENAME).equalsIgnoreCase(fileName)) {
+                    jsonList.add(appData.getJSONObject(i));
+                }
+            }
+            JSONArray newAppData = new JSONArray();
+
+            for (JSONObject obj : jsonList) {
+                newAppData.put(obj);
+            }
+            writeJSONFile(ctx,newAppData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private static JSONArray getJSONFile(Context ctx){

@@ -85,7 +85,11 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
 
     private void deleteImage(){
         String path = adapter.imagePathList.get(this.currentImageIndex);
-        Toast.makeText(this, path + "deleted ", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, path + "deleted ", Toast.LENGTH_LONG).show();
+
+        //delete json entry for this image
+        JSONHandler.removeJSONObject(this,path.substring(path.lastIndexOf("/")+1));
+
         if(path != null){
             File file = new File(path);
             file.delete();

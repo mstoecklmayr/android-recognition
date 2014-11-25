@@ -2,7 +2,14 @@
 
 Fix AddContact view.. Looping through the map had an error (EMAIL and PHONE had no entry in the RandomId map)
 
+JSONObject is now removed when the image is deleted. JSONHandler updated and Gallery activity
+
 When writing the report, I should mention the GUI changes from the first draft of the add contact view!
+
+Supervisor meeting:
+    -app looks good. Addition of a map with all my business-cards / images. Maybe in the settings.
+    -after Christmas I should do a heuristics evaluation
+    -performance tests on different devices to have something to write about
 
 24.11.2014
 
