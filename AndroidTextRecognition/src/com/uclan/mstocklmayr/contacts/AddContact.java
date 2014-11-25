@@ -74,10 +74,12 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
                 name.setText(entry.getValue());
                 continue;
             }
-            View viewToAdd = addUnknownItem(this, entry.getValue(), randomId.getIdFromKey(entry.getKey()), this.lastItemId);
-            registerForContextMenu(viewToAdd);
-            this.lastItemId = viewToAdd.getId();
-            relativeLayout.addView(viewToAdd);
+            if(!entry.getKey().equalsIgnoreCase(TextSplitter.EMAIL) && !entry.getKey().equalsIgnoreCase(TextSplitter.PHONE)){
+                View viewToAdd = addUnknownItem(this, entry.getValue(), randomId.getIdFromKey(entry.getKey()), this.lastItemId);
+                registerForContextMenu(viewToAdd);
+                this.lastItemId = viewToAdd.getId();
+                relativeLayout.addView(viewToAdd);
+            }
         }
 
         registerForContextMenu(findViewById(R.id.tvName));
