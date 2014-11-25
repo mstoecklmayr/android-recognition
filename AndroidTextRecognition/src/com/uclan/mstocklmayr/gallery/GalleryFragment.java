@@ -4,17 +4,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.FloatMath;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.uclan.mstocklmayr.R;
+import com.uclan.mstocklmayr.utils.JSONHandler;
+import com.uclan.mstocklmayr.utils.Util;
 
 import java.io.File;
 
@@ -44,13 +45,28 @@ public class GalleryFragment extends Fragment {
     float oldDist = 1f;
 
 
+     //TODO set status of action menu buttons -  somehow not working
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        String filePath = getArguments().getString(ARG_IMAGE_RESOURCE);
+
+        Location location = JSONHandler.getLocation(this.getActivity(), filePath.substring(filePath.lastIndexOf("/")+1));
+        if(location == null){
+            MenuItem item= menu.findItem(R.id.action_location);
+            Drawable icon = getResources().getDrawable(R.drawable.ic_action_place);
+            item.setIcon(Util.convertDrawableToGrayScale(icon));
+            item.setEnabled(false);
+        }
+        super.onPrepareOptionsMenu(menu);
+    }
+
     public static GalleryFragment buildWithResource(int res){
         Bundle args = new Bundle();
+
         args.putInt(ARG_IMAGE_RESOURCE, res);
 
         GalleryFragment fragment = new GalleryFragment();
         fragment.setArguments(args);
-
         return fragment;
     }
 

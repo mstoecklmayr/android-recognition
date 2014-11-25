@@ -2,6 +2,7 @@ package com.uclan.mstocklmayr.gallery;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import com.uclan.mstocklmayr.CaptureActivity;
 import com.uclan.mstocklmayr.R;
+import com.uclan.mstocklmayr.utils.JSONHandler;
 
 import java.io.File;
 
@@ -46,30 +48,39 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
         pager.setOnPageChangeListener(this);
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.gallery_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.action_discard:
-                deleteImage();
-                return true;
-            case R.id.action_share:
-                shareRecognition();
-                return true;
-            //TODO add reprocess feature
+        if(adapter.imagePathList.size() != 0){
+            switch (item.getItemId()) {
+                case R.id.action_discard:
+                    deleteImage();
+                    return true;
+                case R.id.action_share:
+                    shareRecognition();
+                    return true;
+                case R.id.action_location:
+                    showLocationOnMap();
+                    return true;
+                //TODO add reprocess feature
 //            case R.id.action_reprocess:
 //                reprocessImage();
 //                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
         }
+        Toast.makeText(this, "No image available!", Toast.LENGTH_SHORT).show();
+        return false;
     }
 
     private void deleteImage(){
@@ -98,6 +109,24 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
         shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
         shareIntent.setType("image/jpeg");
         startActivity(Intent.createChooser(shareIntent, "Share image via"));
+    }
+
+    private void showLocationOnMap(){
+        String path = adapter.imagePathList.get(this.currentImageIndex);
+        Location location = JSONHandler.getLocation(this, path.substring(path.lastIndexOf("/")+1));
+        if(location != null){
+            Toast.makeText(this, "Long: "+location.getLongitude()+" Lat: "+location.getLatitude(), Toast.LENGTH_SHORT).show();
+            double latitude = Double.valueOf(location.getLatitude());
+            double longitude = Double.valueOf(location.getLongitude());
+            String label = location.getProvider();
+            String uriBegin = "geo:" + latitude + "," + longitude;
+            String query = latitude + "," + longitude + "(" + label + ")";
+            String encodedQuery = Uri.encode(query);
+            String uriString = uriBegin + "?q=" + encodedQuery + "&z=16";
+            Uri uri = Uri.parse(uriString);
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
     }
 
     private void reprocessImage(){

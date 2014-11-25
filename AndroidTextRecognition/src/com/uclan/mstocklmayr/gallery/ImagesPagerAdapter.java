@@ -26,7 +26,7 @@ public class ImagesPagerAdapter extends FragmentStatePagerAdapter {
 
         GalleryFragment fragment = new GalleryFragment();
         fragment.setArguments(args);
-
+        fragment.setHasOptionsMenu(true);
         return fragment;
     }
 

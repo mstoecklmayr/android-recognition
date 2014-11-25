@@ -34,40 +34,36 @@ public class JSONHandler {
     public static void addImage(Context ctx, String fileName, Location location) {
         File file = ctx.getFileStreamPath(JSONFileName);
 
-        if (!file.exists()) {
-            //create new file
-
-            try {
-                //create output stream to internal storage, MODE_PRIVATE : only this application can read it
-                FileOutputStream fos = ctx.openFileOutput(JSONFileName, ctx.MODE_PRIVATE);
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (!file.exists()) {
+//            //create new file
+//            try {
+//                //create output stream to internal storage, MODE_PRIVATE : only this application can read it
+//                FileOutputStream fos = ctx.openFileOutput(JSONFileName, ctx.MODE_PRIVATE);
+//                fos.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         JSONArray newAppData = new JSONArray();
         JSONObject object = new JSONObject();
 
         try {
             object.put(FILENAME, fileName);
-            object.put(NOTES, "");
-            if(location == null){
-                object.put(LONGITUDE, "");
-                object.put(LATITUDE, "");
-            }else{
+            if(location != null){
                 object.put(LONGITUDE, Double.toString(location.getLongitude()));
                 object.put(LATITUDE, Double.toString(location.getLatitude()));
             }
             newAppData.put(object);
 
+            if(!file.exists()){
+                writeJSONFile(ctx, newAppData);
+            }else{
+                JSONArray appData = getJSONFile(ctx);
+                appData.put(object);
 
-            String text = object.toString();
-
-            JSONArray appData = getJSONFile(ctx);
-            appData.put(text);
-
-            writeJSONFile(ctx, appData);
+                writeJSONFile(ctx, appData);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -121,7 +117,7 @@ public class JSONHandler {
                 JSONObject obj = appData.getJSONObject(i);
                 if(obj.getString(FILENAME).equalsIgnoreCase(fileName)){
                     //provider name is useless
-                    Location location = new Location("image location");
+                    Location location = new Location("Image location");
                     location.setLongitude(new Double(obj.getString(LONGITUDE)));
                     location.setLatitude(new Double(obj.getString((LATITUDE))));
                     return location;
@@ -151,7 +147,7 @@ public class JSONHandler {
             if(b.length() > 0)
                 appData = new JSONArray(b.toString());
             else{
-                appData = new JSONArray();
+                appData = null;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -165,8 +161,9 @@ public class JSONHandler {
         try {
             //create output stream to internal storage, MODE_PRIVATE : only this application can read it
             FileOutputStream fos = ctx.openFileOutput(JSONFileName, ctx.MODE_PRIVATE);
-            if (array != null)
-                fos.write(array.toString().getBytes());
+            String text = array.toString();
+            if (text != null)
+                fos.write(text.getBytes());
             fos.close();
         } catch (IOException e) {
             e.printStackTrace();
