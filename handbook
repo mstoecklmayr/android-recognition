@@ -1,3 +1,9 @@
+25.11.2014
+
+Fix AddContact view.. Looping through the map had an error (EMAIL and PHONE had no entry in the RandomId map)
+
+When writing the report, I should mention the GUI changes from the first draft of the add contact view!
+
 24.11.2014
 
 Missing add contact icon adapted. (I had problems with my filesystem this day and lost some time)
