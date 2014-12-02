@@ -1,3 +1,10 @@
+02.12.2014
+
+First steps to include the Drive API. OAuth 2.0 has to be used to access the google api.
+The needed SHA1 key can be found under the default-android debug keystore ~/.android/debug.keystore (pw: android)
+Then the app has to be registered with the package name and this SHA1 key on the google developer console (https://console.developers.google.com)
+
+
 25.11.2014
 
 Fix AddContact view.. Looping through the map had an error (EMAIL and PHONE had no entry in the RandomId map)
