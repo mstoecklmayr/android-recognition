@@ -1,3 +1,7 @@
+03.12.2014
+
+Add contacts adapted. "OTHER" entries can now be changed and are displayed correctly.
+
 02.12.2014
 
 First steps to include the Drive API. OAuth 2.0 has to be used to access the google api.

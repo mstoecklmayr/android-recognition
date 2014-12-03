@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.DisplayMetrics;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -15,12 +16,16 @@ import com.uclan.mstocklmayr.utils.RandomId;
 import com.uclan.mstocklmayr.utils.TextSplitter;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class AddContact extends Activity implements AdapterView.OnItemSelectedListener {
 
     private int lastItemId;
+    private int lastInputId;
     private Map<String, String> values;
+    RandomId randomId = new RandomId();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         this.values = CaptureActivity.textResultMap;
 
         this.lastItemId = R.id.tvSpacer;
+        this.lastInputId = R.id.etName;
 
         //no mobile, hide relating text/input
         EditText etMobile = (EditText) findViewById(R.id.etMobilePhone);
@@ -53,6 +59,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         }else{
             etMobile.setText(this.values.get(TextSplitter.PHONE));
             registerForContextMenu(findViewById(R.id.tvMobilePhone));
+            this.lastInputId = etMobile.getId();
         }
 
         EditText etEmail = (EditText) findViewById(R.id.etPrivateEmail);
@@ -63,10 +70,10 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         }else{
             etEmail.setText(this.values.get(TextSplitter.EMAIL));
             registerForContextMenu(findViewById(R.id.tvPrivateEmail));
+            this.lastInputId = etEmail.getId();
         }
 
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.addContactLayout);
-        RandomId randomId = new RandomId();
 
         for(Map.Entry<String, String> entry : this.values.entrySet()){
             if(entry.getKey().equalsIgnoreCase(TextSplitter.NAME)){
@@ -234,22 +241,6 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-
-
-            //TODO add reprocess feature
-//            case R.id.action_reprocess:
-//                reprocessImage();
-//                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-
-    @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(view.getContext(),"item clicked in: "+view.getId(),Toast.LENGTH_SHORT).show();
     }
@@ -265,11 +256,13 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         //menu.setHeaderTitle("Context Menu");
         switch (v.getId()){
             case R.id.tvName:
-            case R.id.tvMobilePhone:
-            case R.id.tvPrivateEmail:
                 menu.add(0,v.getId(),0,"Switch first name and last name");
                 break;
+            case R.id.tvMobilePhone:
+            case R.id.tvPrivateEmail:
             default:
+                menu.add(0,v.getId(),0, R.string.mobilePhone);
+                menu.add(0,v.getId(),0, R.string.privateEmail);
                 menu.add(0,v.getId(),0, R.string.privateEmail);
                 menu.add(0,v.getId(),0, R.string.privateNumber);
                 menu.add(0,v.getId(),0, R.string.company);
@@ -282,15 +275,81 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         super.onContextItemSelected(item);
-        Toast.makeText(AddContact.this, item.getTitle(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(AddContact.this, "title: "+item.getTitle()+" id: "+item.getItemId(),Toast.LENGTH_SHORT).show();
+        String text = null;
+        View toRemove = findViewById(item.getItemId());
+        if(toRemove instanceof TextView) {
+            text = ((TextView) toRemove).getText().toString();
+        }
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.addContactLayout);
+        relativeLayout.removeView(toRemove);
+        int spacerBelowId = createInputPair(AddContact.this,this.lastInputId,item.getItemId(),item.getTitle().toString(),text);
 
+        int spacerId = realignSpacer(spacerBelowId);
+        realignOthers(spacerId,text);
         return true;
     }
 
-    private View createInputPair(Context ctx, int belowId, int id, String text){
-        LinearLayout linearLayout = new LinearLayout(ctx);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        linearLayout.setLayoutParams(layoutParams);
+    //reset the below id of the first following element
+    private void realignOthers(int spacerId, String value) {
+        //remove the "OTHER" entry from the map and rebuild the GUI
+        String key = null;
+        for(Map.Entry<String, String> entry : this.values.entrySet()){
+            if(entry.getValue().equalsIgnoreCase(value)){
+                key = entry.getKey();
+            }
+        }
+        this.values.remove(key);
+
+        List<View> viewsToRemove = new ArrayList<View>();
+
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.addContactLayout);
+        for(int i=0;i<relativeLayout.getChildCount();i++){
+            View view = relativeLayout.getChildAt(i);
+            if(view instanceof TextView){
+                for(Map.Entry<String, String> entry : this.values.entrySet()){
+                    if(!entry.getKey().equalsIgnoreCase(TextSplitter.EMAIL)
+                            && !entry.getKey().equalsIgnoreCase(TextSplitter.NAME)
+                            && !entry.getKey().equalsIgnoreCase(TextSplitter.PHONE)
+                            && entry.getValue().equalsIgnoreCase(((TextView) view).getText().toString())){
+                        viewsToRemove.add(view);
+                    }
+                }
+            }
+        }
+        for(View v : viewsToRemove){
+            relativeLayout.removeView(v);
+        }
+
+        for(Map.Entry<String,Integer> entry : randomId.getEntries()){
+           View v = findViewById(entry.getValue());
+           if(v != null){
+            relativeLayout.removeView(v);
+           }else{
+               break;
+           }
+        }
+
+        this.lastItemId = spacerId;
+
+        for(Map.Entry<String, String> entry : this.values.entrySet()){
+            if(entry.getKey().equalsIgnoreCase(TextSplitter.NAME)){
+                continue;
+            }
+            if(!entry.getKey().equalsIgnoreCase(TextSplitter.EMAIL) && !entry.getKey().equalsIgnoreCase(TextSplitter.PHONE)){
+                View viewToAdd = addUnknownItem(this, entry.getValue(), randomId.getIdFromKey(entry.getKey()), this.lastItemId);
+                registerForContextMenu(viewToAdd);
+                this.lastItemId = viewToAdd.getId();
+                relativeLayout.addView(viewToAdd);
+            }
+        }
+
+    }
+
+
+
+    private int createInputPair(Context ctx, int belowId, int id, String header, String text){
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.addContactLayout);
 
         RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -298,18 +357,33 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         TextView tv = new TextView(ctx);
         tv.setBackgroundResource(R.drawable.textview_border);
         tv.setId(id);
-        tv.setText(text);
+        tv.setText(header);
+
+        DisplayMetrics metrics = AddContact.this.getResources().getDisplayMetrics();
+        float dp = 7f;
+        float fpixels = metrics.density * dp;
+        int pixels = (int) (fpixels + 0.5f);
+
+        tv.setPadding(pixels, 0, 0, 0);
+
+        fpixels = metrics.density * 22f;
+        pixels = (int) (fpixels + 0.5f);
+
+        tv.setTextSize(pixels);
         params1.addRule(RelativeLayout.BELOW, belowId);
 
         EditText et = new EditText(ctx);
+        et.setId(id+1);
+        et.setText(text);
         params2.addRule(RelativeLayout.BELOW, id);
         params2.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
+        relativeLayout.addView(tv,params1);
+        relativeLayout.addView(et,params2);
 
-        linearLayout.addView(tv, params1);
-        linearLayout.addView(et, params2);
+        this.lastInputId = et.getId();
 
-        return linearLayout;
+        return et.getId();
     }
 
     private View addUnknownItem(Context ctx, String text, int id, int belowId){
@@ -324,5 +398,13 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         tv.setText(text);
         tv.setLayoutParams(params);
         return tv;
+    }
+
+    private int realignSpacer(int belowId){
+        TextView spacer = (TextView) findViewById(R.id.tvSpacer);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
+        params.addRule(RelativeLayout.BELOW, belowId);
+        spacer.setLayoutParams(params);
+        return spacer.getId();
     }
 }

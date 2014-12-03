@@ -3,6 +3,7 @@ package com.uclan.mstocklmayr.utils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by mike on 11/24/14.
@@ -25,5 +26,9 @@ public class RandomId {
 
     public int getIdFromKey(String key){
         return this.idMap.get(key);
+    }
+
+    public Set<Map.Entry<String,Integer>> getEntries(){
+        return this.idMap.entrySet();
     }
 }
