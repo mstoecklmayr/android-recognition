@@ -7,7 +7,8 @@ ContactType Enum added to replace the static strings from the TextSplitter class
 
 Implemented the reprocess action bar button in the gallery activity. Added a String variable filePath to the decode process starting at CaptureActivityHandler.java and further on.
 
-
+I think about refactoring the map intent because the way with the intent is very limited and using the map api v2 would solve this problem. Test application written.
+APP key must be specified.
 
 03.12.2014
 
