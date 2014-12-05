@@ -5,6 +5,8 @@ the TextSplitter class already accepts the parameter.
 
 ContactType Enum added to replace the static strings from the TextSplitter class. It is not a good approach to leave them as static Strings.
 
+Implemented the reprocess action bar button in the gallery activity.
+
 03.12.2014
 
 Add contacts adapted. "OTHER" entries can now be changed and are displayed correctly.

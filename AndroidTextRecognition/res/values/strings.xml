@@ -17,6 +17,10 @@
     <string name="homePhone">Home Phone</string>
     <string name="homeEmail">Home Email</string>
     <string name="addButton">Add Contact</string>
+    <string name="galleryMenuDiscard">Discard</string>
+    <string name="galleryMenuShare">Share</string>
+    <string name="galleryMenuLocation">Location</string>
+    <string name="galleryMenuReprocess">Reprocess</string>
 
     <string-array name="contactFields">
         <item>@string/firstName</item>

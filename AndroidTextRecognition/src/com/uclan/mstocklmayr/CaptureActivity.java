@@ -284,19 +284,15 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
         ocrResultView = (TextView) findViewById(R.id.ocr_result_text_view);
         registerForContextMenu(ocrResultView);
-        //TODO remove comments below
-//        translationView = (TextView) findViewById(R.id.translation_text_view);
-//        registerForContextMenu(translationView);
 
         ImageView historyButton = (ImageView) findViewById(R.id.btnHistory);
         registerForContextMenu(historyButton);
         historyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast = Toast.makeText(v.getContext(), "history button clicked. show history", Toast.LENGTH_LONG);
-                toast.show();
-
-                //TODO use startActivity for Result, because its better than getting back with a new intent
+//                TODO remove comments below
+//                Toast toast = Toast.makeText(v.getContext(), "history button clicked. show history", Toast.LENGTH_LONG);
+//                toast.show();
 
                 Intent intent = new Intent(CaptureActivity.this, GalleryActivity.class);
                 intent.putExtra("id", 0);
@@ -308,8 +304,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         addContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO add recognition data for contact creation
-
                 //save bitmap to sdcard
                 if (lastBitmap != null) {
                     String fileName = saveImage(lastBitmap);
@@ -326,7 +320,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                         textResult = lastResult.getText();
                     }
 
-                    //TODO split up text result here
                     TextSplitter splitter = new TextSplitter(textResult);
                     textResultMap = splitter.getResult();
 

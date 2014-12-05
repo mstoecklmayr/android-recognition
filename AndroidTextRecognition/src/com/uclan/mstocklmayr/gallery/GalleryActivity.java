@@ -71,10 +71,9 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
                 case R.id.action_location:
                     showLocationOnMap();
                     return true;
-                //TODO add reprocess feature
-//            case R.id.action_reprocess:
-//                reprocessImage();
-//                return true;
+                case R.id.action_reprocess:
+                    reprocessImage();
+                    return true;
                 default:
                     return super.onOptionsItemSelected(item);
             }

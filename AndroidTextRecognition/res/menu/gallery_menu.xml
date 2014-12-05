@@ -5,14 +5,18 @@
         android:showAsAction="never" />
     <item android:id="@+id/action_discard"
           android:icon="@drawable/ic_action_discard"
-          android:title="discard"
+          android:title="@string/galleryMenuDiscard"
           android:showAsAction="always"/>
     <item android:id="@+id/action_share"
           android:icon="@drawable/ic_action_share"
-          android:title="Share"
+          android:title="@string/galleryMenuShare"
           android:showAsAction="always"/>
     <item android:id="@+id/action_location"
           android:icon="@drawable/ic_action_place"
-          android:title="Location"
+          android:title="@string/galleryMenuLocation"
           android:showAsAction="always"/>
+    <item android:id="@+id/action_reprocess"
+          android:icon="@drawable/ic_action_repeat"
+          android:title="@string/galleryMenuReprocess"
+          android:showAsAction="ifRoom"/>
 </menu>
