@@ -1,3 +1,10 @@
+05.12.2014
+
+Add contact adapted. Click listener should work now but it has not been tested yet. The algorithm for the first/last name switch still has to be implemented but the NameSplitter method from
+the TextSplitter class already accepts the parameter.
+
+ContactType Enum added to replace the static strings from the TextSplitter class. It is not a good approach to leave them as static Strings.
+
 03.12.2014
 
 Add contacts adapted. "OTHER" entries can now be changed and are displayed correctly.

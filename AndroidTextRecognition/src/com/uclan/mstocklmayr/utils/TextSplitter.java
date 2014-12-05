@@ -12,17 +12,10 @@ public class TextSplitter {
     private Map<String, String> result;
     private String phoneRegex = "^\\+?[0-9. ()-]{10,25}$";
 
-    public static String NAME = "NAME";
-    public static String EMAIL = "EMAIL";
-    public static String PHONE = "PHONE";
-    public static String OTHER = "OTHER";
-
     public TextSplitter(String text) {
         this.input = text;
         performTextAnalysis();
     }
-
-
 
     private void performTextAnalysis() {
         Pattern pattern = Pattern.compile(phoneRegex);
@@ -40,21 +33,21 @@ public class TextSplitter {
         this.result = new HashMap<String, String>();
 
         //first line is most probably the namey
-        this.result.put(NAME,partList.get(0));
+        this.result.put(ContactTypes.NAME.toString(),partList.get(0));
 
         for(int j=1; j<partList.size();j++){
             String part = partList.get(j);
             //TODO what if there are more phone numbers or more emails?
             if(part.contains("@")){
-                this.result.put(EMAIL, part);
+                this.result.put(ContactTypes.EMAIL.toString(), part);
                 continue;
             }
             matcher = pattern.matcher(part);
             if(matcher.matches()){
-                this.result.put(PHONE,part);
+                this.result.put(ContactTypes.PHONE.toString(),part);
                 continue;
             }
-            this.result.put(OTHER+j,part);
+            this.result.put(ContactTypes.OTHER.toString()+j,part);
         }
     }
 
@@ -64,5 +57,19 @@ public class TextSplitter {
 
     public void setResult(Map<String, String> result) {
         this.result = result;
+    }
+
+    public static String[] splitName(boolean isFirstNameFirst, String name){
+        String[] split = name.split(" ");
+        if(!isFirstNameFirst){
+            //check if name consists out of two parts
+            if(split.length == 2){
+                String help = split[0];
+                split[0] = split[1];
+                split[1] = help;
+            }
+        }
+
+        return split;
     }
 }
