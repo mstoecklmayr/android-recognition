@@ -5,7 +5,9 @@ the TextSplitter class already accepts the parameter.
 
 ContactType Enum added to replace the static strings from the TextSplitter class. It is not a good approach to leave them as static Strings.
 
-Implemented the reprocess action bar button in the gallery activity.
+Implemented the reprocess action bar button in the gallery activity. Added a String variable filePath to the decode process starting at CaptureActivityHandler.java and further on.
+
+
 
 03.12.2014
 

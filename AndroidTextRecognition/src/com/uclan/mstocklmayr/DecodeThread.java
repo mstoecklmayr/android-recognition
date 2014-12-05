@@ -24,34 +24,36 @@ import java.util.concurrent.CountDownLatch;
 
 /**
  * This thread does all the heavy lifting of decoding the images.
- *
+ * <p/>
  * The code for this class was adapted from the ZXing project: http://code.google.com/p/zxing
  */
 final class DecodeThread extends Thread {
 
-  private final CaptureActivity activity;
-  private Handler handler;
-  private final CountDownLatch handlerInitLatch;
+    private final CaptureActivity activity;
+    private Handler handler;
+    private final CountDownLatch handlerInitLatch;
+    private final String filePath;
 
-  DecodeThread(CaptureActivity activity) {
-    this.activity = activity;
-    handlerInitLatch = new CountDownLatch(1);
-  }
-
-  Handler getHandler() {
-    try {
-      handlerInitLatch.await();
-    } catch (InterruptedException ie) {
-      // continue?
+    DecodeThread(CaptureActivity activity, String filePath) {
+        this.activity = activity;
+        this.filePath = filePath;
+        handlerInitLatch = new CountDownLatch(1);
     }
-    return handler;
-  }
 
-  @Override
-  public void run() {
-    Looper.prepare();
-    handler = new DecodeHandler(activity);
-    handlerInitLatch.countDown();
-    Looper.loop();
-  }
+    Handler getHandler() {
+        try {
+            handlerInitLatch.await();
+        } catch (InterruptedException ie) {
+            // continue?
+        }
+        return handler;
+    }
+
+    @Override
+    public void run() {
+        Looper.prepare();
+        handler = new DecodeHandler(activity, this.filePath);
+        handlerInitLatch.countDown();
+        Looper.loop();
+    }
 }

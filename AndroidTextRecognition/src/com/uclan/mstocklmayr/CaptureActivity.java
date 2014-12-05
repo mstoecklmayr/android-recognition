@@ -167,9 +167,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
     // Options menu, for copy to clipboard
     private static final int OPTIONS_COPY_RECOGNIZED_TEXT_ID = Menu.FIRST;
-    private static final int OPTIONS_COPY_TRANSLATED_TEXT_ID = Menu.FIRST + 1;
-    private static final int OPTIONS_SHARE_RECOGNIZED_TEXT_ID = Menu.FIRST + 2;
-    private static final int OPTIONS_SHARE_TRANSLATED_TEXT_ID = Menu.FIRST + 3;
 
     private CameraManager cameraManager;
     private CaptureActivityHandler handler;
@@ -179,7 +176,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     private TextView statusViewBottom;
     private TextView statusViewTop;
     private TextView ocrResultView;
-    private TextView translationView;
     private View cameraButtonView;
     private View resultView;
     private View progressView;
@@ -191,9 +187,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     private TessBaseAPI baseApi; // Java interface for the Tesseract OCR engine
     private String sourceLanguageCodeOcr; // ISO 639-3 language code
     private String sourceLanguageReadable; // Language name, for example, "English"
-    private String sourceLanguageCodeTranslation; // ISO 639-1 language code
-    private String targetLanguageCodeTranslation; // ISO 639-1 language code
-    private String targetLanguageReadable; // Language name, for example, "English"
     private int pageSegmentationMode = TessBaseAPI.PageSegMode.PSM_AUTO_OSD;
     private int ocrEngineMode = TessBaseAPI.OEM_TESSERACT_ONLY;
     private String characterBlacklist;
@@ -530,7 +523,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
             cameraManager.openDriver(surfaceHolder);
 
             // Creating the handler starts the preview, which can also throw a RuntimeException.
-            handler = new CaptureActivityHandler(this, cameraManager, isContinuousModeActive);
+            handler = new CaptureActivityHandler(this, cameraManager, isContinuousModeActive, null);
 
         } catch (IOException ioe) {
             showErrorMessage("Error", "Could not initialize camera. Please try restarting device.");
@@ -644,7 +637,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
      */
     private boolean setSourceLanguage(String languageCode) {
         sourceLanguageCodeOcr = languageCode;
-        sourceLanguageCodeTranslation = LanguageCodeHelper.mapLanguageCode(languageCode);
         sourceLanguageReadable = LanguageCodeHelper.getOcrLanguageName(this, languageCode);
         return true;
     }
@@ -1279,15 +1271,33 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         switch (requestCode){
             case GALLERY_REQUEST_CODE:
                 if(resultCode == RESULT_OK){
-                    //TODO maybe other actions can be executed too
                     //reprocess image
                     String path = data.getExtras().getString(FILE_PATH);
+                    Log.d(TAG, "initCamera()");
+                    if (surfaceHolder == null) {
+                        throw new IllegalStateException("No SurfaceHolder provided");
+                    }
+                    try {
 
+                        // Open and initialize the camera
+                        cameraManager.openDriver(surfaceHolder);
+
+                        // Creating the handler starts the preview, which can also throw a RuntimeException.
+                        handler = new CaptureActivityHandler(this, cameraManager, isContinuousModeActive, path);
+
+                    } catch (IOException ioe) {
+                        showErrorMessage("Error", "Could not initialize camera. Please try restarting device.");
+                    } catch (RuntimeException e) {
+                        // Barcode Scanner has seen crashes in the wild of this variety:
+                        // java.?lang.?RuntimeException: Fail to connect to camera service
+                        showErrorMessage("Error", "Could not initialize camera. Please try restarting device.");
+                    }
                 }
+                //TODO maybe other actions can be executed too
                 break;
             case CONTACT_REQUEST_CODE:
                 if(resultCode == RESULT_OK){
-                    //do stuff
+                    //TODO: maybe return email and save it as json in order to implement a "send my business card" to the person
                 }
                 break;
             case CONNECTION_FAILURE_RESOLUTION_REQUEST :

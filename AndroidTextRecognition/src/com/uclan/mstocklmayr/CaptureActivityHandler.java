@@ -36,6 +36,7 @@ final class CaptureActivityHandler extends Handler {
   private final DecodeThread decodeThread;
   private static State state;
   private final CameraManager cameraManager;
+  private final String filePath;
 
   private enum State {
     PREVIEW,
@@ -46,14 +47,15 @@ final class CaptureActivityHandler extends Handler {
     DONE
   }
 
-  CaptureActivityHandler(CaptureActivity activity, CameraManager cameraManager, boolean isContinuousModeActive) {
+  CaptureActivityHandler(CaptureActivity activity, CameraManager cameraManager, boolean isContinuousModeActive, String filePath) {
     this.activity = activity;
     this.cameraManager = cameraManager;
+    this.filePath = filePath;
 
     // Start ourselves capturing previews (and decoding if using continuous recognition mode).
     cameraManager.startPreview();
     
-    decodeThread = new DecodeThread(activity);
+    decodeThread = new DecodeThread(activity, filePath);
     decodeThread.start();
     
     if (isContinuousModeActive) {

@@ -17,6 +17,8 @@ import com.uclan.mstocklmayr.R;
 import com.uclan.mstocklmayr.utils.JSONHandler;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GalleryActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {
     public static final String imagePath = Environment.getExternalStorageDirectory().toString() + "/Recognitions";
@@ -74,6 +76,9 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
                 case R.id.action_reprocess:
                     reprocessImage();
                     return true;
+                case R.id.action_all_location:
+                    showAllLocationOnMap();
+                    return true;
                 default:
                     return super.onOptionsItemSelected(item);
             }
@@ -130,6 +135,17 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
             startActivity(intent);
         }
+    }
+
+    private void showAllLocationOnMap() {
+        List<Location> locationList = new ArrayList<Location>();
+        for(String locationString : adapter.imagePathList){
+            Location location = JSONHandler.getLocation(this, locationString.substring(locationString.lastIndexOf("/")+1));
+            if(location != null){
+                locationList.add(location);
+            }
+        }
+
     }
 
     private void reprocessImage(){
