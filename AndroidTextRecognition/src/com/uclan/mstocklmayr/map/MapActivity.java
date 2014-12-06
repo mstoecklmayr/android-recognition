@@ -69,7 +69,7 @@ public class MapActivity extends FragmentActivity {
             }
 
             // Moving CameraPosition to last clicked position
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(Double.parseDouble(lat), Double.parseDouble(lng))));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(this.mapLocations.get(0).getLatitude(), this.mapLocations.get(0).getLongitude())));
 
             String zoom = "8";
 

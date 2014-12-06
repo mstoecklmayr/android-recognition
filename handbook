@@ -4,7 +4,10 @@ I had some problems with the Maps API key but now it is working. API key has to 
 manifest, some additional permissions have been added and OpenGL support to display the map. This approach with the Map API has been chosen because the other map is limited in its features with
 multiple markers at once.
 
-Added new map activity to the application and adapted the calls.
+Added new map activity to the application and adapted the calls. Map activity tested.
+Return from add contact fixed.
+
+
 
 05.12.2014
 

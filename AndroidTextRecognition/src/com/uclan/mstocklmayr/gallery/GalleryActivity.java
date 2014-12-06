@@ -138,8 +138,14 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
 //            Uri uri = Uri.parse(uriString);
 //            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
 //            startActivity(intent);
-            this.mapLocations.clear();
-            this.mapLocations = Collections.singletonList(new MapLocation(latitude,longitude,label));
+            MapLocation loc = new MapLocation(latitude, longitude, label);
+            if(this.mapLocations != null){
+                this.mapLocations.clear();
+                this.mapLocations.add(loc);
+            }else{
+                this.mapLocations = new ArrayList<MapLocation>();
+                this.mapLocations.add(loc);
+            }
             Intent intent = new Intent(this,MapActivity.class);
             startActivity(intent);
 
@@ -147,7 +153,11 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
     }
 
     private void showAllLocationOnMap() {
-        this.mapLocations.clear();
+        if(this.mapLocations != null){
+            this.mapLocations.clear();
+        }else{
+            this.mapLocations = new ArrayList<MapLocation>();
+        }
         for(String locationString : adapter.imagePathList){
             Location location = JSONHandler.getLocation(this, locationString.substring(locationString.lastIndexOf("/")+1));
             if(location != null){

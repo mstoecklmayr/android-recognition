@@ -18,9 +18,9 @@
     <item android:id="@+id/action_reprocess"
           android:icon="@drawable/ic_action_repeat"
           android:title="@string/galleryMenuReprocess"
-          android:showAsAction="ifRoom"/>
+          android:showAsAction="always"/>
     <item android:id="@+id/action_all_location"
-          android:title="Show all locations on map"
+          android:title="@string/MultiLocation"
           android:orderInCategory="100"
           android:showAsAction="never" />
 </menu>

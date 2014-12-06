@@ -170,7 +170,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.addContactLayout);
         relativeLayout.removeView(toRemove);
         int spacerBelowId = createInputPair(AddContact.this,this.lastInputId,item.getItemId(),item.getTitle().toString(),text);
-        this.finalPairs.put(ContactTypes.valueOf(item.getTitle().toString()).toString(),spacerBelowId);
+        this.finalPairs.put(ContactTypes.valueOf(item.getTitle().toString().toUpperCase()).toString(),spacerBelowId);
         int spacerId = realignSpacer(spacerBelowId);
         realignOthers(spacerId,text);
         return true;
@@ -308,19 +308,33 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
 
         // Getting reference to Mobile EditText
-        EditText mobilePhone = (EditText) findViewById(finalPairs.get(ContactTypes.PHONE.toString()));
+        EditText mobilePhone = null;
+        if(finalPairs.get(ContactTypes.PHONE.toString()) != null)
+            mobilePhone = (EditText) findViewById(finalPairs.get(ContactTypes.PHONE.toString()));
 
         // Getting reference to HomePhone EditText
-        EditText privatePhone = (EditText) findViewById(finalPairs.get(ContactTypes.PRIVATE_PHONE.toString()));
+        EditText privatePhone = null;
+        if(finalPairs.get(ContactTypes.PRIVATE_PHONE.toString())!= null)
+            privatePhone = (EditText) findViewById(finalPairs.get(ContactTypes.PRIVATE_PHONE.toString()));
 
         // Getting reference to HomeEmail EditText
-        EditText homeEmail = (EditText) findViewById(finalPairs.get(ContactTypes.EMAIL.toString()));
+        EditText homeEmail = null;
+        if(finalPairs.get(ContactTypes.EMAIL.toString()) != null)
+        homeEmail = (EditText) findViewById(finalPairs.get(ContactTypes.EMAIL.toString()));
 
         // Getting reference to WorkEmail EditText
-        EditText workEmail = (EditText) findViewById(finalPairs.get(ContactTypes.WORK_EMAIL.toString()));
+        EditText workEmail = null;
+        if(finalPairs.get(ContactTypes.WORK_EMAIL.toString()) != null)
+        workEmail = (EditText) findViewById(finalPairs.get(ContactTypes.WORK_EMAIL.toString()));
 
-        EditText address = (EditText) findViewById(finalPairs.get(ContactTypes.ADDRESS.toString()));
-        EditText company = (EditText) findViewById(finalPairs.get(ContactTypes.COMPANY.toString()));
+        EditText address = null;
+        if(finalPairs.get(ContactTypes.ADDRESS.toString()) != null)
+        address = (EditText) findViewById(finalPairs.get(ContactTypes.ADDRESS.toString()));
+
+
+        EditText company = null;
+        if(finalPairs.get(ContactTypes.COMPANY.toString()) != null)
+        company = (EditText) findViewById(finalPairs.get(ContactTypes.COMPANY.toString()));
 
 
         ArrayList<ContentProviderOperation> ops =
@@ -346,55 +360,61 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         // Adding insert operation to operations list
         // to insert Mobile Number in the table ContactsContract.Data
-        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, mobilePhone.getText().toString())
-                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
-                .build());
+        if(mobilePhone != null)
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, mobilePhone.getText().toString())
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                    .build());
 
         // Adding insert operation to operations list
         // to  insert Home Phone Number in the table ContactsContract.Data
-        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, privatePhone.getText().toString())
-                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
-                .build());
+        if(privatePhone != null)
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, privatePhone.getText().toString())
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
+                    .build());
 
         // Adding insert operation to operations list
         // to insert Home Email in the table ContactsContract.Data
-        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.Intents.Insert.COMPANY)
-                .withValue(ContactsContract.CommonDataKinds.Email.ADDRESS, homeEmail.getText().toString())
-                .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_HOME)
-                .build());
+        if(homeEmail != null)
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.Intents.Insert.COMPANY)
+                    .withValue(ContactsContract.CommonDataKinds.Email.ADDRESS, homeEmail.getText().toString())
+                    .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_HOME)
+                    .build());
 
         // Adding insert operation to operations list
         // to insert Work Email in the table ContactsContract.Data
-        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Email.ADDRESS, workEmail.getText().toString())
-                .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
-                .build());
+        if(workEmail != null)
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Email.ADDRESS, workEmail.getText().toString())
+                    .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
+                    .build());
 
         // Adding insert operation to operations list
         // to insert address in the table ContactsContract.Data
-        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS, address.getText().toString())
-                .build());
+        if(address != null)
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS, address.getText().toString())
+                    .build());
 
         // Adding insert operation to operations list
         // to insert company in the table ContactsContract.Data
-        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, company.getText().toString())
-                .build());
+        if(company != null)
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, company.getText().toString())
+                    .build());
 
         try{
             // Executing all the insert operations as a single database transaction
@@ -405,5 +425,10 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         }catch (OperationApplicationException e) {
             e.printStackTrace();
         }
+
+        Intent result = new Intent();
+        result.putExtra("name", name.getText().toString());
+        setResult(RESULT_OK, result);
+        finishActivity(CaptureActivity.CONTACT_REQUEST_CODE);
     }
 }

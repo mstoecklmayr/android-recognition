@@ -156,10 +156,10 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     static final int MINIMUM_MEAN_CONFIDENCE = 0; // 0 means don't reject any scored results
 
     /* Request code for activity response from gallery activity */
-    static final int GALLERY_REQUEST_CODE = 0;
+    public static final int GALLERY_REQUEST_CODE = 0;
 
     /* Request code for contact response from gallery activity */
-    static final int CONTACT_REQUEST_CODE = 1;
+    public static final int CONTACT_REQUEST_CODE = 1;
 
     // Context menu
     private static final int SETTINGS_ID = Menu.FIRST;
