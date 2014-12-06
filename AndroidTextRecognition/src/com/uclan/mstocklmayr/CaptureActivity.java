@@ -51,6 +51,11 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.DriveFolder;
+import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.location.LocationClient;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.uclan.mstocklmayr.camera.CameraManager;
@@ -75,7 +80,8 @@ import java.util.Map;
  * The code for this class was adapted from the ZXing project: http://code.google.com/p/zxing/
  */
 public final class CaptureActivity extends FragmentActivity implements SurfaceHolder.Callback,
-        ShutterButton.OnShutterButtonListener, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener{
+        ShutterButton.OnShutterButtonListener, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
 
@@ -206,6 +212,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
     //TODO encapsulate field
     public LocationClient mLocationClient;
+    public GoogleApiClient mGoogleApiClient;
 
     Handler getHandler() {
         return handler;
@@ -229,6 +236,14 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         super.onStart();
         // Connect the client.
         mLocationClient.connect();
+        mGoogleApiClient = new GoogleApiClient.Builder(CaptureActivity.this)
+                .addApi(Drive.API)
+                .addScope(Drive.SCOPE_FILE)
+                .addScope(Drive.SCOPE_APPFOLDER) // required for App Folder sample
+                .addConnectionCallbacks(CaptureActivity.this)
+                .addOnConnectionFailedListener(CaptureActivity.this)
+                .build();
+        mGoogleApiClient.connect();
        }
 
     @Override
@@ -300,12 +315,39 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                 //save bitmap to sdcard
                 if (lastBitmap != null) {
                     String fileName = saveImage(lastBitmap);
+                    //TODO sync with drive here
 
-                    Location location = mLocationClient.getLastLocation();
-                    Toast.makeText(v.getContext(), "Last longitude: "+location.getLongitude()+" ||| last latitude: "+location.getLatitude(), Toast.LENGTH_LONG).show();
+                    // Getting Google Play availability status
+                    int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
+
+                    // Showing status
+                    if(status!= ConnectionResult.SUCCESS){ // Google Play Services are not available
+
+                        int requestCode = 10;
+                        Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, CaptureActivity.this, requestCode);
+                        dialog.show();
+
+                    }else { // Google Play Services are available
+
+                        final ResultCallback<DriveFolder.DriveFolderResult> callback = new ResultCallback<DriveFolder.DriveFolderResult>() {
+                            @Override
+                            public void onResult(DriveFolder.DriveFolderResult result) {
+                                Toast.makeText(CaptureActivity.this, "drive result: "+result.getStatus(), Toast.LENGTH_LONG).show();
+                            }
+                        };
+
+                        MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+                                .setTitle("Recognition").build();
+                        Drive.DriveApi.getRootFolder(mGoogleApiClient).createFolder(
+                                mGoogleApiClient, changeSet).setResultCallback(callback);
+
+                    }
+
+
 
 
                     //save preferences in JSON file like name, notes, gps etc
+                    Location location = mLocationClient.getLastLocation();
                     JSONHandler.addImage(v.getContext(), fileName, location);
 
                     String textResult = "";
@@ -548,6 +590,8 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
             SurfaceHolder surfaceHolder = surfaceView.getHolder();
             surfaceHolder.removeCallback(this);
         }
+
+        //TODO disconnect from Location and drive?
         super.onPause();
     }
 
@@ -1329,6 +1373,11 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     public void onConnected(Bundle bundle) {
         // Display the connection status
         Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Toast.makeText(this, "DRIVE suspended", Toast.LENGTH_SHORT).show();
     }
 
     /*
