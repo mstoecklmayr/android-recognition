@@ -14,10 +14,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import com.uclan.mstocklmayr.CaptureActivity;
 import com.uclan.mstocklmayr.R;
+import com.uclan.mstocklmayr.map.MapActivity;
+import com.uclan.mstocklmayr.map.MapLocation;
 import com.uclan.mstocklmayr.utils.JSONHandler;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GalleryActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {
@@ -26,6 +29,7 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
     private int currentImageIndex = 0;
     private ViewPager pager;
     private ImagesPagerAdapter adapter;
+    public static List<MapLocation> mapLocations;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,25 +131,31 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
             double latitude = Double.valueOf(location.getLatitude());
             double longitude = Double.valueOf(location.getLongitude());
             String label = location.getProvider();
-            String uriBegin = "geo:" + latitude + "," + longitude;
-            String query = latitude + "," + longitude + "(" + label + ")";
-            String encodedQuery = Uri.encode(query);
-            String uriString = uriBegin + "?q=" + encodedQuery + "&z=16";
-            Uri uri = Uri.parse(uriString);
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+//            String uriBegin = "geo:" + latitude + "," + longitude;
+//            String query = latitude + "," + longitude + "(" + label + ")";
+//            String encodedQuery = Uri.encode(query);
+//            String uriString = uriBegin + "?q=" + encodedQuery + "&z=16";
+//            Uri uri = Uri.parse(uriString);
+//            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+//            startActivity(intent);
+            this.mapLocations.clear();
+            this.mapLocations = Collections.singletonList(new MapLocation(latitude,longitude,label));
+            Intent intent = new Intent(this,MapActivity.class);
             startActivity(intent);
+
         }
     }
 
     private void showAllLocationOnMap() {
-        List<Location> locationList = new ArrayList<Location>();
+        this.mapLocations.clear();
         for(String locationString : adapter.imagePathList){
             Location location = JSONHandler.getLocation(this, locationString.substring(locationString.lastIndexOf("/")+1));
             if(location != null){
-                locationList.add(location);
+                this.mapLocations.add(new MapLocation(location.getLatitude(),location.getLongitude(),location.getProvider()));
             }
         }
-
+        Intent intent = new Intent(this,MapActivity.class);
+        startActivity(intent);
     }
 
     private void reprocessImage(){

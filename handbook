@@ -1,3 +1,11 @@
+06.12.2014
+
+I had some problems with the Maps API key but now it is working. API key has to be generated on the google developer website under "Public API access". The returned key has been entered in the
+manifest, some additional permissions have been added and OpenGL support to display the map. This approach with the Map API has been chosen because the other map is limited in its features with
+multiple markers at once.
+
+Added new map activity to the application and adapted the calls.
+
 05.12.2014
 
 Add contact adapted. Click listener should work now but it has not been tested yet. The algorithm for the first/last name switch still has to be implemented but the NameSplitter method from
