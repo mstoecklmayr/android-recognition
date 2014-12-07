@@ -1,3 +1,8 @@
+07.12.2014
+
+Drive support finished. I fought myself through the examples of the drive api but there is hardly any documentation.
+Tested until a file is created on google drive. Add content not fully tested.
+
 06.12.2014
 
 I had some problems with the Maps API key but now it is working. API key has to be generated on the google developer website under "Public API access". The returned key has been entered in the

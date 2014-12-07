@@ -52,10 +52,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveFolder;
-import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.drive.*;
+import com.google.android.gms.drive.query.Filter;
+import com.google.android.gms.drive.query.Filters;
+import com.google.android.gms.drive.query.Query;
+import com.google.android.gms.drive.query.SearchableField;
 import com.google.android.gms.location.LocationClient;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.uclan.mstocklmayr.camera.CameraManager;
@@ -65,12 +68,12 @@ import com.uclan.mstocklmayr.gallery.GalleryActivity;
 import com.uclan.mstocklmayr.utils.JSONHandler;
 import com.uclan.mstocklmayr.utils.TextSplitter;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+
+import static com.google.android.gms.drive.DriveApi.DriveContentsResult;
 
 /**
  * This activity opens the camera and does the actual scanning on a background thread. It draws a
@@ -213,6 +216,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     //TODO encapsulate field
     public LocationClient mLocationClient;
     public GoogleApiClient mGoogleApiClient;
+    private DriveId mFolderDriveId;
 
     Handler getHandler() {
         return handler;
@@ -314,7 +318,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
             public void onClick(View v) {
                 //save bitmap to sdcard
                 if (lastBitmap != null) {
-                    String fileName = saveImage(lastBitmap);
+                    final String fileName = saveImage(lastBitmap);
                     //TODO sync with drive here
 
                     // Getting Google Play availability status
@@ -328,19 +332,121 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                         dialog.show();
 
                     }else { // Google Play Services are available
+                        class EditContentsAsyncTask extends ApiClientAsyncTask<DriveFile, Void, Boolean> {
 
-                        final ResultCallback<DriveFolder.DriveFolderResult> callback = new ResultCallback<DriveFolder.DriveFolderResult>() {
+                            public EditContentsAsyncTask(Context context) {
+                                super(context);
+                            }
+
+                            @Override
+                            protected Boolean doInBackgroundConnected(DriveFile... args) {
+                                DriveFile file = args[0];
+                                try {
+                                    DriveContentsResult driveContentsResult = file.open(
+                                            mGoogleApiClient, DriveFile.MODE_WRITE_ONLY, null).await();
+                                    if (!driveContentsResult.getStatus().isSuccess()) {
+                                        return false;
+                                    }
+                                    Bitmap bitmap = lastBitmap;
+                                    ByteArrayOutputStream blob = new ByteArrayOutputStream();
+                                    bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, blob);
+                                    byte[] bitmapdata = blob.toByteArray();
+
+                                    DriveContents driveContents = driveContentsResult.getDriveContents();
+                                    OutputStream outputStream = driveContents.getOutputStream();
+                                    outputStream.write(bitmapdata);
+                                    com.google.android.gms.common.api.Status status =
+                                            driveContents.commit(mGoogleApiClient, null).await();
+                                    return status.getStatus().isSuccess();
+                                } catch (IOException e) {
+                                    Log.e(TAG, "IOException while appending to the output stream", e);
+                                }
+                                return false;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Boolean result) {
+                                if (!result) {
+                                    Toast.makeText(CaptureActivity.this, "Error while editing contents", Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+                                Toast.makeText(CaptureActivity.this, "Successfully edited contents", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        final ResultCallback<DriveFolder.DriveFileResult> fileCallback =
+                                new ResultCallback<DriveFolder.DriveFileResult>() {
+                                    @Override
+                                    public void onResult(DriveFolder.DriveFileResult result) {
+                                        if (!result.getStatus().isSuccess()) {
+                                            Toast.makeText(CaptureActivity.this, "Error while trying to create the file", Toast.LENGTH_LONG).show();
+                                            return;
+                                        }
+                                        Toast.makeText(CaptureActivity.this, "Created a file: " + result.getDriveFile().getDriveId(), Toast.LENGTH_LONG).show();
+
+                                        new EditContentsAsyncTask(CaptureActivity.this).execute(result.getDriveFile());
+                                    }
+                                };
+
+                        final ResultCallback<DriveContentsResult> driveContentsCallback =
+                                new ResultCallback<DriveContentsResult>() {
+                                    @Override
+                                    public void onResult(DriveContentsResult result) {
+                                        if (!result.getStatus().isSuccess()) {
+                                            Toast.makeText(CaptureActivity.this, "Error while trying to create new file contents", Toast.LENGTH_LONG).show();
+                                            return;
+                                        }
+                                        DriveFolder folder = Drive.DriveApi.getFolder(mGoogleApiClient, mFolderDriveId);
+                                        MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+                                                .setTitle(fileName)
+                                                .setMimeType("image/bmp")
+                                                .setStarred(true).build();
+                                        folder.createFile(mGoogleApiClient, changeSet, result.getDriveContents())
+                                                .setResultCallback(fileCallback);
+                                    }
+                                };
+
+                        final ResultCallback<DriveFolder.DriveFolderResult> folderCallback = new ResultCallback<DriveFolder.DriveFolderResult>() {
                             @Override
                             public void onResult(DriveFolder.DriveFolderResult result) {
                                 Toast.makeText(CaptureActivity.this, "drive result: "+result.getStatus(), Toast.LENGTH_LONG).show();
+                                Drive.DriveApi.newDriveContents(mGoogleApiClient)
+                                        .setResultCallback(driveContentsCallback);
                             }
                         };
+                        final ResultCallback<DriveApi.MetadataBufferResult> metadataCallback =
+                                new ResultCallback<DriveApi.MetadataBufferResult>() {
+                                    @Override
+                                    public void onResult(DriveApi.MetadataBufferResult result) {
+                                        if (!result.getStatus().isSuccess()) {
+                                            Toast.makeText(CaptureActivity.this, "Problem while retrieving results: "+result.getStatus(), Toast.LENGTH_LONG).show();
+                                            return;
+                                        }
+                                        MetadataBuffer mdb = result.getMetadataBuffer();
+                                        boolean exists=false;
+                                        if (mdb != null) {
+                                            for (Metadata md : mdb) {
+                                                if (md == null) continue;
+                                                if(md.getTitle().equalsIgnoreCase("Recognition")){
+                                                    mFolderDriveId = md.getDriveId();      // here is the "Drive ID"
+                                                    exists = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if(exists)
+                                        Drive.DriveApi.newDriveContents(mGoogleApiClient)
+                                                .setResultCallback(driveContentsCallback);
+                                        else{
+                                            MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+                                                    .setTitle("Recognition").build();
+                                            Drive.DriveApi.getRootFolder(mGoogleApiClient).createFolder(
+                                                    mGoogleApiClient, changeSet).setResultCallback(folderCallback);
+                                        }
+                                    }
+                                };
 
-                        MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
-                                .setTitle("Recognition").build();
-                        Drive.DriveApi.getRootFolder(mGoogleApiClient).createFolder(
-                                mGoogleApiClient, changeSet).setResultCallback(callback);
-
+                        Drive.DriveApi.getRootFolder(mGoogleApiClient).listChildren(mGoogleApiClient).setResultCallback(metadataCallback);
                     }
 
 
