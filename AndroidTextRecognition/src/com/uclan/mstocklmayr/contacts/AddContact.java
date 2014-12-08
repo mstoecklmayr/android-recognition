@@ -2,10 +2,7 @@ package com.uclan.mstocklmayr.contacts;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.ContentProviderOperation;
-import android.content.Context;
-import android.content.Intent;
-import android.content.OperationApplicationException;
+import android.content.*;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
@@ -50,6 +47,14 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         linearLayout.setOnClickListener(this);
         ab.setCustomView(linearLayout);
         ab.show();
+
+        //restore preferences
+        SharedPreferences settings = getSharedPreferences(CaptureActivity.PREFS_NAME, 0);
+        if(!settings.contains(CaptureActivity.SWITCH_COUNT)){
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt(CaptureActivity.SWITCH_COUNT, 0);
+            editor.commit();
+        }
 
         this.finalPairs = new HashMap<String, Integer>();
 

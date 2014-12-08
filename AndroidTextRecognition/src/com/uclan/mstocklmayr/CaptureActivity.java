@@ -46,6 +46,9 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -66,7 +69,9 @@ import com.uclan.mstocklmayr.utils.TextSplitter;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static com.google.android.gms.drive.DriveApi.DriveContentsResult;
 
@@ -211,7 +216,9 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     //TODO encapsulate field
     public LocationClient mLocationClient;
     public GoogleApiClient mGoogleApiClient;
-    public static final String PREFS_NAME = "RecogntionPrefs";
+    public static final String PREFS_NAME = "RecognitionPrefs";
+    public static final String SWITCH_COUNT = "SwitchCount";
+    public static final String SHOW_HINTS = "ShowHints";
 
     Handler getHandler() {
         return handler;
@@ -253,13 +260,37 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
         if (isFirstLaunch) {
             setDefaultPreferences();
+//            SharedPreferences preferences = getSharedPreferences(SHOW_HINTS, 0);
+//            SharedPreferences.Editor editor = preferences.edit();
+//            Set<String> hints = new HashSet<String>();
+            /*
+            Add one entry for each hint
+
+            0-Gallery init screen
+            1-AddContact init screen
+            2-Rectangular frame init screen
+            3-Add contact form
+            4-Add contact long press
+            5-Add contact finish
+            6-Gallery swipe
+            7-Gallery actions
+             */
         }
+
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.capture);
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
+
+        new ShowcaseView.Builder(this)
+                .setTarget(new ViewTarget(viewfinderView.getId(),this))
+                .setContentTitle("Card selector")
+                        //.singleShot(2)
+                .hideOnTouchOutside()
+                .build();
+
         cameraButtonView = findViewById(R.id.camera_button_view);
         resultView = findViewById(R.id.result_view);
 
@@ -286,7 +317,12 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                     startActivityForResult(intent, CONTACT_REQUEST_CODE);
                 }
             });
-
+//            new ShowcaseView.Builder(this)
+//                    .setTarget(new ViewTarget(historyButton.getId(),this))
+//                    .setContentTitle("Show taken images")
+//                            //.singleShot(2)
+//                    .hideOnTouchOutside()
+//                    .build();
         }
 
         ocrResultView = (TextView) findViewById(R.id.ocr_result_text_view);
