@@ -15,7 +15,6 @@ import com.uclan.mstocklmayr.R;
 import com.uclan.mstocklmayr.utils.ContactTypes;
 import com.uclan.mstocklmayr.utils.RandomId;
 import com.uclan.mstocklmayr.utils.TextSplitter;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +28,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
     private Map<String, String> values;
     private Map<String, Integer> finalPairs;
     RandomId randomId = new RandomId();
+    private boolean isSwitched = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,18 +48,41 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         ab.setCustomView(linearLayout);
         ab.show();
 
-        //restore preferences
-        SharedPreferences settings = getSharedPreferences(CaptureActivity.PREFS_NAME, 0);
-        if(!settings.contains(CaptureActivity.SWITCH_COUNT)){
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putInt(CaptureActivity.SWITCH_COUNT, 0);
-            editor.commit();
-        }
-
         this.finalPairs = new HashMap<String, Integer>();
 
         //get result map from capture activity
         this.values = CaptureActivity.textResultMap;
+
+        //restore preferences
+        SharedPreferences settings = getSharedPreferences(CaptureActivity.PREFS_NAME, 0);
+        if(!settings.contains(CaptureActivity.TOTAL_COUNT)){
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt(CaptureActivity.TOTAL_COUNT, 0);
+            editor.commit();
+            if(!settings.contains(CaptureActivity.NAME_SWITCH_COUNT)){
+                editor.putInt(CaptureActivity.NAME_SWITCH_COUNT, 0);
+                editor.commit();
+            }
+        }else{
+            //TODO improve algorithm
+            float total = (float)settings.getInt(CaptureActivity.TOTAL_COUNT,0);
+            float switches = (float)settings.getInt(CaptureActivity.NAME_SWITCH_COUNT,0);
+
+            if((switches/total)>0.6){
+                this.isSwitched = true;
+                String[] parts = TextSplitter.splitName(true, this.values.get(ContactTypes.NAME));
+                String newName = null;
+                if(parts.length > 1){
+                    newName = parts[1] + " " + parts[0];
+                }
+                else{
+                    newName = parts[0];
+                }
+                this.values.put(ContactTypes.NAME.toString(), newName);
+            }
+        }
+
+
 
         this.lastItemId = R.id.tvSpacer;
         this.lastInputId = R.id.etName;
@@ -134,6 +157,25 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(view.getContext(),"item clicked in: "+view.getId(),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.switch_names:
+                SharedPreferences settings = getSharedPreferences(CaptureActivity.PREFS_NAME, 0);
+                if(!settings.contains(CaptureActivity.NAME_SWITCH_COUNT)){
+                    int value = settings.getInt(CaptureActivity.NAME_SWITCH_COUNT,0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt(CaptureActivity.NAME_SWITCH_COUNT, ++value);
+                    editor.commit();
+                }
+            break;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+        return false;
     }
 
     @Override
@@ -304,8 +346,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         // Getting reference to Name EditText
         EditText name = (EditText) findViewById(finalPairs.get(ContactTypes.NAME.toString()));
 
-        //TODO: check if the change first/lastName button has been clicked
-        String[] nameParts = TextSplitter.splitName(true, name.getText().toString());
+        String[] nameParts = TextSplitter.splitName(!this.isSwitched, name.getText().toString());
         String firstName = nameParts[0];
         String lastName = null;
         if(nameParts.length > 1)
@@ -431,9 +472,18 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
             e.printStackTrace();
         }
 
+        SharedPreferences settings = getSharedPreferences(CaptureActivity.PREFS_NAME,0);
+        if(!settings.contains(CaptureActivity.TOTAL_COUNT)){
+            int total = settings.getInt(CaptureActivity.TOTAL_COUNT,0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt(CaptureActivity.TOTAL_COUNT, ++total);
+            editor.commit();
+        }
+
         Intent result = new Intent();
         result.putExtra("name", name.getText().toString());
         setResult(RESULT_OK, result);
         finishActivity(CaptureActivity.CONTACT_REQUEST_CODE);
     }
+
 }

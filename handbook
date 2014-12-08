@@ -1,16 +1,7 @@
 08.12.2014
 
 Drive handling exported. ShowViewMaster dependency added.
-
-HintList
-0-Gallery init screen
-1-AddContact init screen
-2-Rectangular frame init screen
-3-Add contact form
-4-Add contact long press
-5-Add contact finish
-6-Gallery swipe
-7-Gallery actions
+Algorithm and shared preferences for name switching added.
 
 07.12.2014
 

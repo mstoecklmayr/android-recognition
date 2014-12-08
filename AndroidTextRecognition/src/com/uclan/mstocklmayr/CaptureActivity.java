@@ -217,8 +217,9 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     public LocationClient mLocationClient;
     public GoogleApiClient mGoogleApiClient;
     public static final String PREFS_NAME = "RecognitionPrefs";
-    public static final String SWITCH_COUNT = "SwitchCount";
-    public static final String SHOW_HINTS = "ShowHints";
+    public static final String NAME_SWITCH_COUNT = "SwitchCount";
+    public static final String TOTAL_COUNT = "TotalCount";
+    public static final String DO_NAME_SWITCH = "DoSwitch";
 
     Handler getHandler() {
         return handler;
