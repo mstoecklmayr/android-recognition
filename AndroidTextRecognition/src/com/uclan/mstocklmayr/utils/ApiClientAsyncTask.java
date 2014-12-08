@@ -1,4 +1,4 @@
-package com.uclan.mstocklmayr;
+package com.uclan.mstocklmayr.utils;
 
 
 import com.google.android.gms.common.ConnectionResult;
