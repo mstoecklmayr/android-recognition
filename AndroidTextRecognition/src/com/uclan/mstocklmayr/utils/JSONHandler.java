@@ -113,6 +113,8 @@ public class JSONHandler {
     //get one property from JSON file
     public static Location getLocation(Context ctx, String fileName){
         JSONArray appData = getJSONFile(ctx);
+        if(appData == null) return  null;
+
         try {
             for(int i = 0; i<appData.length();i++){
                 JSONObject obj = appData.getJSONObject(i);

@@ -46,14 +46,10 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.*;
 import com.google.android.gms.location.LocationClient;
 import com.googlecode.tesseract.android.TessBaseAPI;
@@ -61,7 +57,6 @@ import com.uclan.mstocklmayr.camera.CameraManager;
 import com.uclan.mstocklmayr.camera.ShutterButton;
 import com.uclan.mstocklmayr.contacts.AddContact;
 import com.uclan.mstocklmayr.gallery.GalleryActivity;
-import com.uclan.mstocklmayr.utils.ApiClientAsyncTask;
 import com.uclan.mstocklmayr.utils.DriveHandler;
 import com.uclan.mstocklmayr.utils.JSONHandler;
 import com.uclan.mstocklmayr.utils.TextSplitter;
@@ -69,11 +64,7 @@ import com.uclan.mstocklmayr.utils.TextSplitter;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-
-import static com.google.android.gms.drive.DriveApi.DriveContentsResult;
 
 /**
  * This activity opens the camera and does the actual scanning on a background thread. It draws a
@@ -101,6 +92,9 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
     // The default page segmentation mode to use.
     public static final String DEFAULT_PAGE_SEGMENTATION_MODE = "Auto";
+
+    //The default for my business card
+    public static final String DEFAULT_MY_BUSINESS_CARD = "No business card selected";
 
     //Whether to use autofocus by default
     public static final boolean DEFAULT_TOGGLE_AUTO_FOCUS = true;
@@ -176,6 +170,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
     // Options menu, for copy to clipboard
     private static final int OPTIONS_COPY_RECOGNIZED_TEXT_ID = Menu.FIRST;
+
 
     private CameraManager cameraManager;
     private CaptureActivityHandler handler;
@@ -285,12 +280,12 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         setContentView(R.layout.capture);
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
 
-        new ShowcaseView.Builder(this)
-                .setTarget(new ViewTarget(viewfinderView.getId(),this))
-                .setContentTitle("Card selector")
-                        //.singleShot(2)
-                .hideOnTouchOutside()
-                .build();
+//        new ShowcaseView.Builder(this)
+//                .setTarget(new ViewTarget(viewfinderView.getId(),this))
+//                .setContentTitle("Card selector")
+//                        //.singleShot(2)
+//                .hideOnTouchOutside()
+//                .build();
 
         cameraButtonView = findViewById(R.id.camera_button_view);
         resultView = findViewById(R.id.result_view);
@@ -668,7 +663,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         //    inflater.inflate(R.menu.options_menu, menu);
         super.onCreateOptionsMenu(menu);
         menu.add(0, SETTINGS_ID, 0, "Settings").setIcon(android.R.drawable.ic_menu_preferences);
-        menu.add(0, ABOUT_ID, 0, "About").setIcon(android.R.drawable.ic_menu_info_details);
+        //menu.add(0, ABOUT_ID, 0, "About").setIcon(android.R.drawable.ic_menu_info_details);
         return true;
     }
 
@@ -1218,6 +1213,9 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         characterBlacklist = OcrCharacterHelper.getBlacklist(prefs, sourceLanguageCodeOcr);
         characterWhitelist = OcrCharacterHelper.getWhitelist(prefs, sourceLanguageCodeOcr);
 
+
+
+
         prefs.registerOnSharedPreferenceChangeListener(listener);
 
         beepManager.updatePrefs();
@@ -1229,17 +1227,19 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     private void setDefaultPreferences() {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+        //TODO remove unused
+
         // Continuous preview
-        prefs.edit().putBoolean(PreferencesActivity.KEY_CONTINUOUS_PREVIEW, CaptureActivity.DEFAULT_TOGGLE_CONTINUOUS).commit();
+        //prefs.edit().putBoolean(PreferencesActivity.KEY_CONTINUOUS_PREVIEW, CaptureActivity.DEFAULT_TOGGLE_CONTINUOUS).commit();
 
         // Recognition language
-        prefs.edit().putString(PreferencesActivity.KEY_SOURCE_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE).commit();
+        //prefs.edit().putString(PreferencesActivity.KEY_SOURCE_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE).commit();
 
         // Translation
-        prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_TRANSLATION, CaptureActivity.DEFAULT_TOGGLE_TRANSLATION).commit();
+        //prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_TRANSLATION, CaptureActivity.DEFAULT_TOGGLE_TRANSLATION).commit();
 
         // Translation target language
-        prefs.edit().putString(PreferencesActivity.KEY_TARGET_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_TARGET_LANGUAGE_CODE).commit();
+        //prefs.edit().putString(PreferencesActivity.KEY_TARGET_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_TARGET_LANGUAGE_CODE).commit();
 
         // OCR Engine
         prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, CaptureActivity.DEFAULT_OCR_ENGINE_MODE).commit();
@@ -1248,27 +1248,29 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         prefs.edit().putBoolean(PreferencesActivity.KEY_AUTO_FOCUS, CaptureActivity.DEFAULT_TOGGLE_AUTO_FOCUS).commit();
 
         // Disable problematic focus modes
-        prefs.edit().putBoolean(PreferencesActivity.KEY_DISABLE_CONTINUOUS_FOCUS, CaptureActivity.DEFAULT_DISABLE_CONTINUOUS_FOCUS).commit();
+        //prefs.edit().putBoolean(PreferencesActivity.KEY_DISABLE_CONTINUOUS_FOCUS, CaptureActivity.DEFAULT_DISABLE_CONTINUOUS_FOCUS).commit();
 
         // Beep
-        prefs.edit().putBoolean(PreferencesActivity.KEY_PLAY_BEEP, CaptureActivity.DEFAULT_TOGGLE_BEEP).commit();
+        //prefs.edit().putBoolean(PreferencesActivity.KEY_PLAY_BEEP, CaptureActivity.DEFAULT_TOGGLE_BEEP).commit();
 
         // Character blacklist
-        prefs.edit().putString(PreferencesActivity.KEY_CHARACTER_BLACKLIST,
-                OcrCharacterHelper.getDefaultBlacklist(CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)).commit();
+        //prefs.edit().putString(PreferencesActivity.KEY_CHARACTER_BLACKLIST,
+                //OcrCharacterHelper.getDefaultBlacklist(CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)).commit();
 
         // Character whitelist
-        prefs.edit().putString(PreferencesActivity.KEY_CHARACTER_WHITELIST,
-                OcrCharacterHelper.getDefaultWhitelist(CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)).commit();
+        //prefs.edit().putString(PreferencesActivity.KEY_CHARACTER_WHITELIST,OcrCharacterHelper.getDefaultWhitelist(CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)).commit();
 
         // Page segmentation mode
-        prefs.edit().putString(PreferencesActivity.KEY_PAGE_SEGMENTATION_MODE, CaptureActivity.DEFAULT_PAGE_SEGMENTATION_MODE).commit();
+        //prefs.edit().putString(PreferencesActivity.KEY_PAGE_SEGMENTATION_MODE, CaptureActivity.DEFAULT_PAGE_SEGMENTATION_MODE).commit();
 
         // Reversed camera image
-        prefs.edit().putBoolean(PreferencesActivity.KEY_REVERSE_IMAGE, CaptureActivity.DEFAULT_TOGGLE_REVERSED_IMAGE).commit();
+        //prefs.edit().putBoolean(PreferencesActivity.KEY_REVERSE_IMAGE, CaptureActivity.DEFAULT_TOGGLE_REVERSED_IMAGE).commit();
 
         // Light
         prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, CaptureActivity.DEFAULT_TOGGLE_LIGHT).commit();
+
+        //my business card
+        prefs.edit().putString(PreferencesActivity.KEY_MY_BUSINESS_CARD, "null").commit();
     }
 
     void displayProgressDialog() {
@@ -1350,7 +1352,9 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
                         // Creating the handler starts the preview, which can also throw a RuntimeException.
                         handler = new CaptureActivityHandler(this, cameraManager, isContinuousModeActive, path);
-
+                        if (handler != null) {
+                            handler.shutterButtonClick();
+                        }
                     } catch (IOException ioe) {
                         showErrorMessage("Error", "Could not initialize camera. Please try restarting device.");
                     } catch (RuntimeException e) {

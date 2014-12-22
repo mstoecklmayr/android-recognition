@@ -1,3 +1,10 @@
+22.12.2014
+Changed to windows 10. Holiday work:
+Reprocess image should work now. Shutter button click is simulated.
+Legacy menu button re-enabled for the surface view. This button is only enabled if the app API level is 11 or beneath (http://stackoverflow.com/questions/13322940/menu-button-on-newer-android-devices).
+
+Preferences updated. Image path to my business card is now stored
+
 08.12.2014
 
 Drive handling exported. ShowViewMaster dependency added.
