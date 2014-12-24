@@ -83,12 +83,20 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
                 case R.id.action_all_location:
                     showAllLocationOnMap();
                     return true;
+                case R.id.action_send_my_card:
+                    sendMyBusinessCard();
+                    return true;
                 default:
                     return super.onOptionsItemSelected(item);
             }
         }
         Toast.makeText(this, "No image available!", Toast.LENGTH_SHORT).show();
         return false;
+    }
+
+    private void sendMyBusinessCard() {
+        //TODO get email from current picture, otherwise just attach my card to it
+        Toast.makeText(this, "My card will be sent here!", Toast.LENGTH_SHORT).show();
     }
 
     private void deleteImage(){

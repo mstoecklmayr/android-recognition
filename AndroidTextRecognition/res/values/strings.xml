@@ -22,6 +22,7 @@
     <string name="galleryMenuLocation">Location</string>
     <string name="galleryMenuReprocess">Reprocess</string>
     <string name="MultiLocation">Show all locations on map</string>
+    <string name="galleryMenuSendMyCard">Send my card</string>
 
     <string-array name="contactFields">
         <item>@string/firstName</item>
