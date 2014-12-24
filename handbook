@@ -1,3 +1,7 @@
+24.12.2014
+Preferences fixed. Image path now saved and in shared preferences and "image selected" is shown.
+Next step is to provide an action bar button to send the users business card to the email from an image of a business card
+
 22.12.2014
 Changed to windows 10. Holiday work:
 Reprocess image should work now. Shutter button click is simulated.

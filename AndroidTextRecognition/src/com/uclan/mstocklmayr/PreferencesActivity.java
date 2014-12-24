@@ -62,6 +62,7 @@ public class PreferencesActivity extends PreferenceActivity implements
     public static final String TRANSLATOR_GOOGLE = "Google Translate";
 
     public static final String KEY_MY_BUSINESS_CARD = "preferences_my_business_card";
+    public static final String MY_BUSINESS_CARD_SELECTED = "Image selected";
 
     private Preference preferenceMyBusinessCard;
     private ListPreference listPreferenceOcrEngineMode;
@@ -87,7 +88,7 @@ public class PreferencesActivity extends PreferenceActivity implements
         addPreferencesFromResource(R.xml.preferences);
 
         //TODO could be changed to PreferenceFragment
-        preferenceMyBusinessCard = findPreference("myBusinessCard");
+        preferenceMyBusinessCard = findPreference(KEY_MY_BUSINESS_CARD);
         preferenceMyBusinessCard.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 Intent intent = new Intent();
@@ -101,12 +102,8 @@ public class PreferencesActivity extends PreferenceActivity implements
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        //listPreferenceSourceLanguage = (ListPreference) getPreferenceScreen().findPreference(KEY_SOURCE_LANGUAGE_PREFERENCE);
-        //listPreferenceTargetLanguage = (ListPreference) getPreferenceScreen().findPreference(KEY_TARGET_LANGUAGE_PREFERENCE);
         listPreferenceOcrEngineMode = (ListPreference) getPreferenceScreen().findPreference(KEY_OCR_ENGINE_MODE);
-        //editTextPreferenceCharacterBlacklist = (EditTextPreference) getPreferenceScreen().findPreference(KEY_CHARACTER_BLACKLIST);
-        //editTextPreferenceCharacterWhitelist = (EditTextPreference) getPreferenceScreen().findPreference(KEY_CHARACTER_WHITELIST);
-        //listPreferencePageSegmentationMode = (ListPreference) getPreferenceScreen().findPreference(KEY_PAGE_SEGMENTATION_MODE);
+        preferenceMyBusinessCard = getPreferenceScreen().findPreference(KEY_MY_BUSINESS_CARD);
     }
 
     /**
@@ -121,49 +118,10 @@ public class PreferencesActivity extends PreferenceActivity implements
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
         // Update preference summary values to show current preferences
-        if (key.equals(KEY_SOURCE_LANGUAGE_PREFERENCE)) {
-
-            // Set the summary text for the source language name
-            //listPreferenceSourceLanguage.setSummary(LanguageCodeHelper.getOcrLanguageName(getBaseContext(), sharedPreferences.getString(key, CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)));
-
-            // Retrieve the character blacklist/whitelist for the new language
-            //String blacklist = OcrCharacterHelper.getBlacklist(sharedPreferences, listPreferenceSourceLanguage.getValue());
-            //String whitelist = OcrCharacterHelper.getWhitelist(sharedPreferences, listPreferenceSourceLanguage.getValue());
-
-            // Save the character blacklist/whitelist to preferences
-            //sharedPreferences.edit().putString(KEY_CHARACTER_BLACKLIST, blacklist).commit();
-            //sharedPreferences.edit().putString(KEY_CHARACTER_WHITELIST, whitelist).commit();
-
-            // Set the blacklist/whitelist summary text
-            //editTextPreferenceCharacterBlacklist.setSummary(blacklist);
-            //editTextPreferenceCharacterWhitelist.setSummary(whitelist);
-
-        }else if (key.equals(KEY_TARGET_LANGUAGE_PREFERENCE)) {
-            //listPreferenceTargetLanguage.setSummary(LanguageCodeHelper.getTranslationLanguageName(this, sharedPreferences.getString(key, CaptureActivity.DEFAULT_TARGET_LANGUAGE_CODE)));
-        } else if (key.equals(KEY_PAGE_SEGMENTATION_MODE)) {
+        if (key.equals(KEY_PAGE_SEGMENTATION_MODE)) {
             //listPreferencePageSegmentationMode.setSummary(sharedPreferences.getString(key, CaptureActivity.DEFAULT_PAGE_SEGMENTATION_MODE));
         } else if (key.equals(KEY_OCR_ENGINE_MODE)) {
             listPreferenceOcrEngineMode.setSummary(sharedPreferences.getString(key, CaptureActivity.DEFAULT_OCR_ENGINE_MODE));
-        } else if (key.equals(KEY_CHARACTER_BLACKLIST)) {
-
-            // Save a separate, language-specific character blacklist for this language
-//      OcrCharacterHelper.setBlacklist(sharedPreferences,
-//          listPreferenceSourceLanguage.getValue(),
-//          sharedPreferences.getString(key, OcrCharacterHelper.getDefaultBlacklist(listPreferenceSourceLanguage.getValue())));
-
-            // Set the summary text
-            //editTextPreferenceCharacterBlacklist.setSummary(sharedPreferences.getString(key, OcrCharacterHelper.getDefaultBlacklist(listPreferenceSourceLanguage.getValue())));
-
-        } else if (key.equals(KEY_CHARACTER_WHITELIST)) {
-
-            // Save a separate, language-specific character blacklist for this language
-//      OcrCharacterHelper.setWhitelist(sharedPreferences,
-//          listPreferenceSourceLanguage.getValue(),
-//          sharedPreferences.getString(key, OcrCharacterHelper.getDefaultWhitelist(listPreferenceSourceLanguage.getValue())));
-
-            // Set the summary text
-            //editTextPreferenceCharacterWhitelist.setSummary(sharedPreferences.getString(key, OcrCharacterHelper.getDefaultWhitelist(listPreferenceSourceLanguage.getValue())));
-
         }
     }
 
@@ -175,13 +133,10 @@ public class PreferencesActivity extends PreferenceActivity implements
     protected void onResume() {
         super.onResume();
         // Set up the initial summary values
-//    listPreferenceSourceLanguage.setSummary(LanguageCodeHelper.getOcrLanguageName(getBaseContext(), sharedPreferences.getString(KEY_SOURCE_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)));
-//    listPreferenceTargetLanguage.setSummary(LanguageCodeHelper.getTranslationLanguageName(getBaseContext(), sharedPreferences.getString(KEY_TARGET_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_TARGET_LANGUAGE_CODE)));
-//    listPreferencePageSegmentationMode.setSummary(sharedPreferences.getString(KEY_PAGE_SEGMENTATION_MODE, CaptureActivity.DEFAULT_PAGE_SEGMENTATION_MODE));
-//    editTextPreferenceCharacterBlacklist.setSummary(sharedPreferences.getString(KEY_CHARACTER_BLACKLIST, OcrCharacterHelper.getDefaultBlacklist(listPreferenceSourceLanguage.getValue())));
-//    editTextPreferenceCharacterWhitelist.setSummary(sharedPreferences.getString(KEY_CHARACTER_WHITELIST, OcrCharacterHelper.getDefaultWhitelist(listPreferenceSourceLanguage.getValue())));
         listPreferenceOcrEngineMode.setSummary(sharedPreferences.getString(KEY_OCR_ENGINE_MODE, CaptureActivity.DEFAULT_OCR_ENGINE_MODE));
-        preferenceMyBusinessCard.setSummary(sharedPreferences.getString(KEY_MY_BUSINESS_CARD, CaptureActivity.DEFAULT_MY_BUSINESS_CARD));
+
+        String pref = sharedPreferences.getString(KEY_MY_BUSINESS_CARD, CaptureActivity.DEFAULT_MY_BUSINESS_CARD);
+        preferenceMyBusinessCard.setSummary(pref.equals(CaptureActivity.DEFAULT_MY_BUSINESS_CARD)?pref:MY_BUSINESS_CARD_SELECTED);
         // Set up a listener whenever a key changes
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
@@ -192,16 +147,13 @@ public class PreferencesActivity extends PreferenceActivity implements
 
         if (resultCode == RESULT_OK) {
             Uri selectedImage = imageReturnedIntent.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-            cursor.moveToFirst();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(KEY_MY_BUSINESS_CARD, selectedImage.toString());
+            editor.commit();
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String filePath = cursor.getString(columnIndex);
-            cursor.close();
-            preferenceMyBusinessCard.setSummary(filePath);
-            Toast.makeText(PreferencesActivity.this,filePath,Toast.LENGTH_SHORT).show();
+            preferenceMyBusinessCard.setSummary(MY_BUSINESS_CARD_SELECTED);
+            Toast.makeText(PreferencesActivity.this,selectedImage.toString(),Toast.LENGTH_SHORT).show();
         }
     }
 

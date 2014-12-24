@@ -29,7 +29,7 @@
 			android:entryValues="@array/iso6393" /-->
 
 		<Preference android:title="My business card"
-					android:key="myBusinessCard"
+					android:key="preferences_my_business_card"
 				/>
 			
 	</PreferenceCategory>

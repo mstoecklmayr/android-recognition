@@ -252,25 +252,11 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        checkFirstLaunch();
+        //TODO remove
+        //checkFirstLaunch();
 
         if (isFirstLaunch) {
-            setDefaultPreferences();
-//            SharedPreferences preferences = getSharedPreferences(SHOW_HINTS, 0);
-//            SharedPreferences.Editor editor = preferences.edit();
-//            Set<String> hints = new HashSet<String>();
-            /*
-            Add one entry for each hint
-
-            0-Gallery init screen
-            1-AddContact init screen
-            2-Rectangular frame init screen
-            3-Add contact form
-            4-Add contact long press
-            5-Add contact finish
-            6-Gallery swipe
-            7-Gallery actions
-             */
+            //setDefaultPreferences();
         }
 
 
@@ -1213,9 +1199,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         characterBlacklist = OcrCharacterHelper.getBlacklist(prefs, sourceLanguageCodeOcr);
         characterWhitelist = OcrCharacterHelper.getWhitelist(prefs, sourceLanguageCodeOcr);
 
-
-
-
         prefs.registerOnSharedPreferenceChangeListener(listener);
 
         beepManager.updatePrefs();
@@ -1227,50 +1210,20 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     private void setDefaultPreferences() {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        //TODO remove unused
-
-        // Continuous preview
-        //prefs.edit().putBoolean(PreferencesActivity.KEY_CONTINUOUS_PREVIEW, CaptureActivity.DEFAULT_TOGGLE_CONTINUOUS).commit();
-
-        // Recognition language
-        //prefs.edit().putString(PreferencesActivity.KEY_SOURCE_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE).commit();
-
-        // Translation
-        //prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_TRANSLATION, CaptureActivity.DEFAULT_TOGGLE_TRANSLATION).commit();
-
-        // Translation target language
-        //prefs.edit().putString(PreferencesActivity.KEY_TARGET_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_TARGET_LANGUAGE_CODE).commit();
-
         // OCR Engine
         prefs.edit().putString(PreferencesActivity.KEY_OCR_ENGINE_MODE, CaptureActivity.DEFAULT_OCR_ENGINE_MODE).commit();
 
         // Autofocus
         prefs.edit().putBoolean(PreferencesActivity.KEY_AUTO_FOCUS, CaptureActivity.DEFAULT_TOGGLE_AUTO_FOCUS).commit();
 
-        // Disable problematic focus modes
-        //prefs.edit().putBoolean(PreferencesActivity.KEY_DISABLE_CONTINUOUS_FOCUS, CaptureActivity.DEFAULT_DISABLE_CONTINUOUS_FOCUS).commit();
-
         // Beep
         //prefs.edit().putBoolean(PreferencesActivity.KEY_PLAY_BEEP, CaptureActivity.DEFAULT_TOGGLE_BEEP).commit();
-
-        // Character blacklist
-        //prefs.edit().putString(PreferencesActivity.KEY_CHARACTER_BLACKLIST,
-                //OcrCharacterHelper.getDefaultBlacklist(CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)).commit();
-
-        // Character whitelist
-        //prefs.edit().putString(PreferencesActivity.KEY_CHARACTER_WHITELIST,OcrCharacterHelper.getDefaultWhitelist(CaptureActivity.DEFAULT_SOURCE_LANGUAGE_CODE)).commit();
-
-        // Page segmentation mode
-        //prefs.edit().putString(PreferencesActivity.KEY_PAGE_SEGMENTATION_MODE, CaptureActivity.DEFAULT_PAGE_SEGMENTATION_MODE).commit();
-
-        // Reversed camera image
-        //prefs.edit().putBoolean(PreferencesActivity.KEY_REVERSE_IMAGE, CaptureActivity.DEFAULT_TOGGLE_REVERSED_IMAGE).commit();
 
         // Light
         prefs.edit().putBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, CaptureActivity.DEFAULT_TOGGLE_LIGHT).commit();
 
         //my business card
-        prefs.edit().putString(PreferencesActivity.KEY_MY_BUSINESS_CARD, "null").commit();
+        prefs.edit().putString(PreferencesActivity.KEY_MY_BUSINESS_CARD, CaptureActivity.DEFAULT_MY_BUSINESS_CARD).commit();
     }
 
     void displayProgressDialog() {
