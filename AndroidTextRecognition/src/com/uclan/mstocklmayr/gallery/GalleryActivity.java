@@ -22,6 +22,7 @@ import com.uclan.mstocklmayr.map.MapLocation;
 import com.uclan.mstocklmayr.utils.JSONHandler;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +38,6 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.gallery_viewpager);
 
         ActionBar ab = getActionBar();
         ab.show();
@@ -45,6 +45,7 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
         ab.setDisplayShowTitleEnabled(false);
         ab.setDisplayUseLogoEnabled(false);
 
+        setContentView(R.layout.gallery_viewpager);
         // Selected image id
         int position = 0;
         adapter = new ImagesPagerAdapter(getSupportFragmentManager(), this);
@@ -58,7 +59,6 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -69,7 +69,7 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
-        if(adapter.imagePathList.size() != 0){
+        if (adapter.imagePathList.size() != 0) {
             switch (item.getItemId()) {
                 case R.id.action_discard:
                     deleteImage();
@@ -97,47 +97,6 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
         return false;
     }
 
-    private void sendMyBusinessCard() {
-        String fileName = adapter.imagePathList.get(this.currentImageIndex);
-        fileName = fileName.substring(fileName.lastIndexOf("/")+1);
-
-        String email = JSONHandler.getProperty(this,fileName,JSONHandler.EMAIL);
-
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String uriToImage = settings.getString(PreferencesActivity.KEY_MY_BUSINESS_CARD, "null");
-
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-        if(email != null)
-            intent.putExtra(Intent.EXTRA_EMAIL, email);
-        intent.putExtra(Intent.EXTRA_SUBJECT, "My business card");
-        intent.putExtra(Intent.EXTRA_STREAM, uriToImage);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }
-    }
-
-    private void deleteImage(){
-        String path = adapter.imagePathList.get(this.currentImageIndex);
-        //Toast.makeText(this, path + "deleted ", Toast.LENGTH_LONG).show();
-
-        //delete json entry for this image
-        JSONHandler.removeJSONObject(this,path.substring(path.lastIndexOf("/")+1));
-
-        if(path != null){
-            File file = new File(path);
-            file.delete();
-            int before = adapter.getCount();
-            adapter.imagePathList.remove(this.currentImageIndex);
-            int after = adapter.getCount();
-
-            adapter.notifyDataSetChanged();
-            pager.invalidate();
-        }else{
-            Toast.makeText(this, "error. no image path set", Toast.LENGTH_LONG).show();
-        }
-    }
-
     private void shareRecognition() {
         String path = adapter.imagePathList.get(this.currentImageIndex);
         File file = new File(path);
@@ -149,11 +108,53 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
         startActivity(Intent.createChooser(shareIntent, "Share image via"));
     }
 
-    private void showLocationOnMap(){
+    private void sendMyBusinessCard() {
+        String fileName = adapter.imagePathList.get(this.currentImageIndex);
+        fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
+
+        String email = JSONHandler.getProperty(this, fileName, JSONHandler.EMAIL);
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String imagePath = settings.getString(PreferencesActivity.KEY_MY_BUSINESS_CARD, "null");
+        Uri uriToImage = Uri.fromFile(new File(imagePath));
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        if (email != null)
+            intent.putExtra(Intent.EXTRA_EMAIL, email);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "My business card");
+        intent.putExtra(Intent.EXTRA_STREAM, uriToImage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    private void deleteImage() {
         String path = adapter.imagePathList.get(this.currentImageIndex);
-        Location location = JSONHandler.getLocation(this, path.substring(path.lastIndexOf("/")+1));
-        if(location != null){
-            Toast.makeText(this, "Long: "+location.getLongitude()+" Lat: "+location.getLatitude(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, path + "deleted ", Toast.LENGTH_LONG).show();
+
+        //delete json entry for this image
+        JSONHandler.removeJSONObject(this, path.substring(path.lastIndexOf("/") + 1));
+
+        if (path != null) {
+            File file = new File(path);
+            file.delete();
+            int before = adapter.getCount();
+            adapter.imagePathList.remove(this.currentImageIndex);
+            int after = adapter.getCount();
+
+            adapter.notifyDataSetChanged();
+            pager.invalidate();
+        } else {
+            Toast.makeText(this, "error. no image path set", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void showLocationOnMap() {
+        String path = adapter.imagePathList.get(this.currentImageIndex);
+        Location location = JSONHandler.getLocation(this, path.substring(path.lastIndexOf("/") + 1));
+        if (location != null) {
+            Toast.makeText(this, "Long: " + location.getLongitude() + " Lat: " + location.getLatitude(), Toast.LENGTH_SHORT).show();
             double latitude = Double.valueOf(location.getLatitude());
             double longitude = Double.valueOf(location.getLongitude());
             String label = location.getProvider();
@@ -165,36 +166,36 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
 //            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
 //            startActivity(intent);
             MapLocation loc = new MapLocation(latitude, longitude, label);
-            if(this.mapLocations != null){
+            if (this.mapLocations != null) {
                 this.mapLocations.clear();
                 this.mapLocations.add(loc);
-            }else{
+            } else {
                 this.mapLocations = new ArrayList<MapLocation>();
                 this.mapLocations.add(loc);
             }
-            Intent intent = new Intent(this,MapActivity.class);
+            Intent intent = new Intent(this, MapActivity.class);
             startActivity(intent);
 
         }
     }
 
     private void showAllLocationOnMap() {
-        if(this.mapLocations != null){
+        if (this.mapLocations != null) {
             this.mapLocations.clear();
-        }else{
+        } else {
             this.mapLocations = new ArrayList<MapLocation>();
         }
-        for(String locationString : adapter.imagePathList){
-            Location location = JSONHandler.getLocation(this, locationString.substring(locationString.lastIndexOf("/")+1));
-            if(location != null){
-                this.mapLocations.add(new MapLocation(location.getLatitude(),location.getLongitude(),location.getProvider()));
+        for (String locationString : adapter.imagePathList) {
+            Location location = JSONHandler.getLocation(this, locationString.substring(locationString.lastIndexOf("/") + 1));
+            if (location != null) {
+                this.mapLocations.add(new MapLocation(location.getLatitude(), location.getLongitude(), location.getProvider()));
             }
         }
-        Intent intent = new Intent(this,MapActivity.class);
+        Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }
 
-    private void reprocessImage(){
+    private void reprocessImage() {
         String path = adapter.imagePathList.get(this.currentImageIndex);
         Intent returnIntent = new Intent();
         returnIntent.putExtra(CaptureActivity.FILE_PATH, path);
@@ -209,7 +210,7 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
 
     @Override
     public void onPageSelected(int i) {
-            currentImageIndex = i;
+        currentImageIndex = i;
     }
 
     @Override

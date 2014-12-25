@@ -27,6 +27,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.File;
+
 /**
  * Class to handle preferences that are saved across sessions of the app. Shows
  * a hierarchy of preferences to the user, organized into sections. These
@@ -91,11 +93,15 @@ public class PreferencesActivity extends PreferenceActivity implements
         preferenceMyBusinessCard = findPreference(KEY_MY_BUSINESS_CARD);
         preferenceMyBusinessCard.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                int PICK_IMAGE = 1;
-                startActivityForResult(Intent.createChooser(intent, "Select Business Card"), PICK_IMAGE);
+//                Intent intent = new Intent();
+//                intent.setType("image/*");
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                int PICK_IMAGE = 1;
+//                startActivityForResult(Intent.createChooser(intent, "Select Business Card"), PICK_IMAGE);
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, 1);
                 return true;
             }
         });
@@ -148,12 +154,22 @@ public class PreferencesActivity extends PreferenceActivity implements
         if (resultCode == RESULT_OK) {
             Uri selectedImage = imageReturnedIntent.getData();
 
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String imagePath = cursor.getString(columnIndex);
+            cursor.close();
+
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(KEY_MY_BUSINESS_CARD, selectedImage.toString());
+            editor.putString(KEY_MY_BUSINESS_CARD, imagePath);
             editor.commit();
 
+            Toast.makeText(PreferencesActivity.this,imagePath,Toast.LENGTH_SHORT).show();
             preferenceMyBusinessCard.setSummary(MY_BUSINESS_CARD_SELECTED);
-            Toast.makeText(PreferencesActivity.this,selectedImage.toString(),Toast.LENGTH_SHORT).show();
         }
     }
 
