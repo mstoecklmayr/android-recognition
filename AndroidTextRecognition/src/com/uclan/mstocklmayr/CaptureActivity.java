@@ -84,14 +84,8 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     // ISO 639-3 language code indicating the default recognition language.
     public static final String DEFAULT_SOURCE_LANGUAGE_CODE = "eng";
 
-    // ISO 639-1 language code indicating the default target language for translation.
-    public static final String DEFAULT_TARGET_LANGUAGE_CODE = "es";
-
     // The default OCR engine to use.
     public static final String DEFAULT_OCR_ENGINE_MODE = "Tesseract";
-
-    // The default page segmentation mode to use.
-    public static final String DEFAULT_PAGE_SEGMENTATION_MODE = "Auto";
 
     //The default for my business card
     public static final String DEFAULT_MY_BUSINESS_CARD = "No business card selected";
@@ -99,24 +93,14 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     //Whether to use autofocus by default
     public static final boolean DEFAULT_TOGGLE_AUTO_FOCUS = true;
 
-    // Whether to initially disable continuous-picture and continuous-video focus modes.
-    public static final boolean DEFAULT_DISABLE_CONTINUOUS_FOCUS = true;
-
     // Whether to beep by default when the shutter button is pressed.
     public static final boolean DEFAULT_TOGGLE_BEEP = false;
 
     // Whether to initially show a looping, real-time OCR display.
     public static final boolean DEFAULT_TOGGLE_CONTINUOUS = false;
 
-    // Whether to initially reverse the image returned by the camera.
-    public static final boolean DEFAULT_TOGGLE_REVERSED_IMAGE = false;
-
-    // Whether to enable the use of online translation services be default.
-    public static final boolean DEFAULT_TOGGLE_TRANSLATION = true;
-
     // Whether the light should be initially activated by default.
     public static final boolean DEFAULT_TOGGLE_LIGHT = false;
-
 
     // Flag to display the real-time recognition results at the top of the scanning screen.
     private static final boolean CONTINUOUS_DISPLAY_RECOGNIZED_TEXT = true;
@@ -185,7 +169,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     private View progressView;
     private OcrResult lastResult;
     private Bitmap lastBitmap;
-    private String lastBitmapPath;
     private boolean hasSurface;
     private BeepManager beepManager;
     private TessBaseAPI baseApi; // Java interface for the Tesseract OCR engine
@@ -197,14 +180,12 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     private String characterWhitelist;
     private ShutterButton shutterButton;
     private ImageView historyButton;
-    private boolean isTranslationActive; // Whether we want to show translations
     private boolean isContinuousModeActive; // Whether we are doing OCR in continuous mode
     private SharedPreferences prefs;
     private OnSharedPreferenceChangeListener listener;
     private ProgressDialog dialog; // for initOcr - language download & unzip
     private ProgressDialog indeterminateDialog; // also for initOcr - init OCR engine
     private boolean isEngineReady;
-    private boolean isPaused;
     private static boolean isFirstLaunch; // True if this is the first time the app is being run
     public static Map<String, String> textResultMap; //map containing the split up text
 
@@ -515,8 +496,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         // This method is called when Tesseract has already been successfully initialized, so set
         // isEngineReady = true here.
         isEngineReady = true;
-
-        isPaused = false;
 
         if (handler != null) {
             handler.resetState();
@@ -1347,7 +1326,8 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     @Override
     public void onConnected(Bundle bundle) {
         // Display the connection status
-        Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+        //gets called once for each service (location and drive, atm)
+        Toast.makeText(this, "Service connected", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -1378,6 +1358,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
          * start a Google Play services activity that can resolve
          * error.
          */
+        Toast.makeText(this, "Service connection failure!", Toast.LENGTH_SHORT).show();
         if (connectionResult.hasResolution()) {
             try {
                 // Start an Activity that tries to resolve the error

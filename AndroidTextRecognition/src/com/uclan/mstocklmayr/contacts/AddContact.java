@@ -82,8 +82,6 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
             }
         }
 
-
-
         this.lastItemId = R.id.tvSpacer;
         this.lastInputId = R.id.etName;
 
@@ -217,7 +215,9 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.addContactLayout);
         relativeLayout.removeView(toRemove);
         int spacerBelowId = createInputPair(AddContact.this,this.lastInputId,item.getItemId(),item.getTitle().toString(),text);
-        this.finalPairs.put(ContactTypes.valueOf(item.getTitle().toString().toUpperCase()).toString(),spacerBelowId);
+        String title = item.getTitle().toString().toUpperCase();
+        title = title.replace(" ","_");
+        this.finalPairs.put(ContactTypes.valueOf(title).toString(),spacerBelowId);
         int spacerId = realignSpacer(spacerBelowId);
         realignOthers(spacerId,text);
         return true;
@@ -299,7 +299,6 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         tv.setPadding(pixels, 0, 0, 0);
 
-        fpixels = metrics.density * 22f;
         pixels = (int) (fpixels + 0.5f);
 
         tv.setTextSize(pixels);
@@ -483,7 +482,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         Intent result = new Intent();
         result.putExtra("name", name.getText().toString());
         setResult(RESULT_OK, result);
-        finishActivity(CaptureActivity.CONTACT_REQUEST_CODE);
+        finish();
     }
 
 }
