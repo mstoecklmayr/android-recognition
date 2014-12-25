@@ -75,7 +75,7 @@ import java.util.Map;
  */
 public final class CaptureActivity extends FragmentActivity implements SurfaceHolder.Callback,
         ShutterButton.OnShutterButtonListener, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
 
@@ -236,7 +236,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     @Override
     protected void onStart() {
         super.onStart();
-        // Connect the client.
+        // Connect the clients.
         mLocationClient.connect();
         mGoogleApiClient = new GoogleApiClient.Builder(CaptureActivity.this)
                 .addApi(Drive.API)
@@ -246,19 +246,11 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                 .addOnConnectionFailedListener(CaptureActivity.this)
                 .build();
         mGoogleApiClient.connect();
-       }
+    }
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-
-        //TODO remove
-        //checkFirstLaunch();
-
-        if (isFirstLaunch) {
-            //setDefaultPreferences();
-        }
-
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -336,22 +328,28 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
                     // Getting Google Play availability status
                     int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
-
                     // Showing status
-                    if(status!= ConnectionResult.SUCCESS){ // Google Play Services are not available
+                    if (!mGoogleApiClient.isConnected() || status != ConnectionResult.SUCCESS) { // Google Play Services are not available
 
                         int requestCode = 10;
                         Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, CaptureActivity.this, requestCode);
                         dialog.show();
 
-                    }else { // Google Play Services are available
+                    } else { // Google Play Services are available
                         //start sync process
-                        new DriveHandler(mGoogleApiClient,CaptureActivity.this,lastBitmap,fileName).start();
+                        new DriveHandler(mGoogleApiClient, CaptureActivity.this, lastBitmap, fileName).start();
                     }
 
                     //save preferences in JSON file like name, notes, gps etc
-                    Location location = mLocationClient.getLastLocation();
-                    JSONHandler.addImage(v.getContext(), fileName, location);
+                    Location location = null;
+                    if (mLocationClient.isConnected()) {
+                        location = mLocationClient.getLastLocation();
+                    }
+                    if (location != null) {
+                        JSONHandler.addImage(v.getContext(), fileName, location);
+                    } else {
+                        JSONHandler.addImage(v.getContext(), fileName);
+                    }
 
                     String textResult = "";
                     if (lastResult.getText() != null) {
@@ -537,7 +535,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     }
 
 
-
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.d(TAG, "surfaceCreated()");
@@ -631,7 +628,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
             }
         } else if (keyCode == KeyEvent.KEYCODE_CAMERA) {
 
-                handler.hardwareShutterButtonClick();
+            handler.hardwareShutterButtonClick();
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_FOCUS) {
             // Only perform autofocus if user is not holding down the button.
@@ -1065,9 +1062,9 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     @Override
     public void onShutterButtonClick(ShutterButton b) {
 
-            if (handler != null) {
-                handler.shutterButtonClick();
-            }
+        if (handler != null) {
+            handler.shutterButtonClick();
+        }
 
     }
 
@@ -1269,7 +1266,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         String date = sdf.format(new Date());
         String fname = "IMG_" + date + ".jpg";
         File file = new File(myDir, fname);
-        if (file.exists()){
+        if (file.exists()) {
             file.delete();
         }
 
@@ -1286,12 +1283,11 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
+        switch (requestCode) {
             case GALLERY_REQUEST_CODE:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     //reprocess image
                     String path = data.getExtras().getString(FILE_PATH);
                     Log.d(TAG, "initCamera()");
@@ -1319,18 +1315,18 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                 //TODO maybe other actions can be executed too
                 break;
             case CONTACT_REQUEST_CODE:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     //TODO: maybe return email and save it as json in order to implement a "send my business card" to the person
                 }
                 break;
-            case CONNECTION_FAILURE_RESOLUTION_REQUEST :
+            case CONNECTION_FAILURE_RESOLUTION_REQUEST:
             /*
              * If the result code is Activity.RESULT_OK, try
              * to connect again
              */
                 //TODO handle missing google play service
                 switch (resultCode) {
-                    case Activity.RESULT_OK :
+                    case Activity.RESULT_OK:
                     /*
                      * Try the request again
                      */
@@ -1369,6 +1365,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         Toast.makeText(this, "Disconnected. Please re-connect.",
                 Toast.LENGTH_SHORT).show();
     }
+
     /*
          * Called by Location Services if the attempt to
          * Location Services fails.
@@ -1400,7 +1397,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
              * If no resolution is available, display a dialog to the
              * user with the error.
              */
-            //showErrorDialog(connectionResult.getErrorCode());
+            GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this, 0).show();
         }
     }
 
@@ -1408,15 +1405,18 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     public static class ErrorDialogFragment extends DialogFragment {
         // Global field to contain the error dialog
         private Dialog mDialog;
+
         // Default constructor. Sets the dialog field to null
         public ErrorDialogFragment() {
             super();
             mDialog = null;
         }
+
         // Set the dialog to display
         public void setDialog(Dialog dialog) {
             mDialog = dialog;
         }
+
         // Return a Dialog to the DialogFragment.
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {

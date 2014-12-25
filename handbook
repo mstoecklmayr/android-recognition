@@ -1,3 +1,7 @@
+25.12.2014
+Hence I am now developing on Windows, the debug SHA1 key from the debug.keystore has changed. First I didn't realise why it was not working anymore but then I had to change the SHA1 key in the developer console
+Error handling for play services added (location service threw an exception because I commented it out for testing purpose).
+
 24.12.2014
 Preferences fixed. Image path now saved and in shared preferences and "image selected" is shown.
 Next step is to provide an action bar button to send the users business card to the email from an image of a business card
