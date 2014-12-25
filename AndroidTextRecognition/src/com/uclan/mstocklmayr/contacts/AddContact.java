@@ -22,7 +22,11 @@ import java.util.List;
 import java.util.Map;
 
 public class AddContact extends Activity implements AdapterView.OnItemSelectedListener, OnClickListener {
+    //used for the intent result
+    public final static String CONTACT_NAME = "name";
+    public final static String CONTACT_MAIL = "mail";
 
+    private String filePath;
     private int lastItemId;
     private int lastInputId;
     private Map<String, String> values;
@@ -42,6 +46,9 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         ab.setDisplayShowTitleEnabled(false);
         ab.setDisplayUseLogoEnabled(false);
         ab.setDisplayShowCustomEnabled(true);
+
+        Intent intent = getIntent();
+        this.filePath = intent.getStringExtra(CaptureActivity.FILE_PATH);
 
         LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.finish_button,null);
         linearLayout.setOnClickListener(this);
@@ -99,14 +106,14 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         }
 
         EditText etEmail = (EditText) findViewById(R.id.etPrivateEmail);
-        if(!this.values.containsKey(ContactTypes.EMAIL.toString())){
+        if(!this.values.containsKey(ContactTypes.PRIVATE_EMAIL.toString())){
             TextView email = (TextView) findViewById(R.id.tvPrivateEmail);
             email.setVisibility(View.GONE);
             etEmail.setVisibility(View.GONE);
         }else{
-            etEmail.setText(this.values.get(ContactTypes.EMAIL.toString()));
+            etEmail.setText(this.values.get(ContactTypes.PRIVATE_EMAIL.toString()));
             registerForContextMenu(findViewById(R.id.tvPrivateEmail));
-            this.finalPairs.put(ContactTypes.EMAIL.toString(),etEmail.getId());
+            this.finalPairs.put(ContactTypes.PRIVATE_EMAIL.toString(),etEmail.getId());
             this.lastInputId = etEmail.getId();
         }
 
@@ -119,7 +126,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
                 this.finalPairs.put(ContactTypes.NAME.toString(), name.getId());
                 continue;
             }
-            if(!entry.getKey().equalsIgnoreCase(ContactTypes.EMAIL.toString()) && !entry.getKey().equalsIgnoreCase(ContactTypes.PHONE.toString())){
+            if(!entry.getKey().equalsIgnoreCase(ContactTypes.PRIVATE_EMAIL.toString()) && !entry.getKey().equalsIgnoreCase(ContactTypes.PHONE.toString())){
                 View viewToAdd = addUnknownItem(this, entry.getValue(), randomId.getIdFromKey(entry.getKey()), this.lastItemId);
                 registerForContextMenu(viewToAdd);
                 this.lastItemId = viewToAdd.getId();
@@ -193,7 +200,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
             case R.id.tvPrivateEmail:
             default:
                 menu.add(0,v.getId(),0, R.string.mobilePhone);
-                menu.add(0,v.getId(),0, R.string.privateEmail);
+                menu.add(0,v.getId(),0, R.string.workEmail);
                 menu.add(0,v.getId(),0, R.string.privateEmail);
                 menu.add(0,v.getId(),0, R.string.privateNumber);
                 menu.add(0,v.getId(),0, R.string.company);
@@ -241,7 +248,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
             View view = relativeLayout.getChildAt(i);
             if(view instanceof TextView){
                 for(Map.Entry<String, String> entry : this.values.entrySet()){
-                    if(!entry.getKey().equalsIgnoreCase(ContactTypes.EMAIL.toString())
+                    if(!entry.getKey().equalsIgnoreCase(ContactTypes.PRIVATE_EMAIL.toString())
                             && !entry.getKey().equalsIgnoreCase(ContactTypes.NAME.toString())
                             && !entry.getKey().equalsIgnoreCase(ContactTypes.PHONE.toString())
                             && entry.getValue().equalsIgnoreCase(((TextView) view).getText().toString())){
@@ -269,7 +276,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
             if(entry.getKey().equalsIgnoreCase(ContactTypes.NAME.toString())){
                 continue;
             }
-            if(!entry.getKey().equalsIgnoreCase(ContactTypes.EMAIL.toString()) && !entry.getKey().equalsIgnoreCase(ContactTypes.PHONE.toString())){
+            if(!entry.getKey().equalsIgnoreCase(ContactTypes.PRIVATE_EMAIL.toString()) && !entry.getKey().equalsIgnoreCase(ContactTypes.PHONE.toString())){
                 View viewToAdd = addUnknownItem(this, entry.getValue(), randomId.getIdFromKey(entry.getKey()), this.lastItemId);
                 registerForContextMenu(viewToAdd);
                 this.lastItemId = viewToAdd.getId();
@@ -364,8 +371,8 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         // Getting reference to HomeEmail EditText
         EditText homeEmail = null;
-        if(finalPairs.get(ContactTypes.EMAIL.toString()) != null)
-        homeEmail = (EditText) findViewById(finalPairs.get(ContactTypes.EMAIL.toString()));
+        if(finalPairs.get(ContactTypes.PRIVATE_EMAIL.toString()) != null)
+        homeEmail = (EditText) findViewById(finalPairs.get(ContactTypes.PRIVATE_EMAIL.toString()));
 
         // Getting reference to WorkEmail EditText
         EditText workEmail = null;
@@ -480,7 +487,16 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         }
 
         Intent result = new Intent();
-        result.putExtra("name", name.getText().toString());
+        result.putExtra(CONTACT_NAME, name.getText().toString());
+        result.putExtra(CaptureActivity.FILE_PATH, this.filePath);
+        if(homeEmail != null || workEmail != null){
+            if(homeEmail != null){
+                result.putExtra(CONTACT_MAIL, homeEmail.getText().toString());
+            }
+            else{
+                result.putExtra(CONTACT_MAIL, workEmail.getText().toString());
+            }
+        }
         setResult(RESULT_OK, result);
         finish();
     }

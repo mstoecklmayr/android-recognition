@@ -305,7 +305,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                 //save bitmap to sdcard
                 if (lastBitmap != null) {
                     final String fileName = saveImage(lastBitmap);
-                    //TODO sync with drive here
 
                     // Getting Google Play availability status
                     int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
@@ -1296,6 +1295,11 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
             case CONTACT_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     //TODO: maybe return email and save it as json in order to implement a "send my business card" to the person
+                    String mail = data.getStringExtra(AddContact.CONTACT_MAIL);
+                    //String name = data.getStringExtra(AddContact.CONTACT_NAME);
+                    String filePath = data.getStringExtra(FILE_PATH);
+                    if(mail != null)
+                        JSONHandler.addRecordForFile(CaptureActivity.this,filePath,JSONHandler.EMAIL,mail);
                 }
                 break;
             case CONNECTION_FAILURE_RESOLUTION_REQUEST:

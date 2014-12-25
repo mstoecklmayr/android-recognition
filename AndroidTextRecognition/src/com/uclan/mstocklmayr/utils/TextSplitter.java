@@ -39,7 +39,7 @@ public class TextSplitter {
             String part = partList.get(j);
             //TODO what if there are more phone numbers or more emails?
             if(part.contains("@")){
-                this.result.put(ContactTypes.EMAIL.toString(), part);
+                this.result.put(ContactTypes.PRIVATE_EMAIL.toString(), part);
                 continue;
             }
             matcher = pattern.matcher(part);

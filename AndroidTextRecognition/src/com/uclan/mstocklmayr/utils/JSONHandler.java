@@ -14,11 +14,12 @@ import java.util.ArrayList;
  * Created by mike on 11/4/14.
  */
 public class JSONHandler {
-    static final String JSONFileName = "appData";
-    static final String FILENAME = "filename";
-    static final String NOTES = "notes";
-    static final String LATITUDE = "latitude";
-    static final String LONGITUDE = "longitude";
+    public static final String JSONFileName = "appData";
+    public static final String FILENAME = "filename";
+    public static final String NOTES = "notes";
+    public static final String LATITUDE = "latitude";
+    public static final String LONGITUDE = "longitude";
+    public static final String EMAIL = "email";
 
 
     /*
@@ -34,17 +35,6 @@ public class JSONHandler {
      */
     public static void addImage(Context ctx, String fileName, Location location) {
         File file = ctx.getFileStreamPath(JSONFileName);
-
-//        if (!file.exists()) {
-//            //create new file
-//            try {
-//                //create output stream to internal storage, MODE_PRIVATE : only this application can read it
-//                FileOutputStream fos = ctx.openFileOutput(JSONFileName, ctx.MODE_PRIVATE);
-//                fos.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
 
         JSONArray newAppData = new JSONArray();
         JSONObject object = new JSONObject();
@@ -71,12 +61,12 @@ public class JSONHandler {
     }
 
     //adds an entry to the JSON file with the corresponding fileName
-    public static void addRecordForFile(Context ctx, String filePath, String name, String value){
+    public static void addRecordForFile(Context ctx, String fileName, String name, String value){
         JSONArray appData = getJSONFile(ctx);
         try {
             for(int i = 0; i<appData.length();i++){
                 JSONObject obj = appData.getJSONObject(i);
-                if(obj.getString(FILENAME).equalsIgnoreCase(filePath)){
+                if(obj.getString(FILENAME).equalsIgnoreCase(fileName)){
                     obj.put(name, value);
                     break;
                 }

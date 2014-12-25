@@ -20,7 +20,7 @@
           android:title="@string/galleryMenuReprocess"
           android:showAsAction="always"/>
     <item android:id="@+id/action_send_my_card"
-          android:icon="@drawable/ic_action_share"
+          android:icon="@drawable/ic_action_email"
           android:title="@string/galleryMenuSendMyCard"
           android:showAsAction="always"/>
     <item android:id="@+id/action_all_location"
