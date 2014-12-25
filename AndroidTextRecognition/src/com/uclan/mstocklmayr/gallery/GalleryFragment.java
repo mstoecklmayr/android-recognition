@@ -1,5 +1,6 @@
 package com.uclan.mstocklmayr.gallery;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -7,12 +8,14 @@ import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.*;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.uclan.mstocklmayr.PreferencesActivity;
 import com.uclan.mstocklmayr.R;
 import com.uclan.mstocklmayr.utils.JSONHandler;
 import com.uclan.mstocklmayr.utils.Util;
@@ -54,6 +57,16 @@ public class GalleryFragment extends Fragment {
         if(location == null){
             MenuItem item= menu.findItem(R.id.action_location);
             Drawable icon = getResources().getDrawable(R.drawable.ic_action_place);
+            item.setIcon(Util.convertDrawableToGrayScale(icon));
+            item.setEnabled(false);
+        }
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        String cardPath = settings.getString(PreferencesActivity.KEY_MY_BUSINESS_CARD, "null");
+
+        if(cardPath.equals("null")){
+            MenuItem item= menu.findItem(R.id.action_send_my_card);
+            Drawable icon = getResources().getDrawable(R.drawable.ic_action_email);
             item.setIcon(Util.convertDrawableToGrayScale(icon));
             item.setEnabled(false);
         }

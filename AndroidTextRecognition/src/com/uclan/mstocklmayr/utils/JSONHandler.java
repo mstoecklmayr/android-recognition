@@ -86,10 +86,8 @@ public class JSONHandler {
                 if(obj.getString(FILENAME).equalsIgnoreCase(fileName)){
                     if (property.equals(NOTES)) {
                         return obj.getString(NOTES);
-                    } else if (property.equals(LATITUDE)) {
-                        return obj.getString(LATITUDE);
-                    } else if (property.equals(LONGITUDE)) {
-                        return obj.getString(LONGITUDE);
+                    }else if (property.equals(EMAIL)) {
+                        return obj.getString(EMAIL);
                     }
                     break;
                 }

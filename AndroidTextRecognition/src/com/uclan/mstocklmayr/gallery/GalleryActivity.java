@@ -2,10 +2,12 @@ package com.uclan.mstocklmayr.gallery;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 import com.uclan.mstocklmayr.CaptureActivity;
+import com.uclan.mstocklmayr.PreferencesActivity;
 import com.uclan.mstocklmayr.R;
 import com.uclan.mstocklmayr.map.MapActivity;
 import com.uclan.mstocklmayr.map.MapLocation;
@@ -95,8 +98,23 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
     }
 
     private void sendMyBusinessCard() {
-        //TODO get email from current picture, otherwise just attach my card to it
-        Toast.makeText(this, "My card will be sent here!", Toast.LENGTH_SHORT).show();
+        String fileName = adapter.imagePathList.get(this.currentImageIndex);
+        fileName = fileName.substring(fileName.lastIndexOf("/")+1);
+
+        String email = JSONHandler.getProperty(this,fileName,JSONHandler.EMAIL);
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String uriToImage = settings.getString(PreferencesActivity.KEY_MY_BUSINESS_CARD, "null");
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        if(email != null)
+            intent.putExtra(Intent.EXTRA_EMAIL, email);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "My business card");
+        intent.putExtra(Intent.EXTRA_STREAM, uriToImage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     private void deleteImage(){
