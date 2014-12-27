@@ -143,10 +143,10 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     static final int MINIMUM_MEAN_CONFIDENCE = 0; // 0 means don't reject any scored results
 
     /* Request code for activity response from gallery activity */
-    public static final int GALLERY_REQUEST_CODE = 0;
+    public static final int GALLERY_REQUEST_CODE = 10;
 
     /* Request code for contact response from gallery activity */
-    public static final int CONTACT_REQUEST_CODE = 1;
+    public static final int CONTACT_REQUEST_CODE = 11;
 
     // Context menu
     private static final int SETTINGS_ID = Menu.FIRST;
@@ -269,7 +269,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                 public void onClick(View v) {
                     Intent intent = new Intent(CaptureActivity.this, GalleryActivity.class);
                     intent.putExtra("id", 0);
-                    startActivityForResult(intent, CONTACT_REQUEST_CODE);
+                    startActivityForResult(intent, GALLERY_REQUEST_CODE);
                 }
             });
 //            new ShowcaseView.Builder(this)
@@ -288,10 +288,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         historyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                TODO remove comments below
-//                Toast toast = Toast.makeText(v.getContext(), "history button clicked. show history", Toast.LENGTH_LONG);
-//                toast.show();
-
                 Intent intent = new Intent(CaptureActivity.this, GalleryActivity.class);
                 intent.putExtra("id", 0);
                 startActivityForResult(intent, GALLERY_REQUEST_CODE);
