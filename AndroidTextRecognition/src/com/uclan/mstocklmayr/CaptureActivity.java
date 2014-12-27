@@ -446,9 +446,20 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     }
 
     @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         resetStatusView();
+
+        //reconnect location and drive services
+        mGoogleApiClient.connect();
+        mGoogleApiClient.connect();
 
         String previousSourceLanguageCodeOcr = sourceLanguageCodeOcr;
         int previousOcrEngineMode = ocrEngineMode;
@@ -565,7 +576,8 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
             surfaceHolder.removeCallback(this);
         }
 
-        //TODO disconnect from Location and drive?
+        mLocationClient.disconnect();
+        mGoogleApiClient.disconnect();
         super.onPause();
     }
 

@@ -1,5 +1,7 @@
 package com.uclan.mstocklmayr.gallery;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,9 +12,11 @@ import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.*;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.uclan.mstocklmayr.PreferencesActivity;
@@ -26,11 +30,12 @@ public class GalleryFragment extends Fragment {
 
     private static final String ARG_IMAGE_RESOURCE = "imagePath";
 
+    private boolean isNotesVisible = false;
 
     //zoom test variables
     private static final String TAG = "Touch";
     @SuppressWarnings("unused")
-    private static final float MIN_ZOOM = 1f,MAX_ZOOM = 1f;
+    private static final float MIN_ZOOM = 1f, MAX_ZOOM = 1f;
 
     // These matrices will be used to scale points of the image
     Matrix matrix = new Matrix();
@@ -48,14 +53,14 @@ public class GalleryFragment extends Fragment {
     float oldDist = 1f;
 
 
-     //TODO set status of action menu buttons -  somehow not working
+    //TODO set status of action menu buttons -  somehow not working
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         String filePath = getArguments().getString(ARG_IMAGE_RESOURCE);
 
-        Location location = JSONHandler.getLocation(this.getActivity(), filePath.substring(filePath.lastIndexOf("/")+1));
-        if(location == null){
-            MenuItem item= menu.findItem(R.id.action_location);
+        Location location = JSONHandler.getLocation(this.getActivity(), filePath.substring(filePath.lastIndexOf("/") + 1));
+        if (location == null) {
+            MenuItem item = menu.findItem(R.id.action_location);
             Drawable icon = getResources().getDrawable(R.drawable.ic_action_place);
             item.setIcon(Util.convertDrawableToGrayScale(icon));
             item.setEnabled(false);
@@ -64,8 +69,8 @@ public class GalleryFragment extends Fragment {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         String cardPath = settings.getString(PreferencesActivity.KEY_MY_BUSINESS_CARD, "null");
 
-        if(cardPath.equals("null")){
-            MenuItem item= menu.findItem(R.id.action_send_my_card);
+        if (cardPath.equals("null")) {
+            MenuItem item = menu.findItem(R.id.action_send_my_card);
             Drawable icon = getResources().getDrawable(R.drawable.ic_action_email);
             item.setIcon(Util.convertDrawableToGrayScale(icon));
             item.setEnabled(false);
@@ -73,7 +78,7 @@ public class GalleryFragment extends Fragment {
         super.onPrepareOptionsMenu(menu);
     }
 
-    public static GalleryFragment buildWithResource(int res){
+    public static GalleryFragment buildWithResource(int res) {
         Bundle args = new Bundle();
 
         args.putInt(ARG_IMAGE_RESOURCE, res);
@@ -99,6 +104,52 @@ public class GalleryFragment extends Fragment {
         ImageView imageView = (ImageView) getView().findViewById(R.id.imageview);
         imageView.setImageBitmap(bmp);
 
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView tvNotes = (TextView) getView().findViewById(R.id.notes);
+                if(!isNotesVisible){
+                    tvNotes.setVisibility(View.VISIBLE);
+                    String filePath = getArguments().getString(ARG_IMAGE_RESOURCE);
+                    filePath = filePath.substring(filePath.lastIndexOf("/") + 1);
+                    String notes = JSONHandler.getProperty(getActivity(), filePath, JSONHandler.NOTES);
+                    tvNotes.setText(notes == null ? "" : notes);
+                    isNotesVisible=true;
+                }else {
+                    tvNotes.setVisibility(View.GONE);
+                    isNotesVisible = false;
+                }
+            }
+        });
+
+        imageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String filePath = getArguments().getString(ARG_IMAGE_RESOURCE);
+                final String fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
+                String notes = JSONHandler.getProperty(getActivity(), filePath, JSONHandler.NOTES);
+
+                final EditText input = new EditText(getActivity());
+                input.setText(notes);
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Notes")
+                        .setMessage("Enter your notes:")
+                        .setView(input)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Editable value = input.getText();
+
+                                JSONHandler.addRecordForFile(getActivity(),fileName,JSONHandler.NOTES,value.toString());
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Log.d(TAG, "cancel onClickListener"); // write to LogCat
+                    }
+                }).show();
+                return true;
+            }
+        });
+
         imageView.setOnTouchListener(new View.OnTouchListener() {
 
 
@@ -111,8 +162,7 @@ public class GalleryFragment extends Fragment {
                 dumpEvent(event);
                 // Handle touch events here...
 
-                switch (event.getAction() & MotionEvent.ACTION_MASK)
-                {
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_DOWN: // first finger down only
                         matrix.set(view.getImageMatrix());
                         savedMatrix.set(matrix);
@@ -142,18 +192,14 @@ public class GalleryFragment extends Fragment {
 
                     case MotionEvent.ACTION_MOVE:
 
-                        if (mode == DRAG)
-                        {
+                        if (mode == DRAG) {
                             // matrix.set(savedMatrix);
                             //matrix.postTranslate(event.getX() - start.x, event.getY() - start.y); // create the transformation in the matrix  of points
-                        }
-                        else if (mode == ZOOM)
-                        {
+                        } else if (mode == ZOOM) {
                             // pinch zooming
                             float newDist = spacing(event);
                             Log.d(TAG, "newDist=" + newDist);
-                            if (newDist > 5f)
-                            {
+                            if (newDist > 5f) {
                                 matrix.set(savedMatrix);
                                 scale = newDist / oldDist; // setting the scaling of the
                                 // matrix...if scale > 1 means
@@ -167,12 +213,14 @@ public class GalleryFragment extends Fragment {
 
                 view.setImageMatrix(matrix); // display the transformation on screen
 
-                return true; // indicate event was handled
+                return false; // indicate event was handled
             }
         });
 
         TextView tv = (TextView) getView().findViewById(R.id.caption);
         tv.setText(resource);
+        TextView tvNotes = (TextView) getView().findViewById(R.id.notes);
+        tvNotes.setVisibility(View.GONE);
     }
 
     /*
@@ -182,8 +230,7 @@ public class GalleryFragment extends Fragment {
      * ----------------------------------------------------
      */
 
-    private float spacing(MotionEvent event)
-    {
+    private float spacing(MotionEvent event) {
         float x = event.getX(0) - event.getX(1);
         float y = event.getY(0) - event.getY(1);
         return FloatMath.sqrt(x * x + y * y);
@@ -196,31 +243,29 @@ public class GalleryFragment extends Fragment {
      * ------------------------------------------------------------
      */
 
-    private void midPoint(PointF point, MotionEvent event)
-    {
+    private void midPoint(PointF point, MotionEvent event) {
         float x = event.getX(0) + event.getX(1);
         float y = event.getY(0) + event.getY(1);
         point.set(x / 2, y / 2);
     }
 
-    /** Show an event in the LogCat view, for debugging */
-    private void dumpEvent(MotionEvent event)
-    {
-        String names[] = { "DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE","POINTER_DOWN", "POINTER_UP", "7?", "8?", "9?" };
+    /**
+     * Show an event in the LogCat view, for debugging
+     */
+    private void dumpEvent(MotionEvent event) {
+        String names[] = {"DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE", "POINTER_DOWN", "POINTER_UP", "7?", "8?", "9?"};
         StringBuilder sb = new StringBuilder();
         int action = event.getAction();
         int actionCode = action & MotionEvent.ACTION_MASK;
         sb.append("event ACTION_").append(names[actionCode]);
 
-        if (actionCode == MotionEvent.ACTION_POINTER_DOWN || actionCode == MotionEvent.ACTION_POINTER_UP)
-        {
+        if (actionCode == MotionEvent.ACTION_POINTER_DOWN || actionCode == MotionEvent.ACTION_POINTER_UP) {
             sb.append("(pid ").append(action >> MotionEvent.ACTION_POINTER_ID_SHIFT);
             sb.append(")");
         }
 
         sb.append("[");
-        for (int i = 0; i < event.getPointerCount(); i++)
-        {
+        for (int i = 0; i < event.getPointerCount(); i++) {
             sb.append("#").append(i);
             sb.append("(pid ").append(event.getPointerId(i));
             sb.append(")=").append((int) event.getX(i));
