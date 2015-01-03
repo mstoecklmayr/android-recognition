@@ -113,7 +113,7 @@ public class GalleryFragment extends Fragment {
                     String filePath = getArguments().getString(ARG_IMAGE_RESOURCE);
                     filePath = filePath.substring(filePath.lastIndexOf("/") + 1);
                     String notes = JSONHandler.getProperty(getActivity(), filePath, JSONHandler.NOTES);
-                    tvNotes.setText(notes == null ? "" : notes);
+                    tvNotes.setText(notes == null ? getString(R.string.initialNotesMessage) : notes);
                     isNotesVisible=true;
                 }else {
                     tvNotes.setVisibility(View.GONE);

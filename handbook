@@ -1,3 +1,6 @@
+03.01.2015
+Gallery action bar edited. Notes show initial message if no note is present.
+
 27.12.2014
 Reprocess fixed. Wrong request code has been sent with the intent from the first 'history' button.
 Notes added. Showed onClick and editable on longClick.

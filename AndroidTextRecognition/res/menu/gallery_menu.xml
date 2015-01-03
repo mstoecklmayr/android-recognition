@@ -1,8 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/action_settings"
+    <!--item android:id="@+id/action_settings"
         android:title="Title"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        android:showAsAction="never" /-->
     <item android:id="@+id/action_discard"
           android:icon="@drawable/ic_action_discard"
           android:title="@string/galleryMenuDiscard"
