@@ -26,7 +26,6 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
     public final static String CONTACT_NAME = "name";
     public final static String CONTACT_MAIL = "mail";
 
-    private String filePath;
     private int lastItemId;
     private int lastInputId;
     private Map<String, String> values;
@@ -48,7 +47,6 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         ab.setDisplayShowCustomEnabled(true);
 
         Intent intent = getIntent();
-        this.filePath = intent.getStringExtra(CaptureActivity.FILE_PATH);
 
         LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.finish_button,null);
         linearLayout.setOnClickListener(this);
@@ -489,7 +487,6 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         Intent result = new Intent();
         result.putExtra(CONTACT_NAME, name.getText().toString());
-        result.putExtra(CaptureActivity.FILE_PATH, this.filePath);
         if(homeEmail != null || workEmail != null){
             if(homeEmail != null){
                 result.putExtra(CONTACT_MAIL, homeEmail.getText().toString());

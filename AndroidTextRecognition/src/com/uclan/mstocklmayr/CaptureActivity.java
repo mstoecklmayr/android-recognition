@@ -218,7 +218,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     protected void onStart() {
         super.onStart();
         // Connect the clients.
-        //mLocationClient.connect();
+        mLocationClient.connect();
         mGoogleApiClient = new GoogleApiClient.Builder(CaptureActivity.this)
                 .addApi(Drive.API)
                 .addScope(Drive.SCOPE_FILE)
@@ -300,33 +300,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
             public void onClick(View v) {
                 //save bitmap to sdcard
                 if (lastBitmap != null) {
-                    final String fileName = saveImage(lastBitmap);
-
-                    // Getting Google Play availability status
-                    int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
-                    // Showing status
-                    boolean driveConnectionStatus = mGoogleApiClient.isConnected();
-                    if (!driveConnectionStatus || status != ConnectionResult.SUCCESS) { // Google Play Services are not available
-
-                        int requestCode = 10;
-                        Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, CaptureActivity.this, requestCode);
-                        dialog.show();
-
-                    } else { // Google Play Services are available
-                        //start sync process
-                        new DriveHandler(mGoogleApiClient, CaptureActivity.this, lastBitmap, fileName).start();
-                    }
-
-                    //save preferences in JSON file like name, notes, gps etc
-                    Location location = null;
-                    if (mLocationClient.isConnected()) {
-                        location = mLocationClient.getLastLocation();
-                    }
-                    if (location != null) {
-                        JSONHandler.addImage(v.getContext(), fileName, location);
-                    } else {
-                        JSONHandler.addImage(v.getContext(), fileName);
-                    }
 
                     String textResult = "";
                     if (lastResult.getText() != null) {
@@ -341,7 +314,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                     toast.show();
                     Intent intent = new Intent(CaptureActivity.this, AddContact.class);
                     intent.putExtra(TEXT_RESULT, textResult);
-                    intent.putExtra(FILE_PATH, fileName);
                     startActivityForResult(intent, CONTACT_REQUEST_CODE);
                 } else {
                     Toast toast = Toast.makeText(v.getContext(), "Error processing the image", Toast.LENGTH_LONG);
@@ -1303,12 +1275,41 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                 break;
             case CONTACT_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
-                    //TODO: maybe return email and save it as json in order to implement a "send my business card" to the person
-                    String mail = data.getStringExtra(AddContact.CONTACT_MAIL);
-                    //String name = data.getStringExtra(AddContact.CONTACT_NAME);
-                    String filePath = data.getStringExtra(FILE_PATH);
-                    if(mail != null)
-                        JSONHandler.addRecordForFile(CaptureActivity.this,filePath,JSONHandler.EMAIL,mail);
+                    if(lastBitmap != null){
+                        final String fileName = saveImage(lastBitmap);
+
+                        // Getting Google Play availability status
+                        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
+                        // Showing status
+                        if (!mGoogleApiClient.isConnected() || status != ConnectionResult.SUCCESS) { // Google Play Services are not available
+
+                            requestCode = 10;
+                            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, CaptureActivity.this, requestCode);
+                            dialog.show();
+
+                        } else { // Google Play Services are available
+                            //start sync process
+                            new DriveHandler(mGoogleApiClient, CaptureActivity.this, lastBitmap, fileName).start();
+                        }
+
+                        //save preferences in JSON file like name, notes, gps etc
+                        Location location = null;
+                        if (mLocationClient.isConnected()) {
+                            location = mLocationClient.getLastLocation();
+                        }
+                        if (location != null) {
+                            JSONHandler.addImage(this, fileName, location);
+                        } else {
+                            JSONHandler.addImage(this, fileName);
+                        }
+
+                        String mail = data.getStringExtra(AddContact.CONTACT_MAIL);
+                        //String name = data.getStringExtra(AddContact.CONTACT_NAME);
+                        String filePath = data.getStringExtra(FILE_PATH);
+                        if (mail != null)
+                            JSONHandler.addRecordForFile(CaptureActivity.this, filePath, JSONHandler.EMAIL, mail);
+
+                    }
                 }
                 break;
             case CONNECTION_FAILURE_RESOLUTION_REQUEST:

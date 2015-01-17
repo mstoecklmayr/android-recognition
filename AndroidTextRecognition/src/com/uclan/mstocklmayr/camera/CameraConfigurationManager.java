@@ -89,15 +89,18 @@ final class CameraConfigurationManager {
     initializeTorch(parameters, prefs);
     String focusMode = null;
     if (prefs.getBoolean(PreferencesActivity.KEY_AUTO_FOCUS, true)) {
-      if (prefs.getBoolean(PreferencesActivity.KEY_DISABLE_CONTINUOUS_FOCUS, false)) {
-        focusMode = findSettableValue(parameters.getSupportedFocusModes(),
-            Camera.Parameters.FOCUS_MODE_AUTO);
-      } else {
-        focusMode = findSettableValue(parameters.getSupportedFocusModes(),
-            "continuous-video", // Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO in 4.0+
-            "continuous-picture", // Camera.Paramters.FOCUS_MODE_CONTINUOUS_PICTURE in 4.0+
-            Camera.Parameters.FOCUS_MODE_AUTO);
-      }
+      //TODO fix this
+      focusMode = findSettableValue(parameters.getSupportedFocusModes(),
+              Camera.Parameters.FOCUS_MODE_AUTO);
+//      if (prefs.getBoolean(PreferencesActivity.KEY_DISABLE_CONTINUOUS_FOCUS, false)) {
+//        focusMode = findSettableValue(parameters.getSupportedFocusModes(),
+//            Camera.Parameters.FOCUS_MODE_AUTO);
+//      } else {
+//        focusMode = findSettableValue(parameters.getSupportedFocusModes(),
+//            "continuous-video", // Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO in 4.0+
+//            "continuous-picture", // Camera.Paramters.FOCUS_MODE_CONTINUOUS_PICTURE in 4.0+
+//            Camera.Parameters.FOCUS_MODE_AUTO);
+//      }
     }
     // Maybe selected auto-focus but not available, so fall through here:
     if (focusMode == null) {

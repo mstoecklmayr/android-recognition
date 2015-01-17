@@ -57,10 +57,10 @@
 	<!-- ADVANCED SETTINGS -->
 	<PreferenceCategory android:title="Advanced settings">
 
-	    <ListPreference android:key="preference_ocr_engine_mode"
+	    <!--ListPreference android:key="preference_ocr_engine_mode"
 	        android:title="OCR engine"
 	        android:entries="@array/ocrenginemodes"
-	        android:entryValues="@array/ocrenginemodes"/>
+	        android:entryValues="@array/ocrenginemodes"/-->
 	    
 	    <CheckBoxPreference
 	        android:key="preferences_auto_focus"

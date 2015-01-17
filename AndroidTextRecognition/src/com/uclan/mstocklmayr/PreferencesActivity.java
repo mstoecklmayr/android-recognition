@@ -58,23 +58,13 @@ public class PreferencesActivity extends PreferenceActivity implements
     public static final String KEY_NOT_OUR_RESULTS_SHOWN = "preferences_not_our_results_shown";
     public static final String KEY_REVERSE_IMAGE = "preferences_reverse_image";
     public static final String KEY_PLAY_BEEP = "preferences_play_beep";
-    public static final String KEY_VIBRATE = "preferences_vibrate";
 
-    public static final String TRANSLATOR_BING = "Bing Translator";
-    public static final String TRANSLATOR_GOOGLE = "Google Translate";
 
     public static final String KEY_MY_BUSINESS_CARD = "preferences_my_business_card";
     public static final String MY_BUSINESS_CARD_SELECTED = "Image selected";
 
     private Preference preferenceMyBusinessCard;
     private ListPreference listPreferenceOcrEngineMode;
-  /*private ListPreference listPreferenceSourceLanguage;
-  private ListPreference listPreferenceTargetLanguage;
-  private ListPreference listPreferenceTranslator;
-  private EditTextPreference editTextPreferenceCharacterBlacklist;
-  private EditTextPreference editTextPreferenceCharacterWhitelist;
-  private ListPreference listPreferencePageSegmentationMode;
-  */
 
     private static SharedPreferences sharedPreferences;
 

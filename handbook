@@ -1,6 +1,12 @@
 17.01.2015
 IMPORTANT: do not disconnect the drive api service in onPause/onStop because then when the DriveHandler tries to access it, it gets disconnected before.
 
+Storage of image has been moved to the 'OnActivityResult' method in order to prevent the creation of too much unused images.
+
+Autofocus is now enabled all the time. Camera property changed from "continous-foto" to "auto" for better autofocus.
+
+Autofocus property removed from the preferences.
+
 03.01.2015
 Gallery action bar edited. Notes show initial message if no note is present.
 
