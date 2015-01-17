@@ -59,13 +59,19 @@ public class DriveHandler {
                         Toast.makeText(ctx, "Error while trying to create new file contents", Toast.LENGTH_LONG).show();
                         return;
                     }
-                    DriveFolder folder = Drive.DriveApi.getFolder(mGoogleApiClient, mFolderDriveId);
-                    MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
-                            .setTitle(fileName)
-                            .setMimeType("image/bmp")
-                            .setStarred(true).build();
-                    folder.createFile(mGoogleApiClient, changeSet, result.getDriveContents())
-                            .setResultCallback(fileCallback);
+                    boolean isConnected = mGoogleApiClient.isConnected();
+                    if(isConnected){
+                        DriveFolder folder = Drive.DriveApi.getFolder(mGoogleApiClient, mFolderDriveId);
+                        MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+                                .setTitle(fileName)
+                                .setMimeType("image/bmp")
+                                .setStarred(true).build();
+                        folder.createFile(mGoogleApiClient, changeSet, result.getDriveContents())
+                                .setResultCallback(fileCallback);
+                    }else{
+                        Toast.makeText(ctx, "drive not connected", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                 }
             };
 

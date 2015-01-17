@@ -218,7 +218,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     protected void onStart() {
         super.onStart();
         // Connect the clients.
-        mLocationClient.connect();
+        //mLocationClient.connect();
         mGoogleApiClient = new GoogleApiClient.Builder(CaptureActivity.this)
                 .addApi(Drive.API)
                 .addScope(Drive.SCOPE_FILE)
@@ -305,7 +305,8 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                     // Getting Google Play availability status
                     int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
                     // Showing status
-                    if (!mGoogleApiClient.isConnected() || status != ConnectionResult.SUCCESS) { // Google Play Services are not available
+                    boolean driveConnectionStatus = mGoogleApiClient.isConnected();
+                    if (!driveConnectionStatus || status != ConnectionResult.SUCCESS) { // Google Play Services are not available
 
                         int requestCode = 10;
                         Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, CaptureActivity.this, requestCode);
@@ -447,8 +448,8 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
     @Override
     protected void onStop() {
-        mGoogleApiClient.disconnect();
-        mGoogleApiClient.disconnect();
+        mLocationClient.disconnect();
+        //mGoogleApiClient.disconnect();
         super.onStop();
     }
 
@@ -577,7 +578,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         }
 
         mLocationClient.disconnect();
-        mGoogleApiClient.disconnect();
+        //mGoogleApiClient.disconnect();
         super.onPause();
     }
 

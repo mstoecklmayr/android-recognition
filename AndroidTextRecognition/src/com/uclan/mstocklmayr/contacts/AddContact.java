@@ -358,6 +358,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         if(nameParts.length > 1)
             lastName = nameParts[1];
 
+        String displayName = firstName + " " +lastName;
 
         // Getting reference to Mobile EditText
         EditText mobilePhone = null;
@@ -407,7 +408,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
                 .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, firstName+" "+lastName == null ? "":lastName)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, displayName)
                 .build());
 
         // Adding insert operation to operations list
