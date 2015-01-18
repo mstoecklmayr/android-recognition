@@ -39,6 +39,9 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_contact);
 
+        //to have a full screen with an action bar
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         ActionBar ab = getActionBar();
 
         ab.setDisplayShowHomeEnabled(false);

@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.Toast;
 import com.uclan.mstocklmayr.CaptureActivity;
 import com.uclan.mstocklmayr.PreferencesActivity;
@@ -38,9 +39,12 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //to have a full screen with an action bar
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 
         ActionBar ab = getActionBar();
-        ab.show();
+        //ab.show();
         ab.setDisplayShowHomeEnabled(false);
         ab.setDisplayShowTitleEnabled(false);
         ab.setDisplayUseLogoEnabled(false);

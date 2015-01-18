@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.preference.*;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.io.File;
@@ -79,15 +80,14 @@ public class PreferencesActivity extends PreferenceActivity implements
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
+        //to have a full screen with an action bar
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
         //TODO could be changed to PreferenceFragment
         preferenceMyBusinessCard = findPreference(KEY_MY_BUSINESS_CARD);
         preferenceMyBusinessCard.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-//                Intent intent = new Intent();
-//                intent.setType("image/*");
-//                intent.setAction(Intent.ACTION_GET_CONTENT);
-//                int PICK_IMAGE = 1;
-//                startActivityForResult(Intent.createChooser(intent, "Select Business Card"), PICK_IMAGE);
                 Intent i = new Intent(
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
