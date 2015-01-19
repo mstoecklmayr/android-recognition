@@ -1,3 +1,12 @@
+19.01.2015
+Start project week.
+Finish evaluation form.
+Toasts transformed to "log.d()"
+Code cleanup
+removed location service disconnects
+observing some strage autofocus behaviour (when taking a picture and then clicking back, sometimes the auto focus is not working)
+Saving of the OCR image also removed
+
 18.01.2015
 Hide "Notification bar" in order to prevent the actionbar to flatter around (show, hide and then show again).
 Added to all activities.

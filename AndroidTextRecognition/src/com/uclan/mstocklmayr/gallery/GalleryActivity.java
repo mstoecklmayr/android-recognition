@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,6 +31,8 @@ import java.util.List;
 
 public class GalleryActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {
     public static final String imagePath = Environment.getExternalStorageDirectory().toString() + "/Recognitions";
+
+    private static final String TAG = GalleryActivity.class.getSimpleName();
 
     private int currentImageIndex = 0;
     private ViewPager pager;
@@ -149,7 +152,8 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
             adapter.notifyDataSetChanged();
             pager.invalidate();
         } else {
-            Toast.makeText(this, "error. no image path set", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Error! No image path set!", Toast.LENGTH_LONG).show();
+            Log.d(TAG, "Error! No image path set!");
         }
     }
 

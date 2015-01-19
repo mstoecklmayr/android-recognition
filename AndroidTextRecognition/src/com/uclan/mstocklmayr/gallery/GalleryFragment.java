@@ -33,7 +33,7 @@ public class GalleryFragment extends Fragment {
     private boolean isNotesVisible = false;
 
     //zoom test variables
-    private static final String TAG = "Touch";
+    private static final String TAG = GalleryFragment.class.getSimpleName()+"-Touch";
     @SuppressWarnings("unused")
     private static final float MIN_ZOOM = 1f, MAX_ZOOM = 1f;
 
@@ -130,8 +130,8 @@ public class GalleryFragment extends Fragment {
                 final EditText input = new EditText(getActivity());
                 input.setText(notes);
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("Notes")
-                        .setMessage("Enter your notes:")
+                        .setTitle(getString(R.string.notesPopupTitle))
+                        .setMessage(getString(R.string.notesPopUpQuestion))
                         .setView(input)
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
