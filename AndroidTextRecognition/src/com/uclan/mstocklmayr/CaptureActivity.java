@@ -25,10 +25,7 @@ import android.content.*;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Rect;
+import android.graphics.*;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Environment;
@@ -46,6 +43,8 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.PointTarget;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -63,7 +62,9 @@ import com.uclan.mstocklmayr.utils.TextSplitter;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -150,7 +151,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
     // Context menu
     private static final int SETTINGS_ID = Menu.FIRST;
-    private static final int ABOUT_ID = Menu.FIRST + 1;
 
     // Options menu, for copy to clipboard
     private static final int OPTIONS_COPY_RECOGNIZED_TEXT_ID = Menu.FIRST;
@@ -186,7 +186,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     private ProgressDialog dialog; // for initOcr - language download & unzip
     private ProgressDialog indeterminateDialog; // also for initOcr - init OCR engine
     private boolean isEngineReady;
-    private static boolean isFirstLaunch; // True if this is the first time the app is being run
     public static Map<String, String> textResultMap; //map containing the split up text
 
     //TODO encapsulate field
@@ -195,7 +194,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     public static final String PREFS_NAME = "RecognitionPrefs";
     public static final String NAME_SWITCH_COUNT = "SwitchCount";
     public static final String TOTAL_COUNT = "TotalCount";
-    public static final String DO_NAME_SWITCH = "DoSwitch";
 
     Handler getHandler() {
         return handler;
@@ -239,13 +237,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         setContentView(R.layout.capture);
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
 
-//        new ShowcaseView.Builder(this)
-//                .setTarget(new ViewTarget(viewfinderView.getId(),this))
-//                .setContentTitle("Card selector")
-//                        //.singleShot(2)
-//                .hideOnTouchOutside()
-//                .build();
-
         cameraButtonView = findViewById(R.id.camera_button_view);
         resultView = findViewById(R.id.result_view);
 
@@ -283,9 +274,9 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         ocrResultView = (TextView) findViewById(R.id.ocr_result_text_view);
         registerForContextMenu(ocrResultView);
 
-        ImageView historyButton = (ImageView) findViewById(R.id.btnHistory);
-        registerForContextMenu(historyButton);
-        historyButton.setOnClickListener(new View.OnClickListener() {
+        ImageView sndHistoryButton = (ImageView) findViewById(R.id.btnHistory);
+        registerForContextMenu(sndHistoryButton);
+        sndHistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CaptureActivity.this, GalleryActivity.class);
@@ -1027,45 +1018,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         cameraManager.requestAutoFocus(350L);
     }
 
-    static boolean getFirstLaunch() {
-        return isFirstLaunch;
-    }
-
-    /**
-     * We want the help screen to be shown automatically the first time a new version of the app is
-     * run. The easiest way to do this is to check android:versionCode from the manifest, and compare
-     * it to a value stored as a preference.
-     */
-    private boolean checkFirstLaunch() {
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
-            int currentVersion = info.versionCode;
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            int lastVersion = prefs.getInt(PreferencesActivity.KEY_HELP_VERSION_SHOWN, 0);
-            if (lastVersion == 0) {
-                isFirstLaunch = true;
-            } else {
-                isFirstLaunch = false;
-            }
-            if (currentVersion > lastVersion) {
-
-//        // Record the last version for which we last displayed the What's New (Help) page
-//        prefs.edit().putInt(PreferencesActivity.KEY_HELP_VERSION_SHOWN, currentVersion).commit();
-//        Intent intent = new Intent(this, HelpActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-//
-//        // Show the default page on a clean install, and the what's new page on an upgrade.
-//        String page = lastVersion == 0 ? HelpActivity.DEFAULT_PAGE : HelpActivity.WHATS_NEW_PAGE;
-//        intent.putExtra(HelpActivity.REQUESTED_PAGE_KEY, page);
-//        startActivity(intent);
-            }
-            return false;
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.w(TAG, e);
-        }
-        return false;
-    }
-
     /**
      * Returns a string that represents which OCR engine(s) are currently set to be run.
      *
@@ -1329,7 +1281,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     @Override
     public void onConnectionSuspended(int i) {
 
-        Log.i(TAG,"DRIVE suspended");
+        Log.i(TAG, "DRIVE suspended");
     }
 
     /*

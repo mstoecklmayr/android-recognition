@@ -26,6 +26,10 @@
     <string name="initialNotesMessage">Long click image to add notes!</string>
     <string name="notesPopupTitle">Notes</string>
     <string name="notesPopUpQuestion">Enter your notes:</string>
+    <string name="autofocus">Autofocus</string>
+    <string name="toggleLight">Light</string>
+    <string name="myBusinessCard">My business card</string>
+    <string name="resetHints">Reset usage hints</string>
 
     <string-array name="contactFields">
         <item>@string/firstName</item>

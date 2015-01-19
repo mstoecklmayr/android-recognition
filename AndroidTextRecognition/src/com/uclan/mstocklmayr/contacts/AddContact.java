@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.uclan.mstocklmayr.CaptureActivity;
 import com.uclan.mstocklmayr.R;
 import com.uclan.mstocklmayr.utils.ContactTypes;
@@ -46,6 +47,12 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         //to have a full screen with an action bar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        new ShowcaseView.Builder(this)
+                .setContentTitle("Long press on the text to \n add it to a category.")
+                 .singleShot(200)
+                .hideOnTouchOutside()
+                .build();
 
         ActionBar ab = getActionBar();
 

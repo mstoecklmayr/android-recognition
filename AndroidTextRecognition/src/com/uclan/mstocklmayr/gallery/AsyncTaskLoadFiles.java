@@ -24,7 +24,6 @@ public class AsyncTaskLoadFiles extends AsyncTask<Void, String, Void> {
     @Override
     protected void onPreExecute() {
         String targetPath = path;
-        Toast.makeText(ctx, path, Toast.LENGTH_SHORT).show();
         targetDirector = new File(targetPath);
         myTaskAdapter.clear();
 

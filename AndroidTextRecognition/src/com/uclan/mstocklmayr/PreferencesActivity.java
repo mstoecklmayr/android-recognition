@@ -24,11 +24,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.*;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
+import com.github.amlcurran.showcaseview.ShowcaseView;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class to handle preferences that are saved across sessions of the app. Shows
@@ -43,31 +44,27 @@ public class PreferencesActivity extends PreferenceActivity implements
 
     // Preference keys not carried over from ZXing project
     public static final String KEY_SOURCE_LANGUAGE_PREFERENCE = "sourceLanguageCodeOcrPref";
-    public static final String KEY_TARGET_LANGUAGE_PREFERENCE = "targetLanguageCodeTranslationPref";
-    public static final String KEY_TOGGLE_TRANSLATION = "preference_translation_toggle_translation";
     public static final String KEY_CONTINUOUS_PREVIEW = "preference_capture_continuous";
     public static final String KEY_PAGE_SEGMENTATION_MODE = "preference_page_segmentation_mode";
     public static final String KEY_OCR_ENGINE_MODE = "preference_ocr_engine_mode";
-    public static final String KEY_CHARACTER_BLACKLIST = "preference_character_blacklist";
-    public static final String KEY_CHARACTER_WHITELIST = "preference_character_whitelist";
     public static final String KEY_TOGGLE_LIGHT = "preference_toggle_light";
 
     // Preference keys carried over from ZXing project
     public static final String KEY_AUTO_FOCUS = "preferences_auto_focus";
-    public static final String KEY_DISABLE_CONTINUOUS_FOCUS = "preferences_disable_continuous_focus";
-    public static final String KEY_HELP_VERSION_SHOWN = "preferences_help_version_shown";
-    public static final String KEY_NOT_OUR_RESULTS_SHOWN = "preferences_not_our_results_shown";
     public static final String KEY_REVERSE_IMAGE = "preferences_reverse_image";
     public static final String KEY_PLAY_BEEP = "preferences_play_beep";
 
 
     public static final String KEY_MY_BUSINESS_CARD = "preferences_my_business_card";
+    public static final String KEY_RESET_HINTS = "preferences_reset_hints";
     public static final String MY_BUSINESS_CARD_SELECTED = "Image selected";
 
     private Preference preferenceMyBusinessCard;
+    private Preference preferenceResetHints;
     private ListPreference listPreferenceOcrEngineMode;
 
     private static SharedPreferences sharedPreferences;
+    private List<Integer> singleShotIdList = new ArrayList<Integer>();
 
     /**
      * Set the default preference values.
@@ -83,6 +80,10 @@ public class PreferencesActivity extends PreferenceActivity implements
         //to have a full screen with an action bar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        //set showcase view single shot ids in order to reset them within the settings
+        singleShotIdList.add(200);
+        singleShotIdList.add(300);
+
 
         //TODO could be changed to PreferenceFragment
         preferenceMyBusinessCard = findPreference(KEY_MY_BUSINESS_CARD);
@@ -93,6 +94,19 @@ public class PreferencesActivity extends PreferenceActivity implements
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, 1);
                 return true;
+            }
+        });
+
+        preferenceResetHints = findPreference(KEY_RESET_HINTS);
+        preferenceResetHints.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                boolean result = ShowcaseView.resetShotState(PreferencesActivity.this,singleShotIdList);
+                if(result)
+                    Toast.makeText(PreferencesActivity.this, "Hints have been reset",Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(PreferencesActivity.this, "Error while resetting hints!",Toast.LENGTH_SHORT).show();
+                return result;
             }
         });
 
@@ -129,7 +143,7 @@ public class PreferencesActivity extends PreferenceActivity implements
     protected void onResume() {
         super.onResume();
         // Set up the initial summary values
-        listPreferenceOcrEngineMode.setSummary(sharedPreferences.getString(KEY_OCR_ENGINE_MODE, CaptureActivity.DEFAULT_OCR_ENGINE_MODE));
+        //listPreferenceOcrEngineMode.setSummary(sharedPreferences.getString(KEY_OCR_ENGINE_MODE, CaptureActivity.DEFAULT_OCR_ENGINE_MODE));
 
         String pref = sharedPreferences.getString(KEY_MY_BUSINESS_CARD, CaptureActivity.DEFAULT_MY_BUSINESS_CARD);
         preferenceMyBusinessCard.setSummary(pref.equals(CaptureActivity.DEFAULT_MY_BUSINESS_CARD)?pref:MY_BUSINESS_CARD_SELECTED);

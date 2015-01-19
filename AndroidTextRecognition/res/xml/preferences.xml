@@ -28,10 +28,12 @@
 			android:entries="@array/languagenames"
 			android:entryValues="@array/iso6393" /-->
 
-		<Preference android:title="My business card"
+		<Preference android:title="@string/myBusinessCard"
 					android:key="preferences_my_business_card"
 				/>
-			
+		<Preference android:title="@string/resetHints"
+					android:key="preferences_reset_hints"
+				/>
 	</PreferenceCategory>
 
 	<!-- TRANSLATION SETTINGS -->
@@ -64,7 +66,7 @@
 	    
 	    <CheckBoxPreference
 	        android:key="preferences_auto_focus"
-	        android:title="Autofocus"/>
+	        android:title="@string/autofocus"/>
 	    
 	    <!--CheckBoxPreference
 	        android:key="preferences_disable_continuous_focus"
@@ -84,7 +86,7 @@
 
 		<CheckBoxPreference
 		    android:key="preference_toggle_light"
-		    android:title="Light"/>
+		    android:title="@string/toggleLight"/>
 
 
 	    <!--ListPreference android:key="preference_page_segmentation_mode"

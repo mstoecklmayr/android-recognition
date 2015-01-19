@@ -215,8 +215,6 @@ public class GalleryFragment extends Fragment {
             }
         });
 
-        TextView tv = (TextView) getView().findViewById(R.id.caption);
-        tv.setText(resource);
         TextView tvNotes = (TextView) getView().findViewById(R.id.notes);
         tvNotes.setVisibility(View.GONE);
     }

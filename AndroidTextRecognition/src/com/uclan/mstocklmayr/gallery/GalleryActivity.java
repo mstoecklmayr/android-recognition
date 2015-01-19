@@ -16,6 +16,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
 import com.uclan.mstocklmayr.CaptureActivity;
 import com.uclan.mstocklmayr.PreferencesActivity;
 import com.uclan.mstocklmayr.R;
@@ -44,6 +46,15 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
         super.onCreate(savedInstanceState);
         //to have a full screen with an action bar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        ActionItemTarget target = new ActionItemTarget(this, R.id.action_send_my_card);
+
+        new ShowcaseView.Builder(this)
+                .setTarget(target)
+                .setContentTitle("Enabled when \n\"My business card\" is configured in settings\n(dots on photo screen)!")
+                .singleShot(300)
+                .hideOnTouchOutside()
+                .build();
 
         ActionBar ab = getActionBar();
         //ab.show();
@@ -161,7 +172,7 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
         String path = adapter.imagePathList.get(this.currentImageIndex);
         Location location = JSONHandler.getLocation(this, path.substring(path.lastIndexOf("/") + 1));
         if (location != null) {
-            Toast.makeText(this, "Long: " + location.getLongitude() + " Lat: " + location.getLatitude(), Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Long: " + location.getLongitude() + " Lat: " + location.getLatitude());
             double latitude = Double.valueOf(location.getLatitude());
             double longitude = Double.valueOf(location.getLongitude());
             String label = location.getProvider();
