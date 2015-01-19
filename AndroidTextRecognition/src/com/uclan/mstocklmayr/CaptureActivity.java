@@ -43,8 +43,6 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.PointTarget;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
