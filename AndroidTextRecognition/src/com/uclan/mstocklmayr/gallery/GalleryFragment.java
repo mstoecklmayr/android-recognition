@@ -52,8 +52,6 @@ public class GalleryFragment extends Fragment {
     PointF mid = new PointF();
     float oldDist = 1f;
 
-
-    //TODO set status of action menu buttons -  somehow not working
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         String filePath = getArguments().getString(ARG_IMAGE_RESOURCE);

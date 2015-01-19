@@ -65,8 +65,6 @@ final class OcrRecognizeAsyncTask extends AsyncTask<Void, Void, Boolean> {
         Bitmap bitmap = null;
         if(this.filePath == null){
             bitmap = activity.getCameraManager().buildLuminanceSource(data, width, height).renderCroppedGreyscaleBitmap();
-            //TODO remove as soon as possible
-            saveImage(bitmap);
         }else{
             File file = new File(this.filePath);
             bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
@@ -100,7 +98,6 @@ final class OcrRecognizeAsyncTask extends AsyncTask<Void, Void, Boolean> {
                 return false;
             }
 
-            //TODO remove result borders
             ocrResult = new OcrResult();
             ocrResult.setWordConfidences(baseApi.wordConfidences());
             ocrResult.setMeanConfidence(baseApi.meanConfidence());

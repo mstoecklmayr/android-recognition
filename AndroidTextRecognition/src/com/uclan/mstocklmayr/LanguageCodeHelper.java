@@ -127,7 +127,7 @@ public class LanguageCodeHelper {
       return "ro";
     } else if (languageCode.equals("rus")) { // Russian
       return "ru";
-    } else if (languageCode.equals("srp")) { // Serbian (Latin) // TODO is google expecting Cyrillic?
+    } else if (languageCode.equals("srp")) { // Serbian (Latin)
       return "sr";
     } else if (languageCode.equals("slk")) { // Slovak
       return "sk";

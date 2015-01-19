@@ -42,7 +42,6 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
         //to have a full screen with an action bar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
         ActionBar ab = getActionBar();
         //ab.show();
         ab.setDisplayShowHomeEnabled(false);

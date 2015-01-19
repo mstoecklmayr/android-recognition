@@ -309,15 +309,13 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                     TextSplitter splitter = new TextSplitter(textResult);
                     textResultMap = splitter.getResult();
 
+                    Log.d(TAG, "add contact button clicked. show history");
 
-                    Toast toast = Toast.makeText(v.getContext(), "add contact button clicked. show history", Toast.LENGTH_LONG);
-                    toast.show();
                     Intent intent = new Intent(CaptureActivity.this, AddContact.class);
                     intent.putExtra(TEXT_RESULT, textResult);
                     startActivityForResult(intent, CONTACT_REQUEST_CODE);
                 } else {
-                    Toast toast = Toast.makeText(v.getContext(), "Error processing the image", Toast.LENGTH_LONG);
-                    toast.show();
+                    Toast.makeText(v.getContext(), "Error processing the image", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -420,7 +418,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
     @Override
     protected void onStop() {
-        mLocationClient.disconnect();
+        //mLocationClient.disconnect();
         //mGoogleApiClient.disconnect();
         super.onStop();
     }
@@ -431,7 +429,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         resetStatusView();
 
         //reconnect location and drive services
-        mGoogleApiClient.connect();
+        mLocationClient.connect();
         mGoogleApiClient.connect();
 
         String previousSourceLanguageCodeOcr = sourceLanguageCodeOcr;
@@ -549,7 +547,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
             surfaceHolder.removeCallback(this);
         }
 
-        mLocationClient.disconnect();
+        //mLocationClient.disconnect();
         //mGoogleApiClient.disconnect();
         super.onPause();
     }
@@ -605,7 +603,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         //    inflater.inflate(R.menu.options_menu, menu);
         super.onCreateOptionsMenu(menu);
         menu.add(0, SETTINGS_ID, 0, "Settings").setIcon(android.R.drawable.ic_menu_preferences);
-        //menu.add(0, ABOUT_ID, 0, "About").setIcon(android.R.drawable.ic_menu_info_details);
         return true;
     }
 
@@ -616,12 +613,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
             case SETTINGS_ID: {
                 intent = new Intent().setClass(this, PreferencesActivity.class);
                 startActivity(intent);
-                break;
-            }
-            case ABOUT_ID: {
-//      intent = new Intent(this, HelpActivity.class);
-//      intent.putExtra(HelpActivity.REQUESTED_PAGE_KEY, HelpActivity.ABOUT_PAGE);
-//      startActivity(intent);
                 break;
             }
         }
@@ -791,6 +782,8 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         viewfinderView.setVisibility(View.GONE);
         resultView.setVisibility(View.VISIBLE);
 
+
+        //TODO to remove the word boundings
         //lastBitmap = ocrResult.getBitmapWithoutBounding();
         lastBitmap = ocrResult.getBitmap();
 
@@ -968,15 +961,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         }
         lastResult = null;
         viewfinderView.removeResultText();
-    }
-
-    /**
-     * Displays a pop-up message showing the name of the current OCR source language.
-     */
-    void showLanguageName() {
-//        Toast toast = Toast.makeText(this, "OCR: " + sourceLanguageReadable, Toast.LENGTH_LONG);
-//        toast.setGravity(Gravity.TOP, 0, 0);
-//        toast.show();
     }
 
     /**
@@ -1271,7 +1255,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                         showErrorMessage("Error", "Could not initialize camera. Please try restarting device.");
                     }
                 }
-                //TODO maybe other actions can be executed too
                 break;
             case CONTACT_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
@@ -1317,7 +1300,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
              * If the result code is Activity.RESULT_OK, try
              * to connect again
              */
-                //TODO handle missing google play service
                 switch (resultCode) {
                     case Activity.RESULT_OK:
                     /*
@@ -1341,12 +1323,13 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     public void onConnected(Bundle bundle) {
         // Display the connection status
         //gets called once for each service (location and drive, atm)
-        Toast.makeText(this, "Service connected", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "Service connected");
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(this, "DRIVE suspended", Toast.LENGTH_SHORT).show();
+
+        Log.i(TAG,"DRIVE suspended");
     }
 
     /*
@@ -1372,7 +1355,8 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
          * start a Google Play services activity that can resolve
          * error.
          */
-        Toast.makeText(this, "Service connection failure!", Toast.LENGTH_SHORT).show();
+        Log.e(TAG,"Service connection failure!");
+
         if (connectionResult.hasResolution()) {
             try {
                 // Start an Activity that tries to resolve the error

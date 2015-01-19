@@ -3,10 +3,12 @@ package com.uclan.mstocklmayr.contacts;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.*;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -22,6 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 public class AddContact extends Activity implements AdapterView.OnItemSelectedListener, OnClickListener {
+
+    private static final String TAG = AddContact.class.getSimpleName();
+
     //used for the intent result
     public final static String CONTACT_NAME = "name";
     public final static String CONTACT_MAIL = "mail";
@@ -51,7 +56,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         Intent intent = getIntent();
 
-        LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.finish_button,null);
+        LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.finish_button, null);
         linearLayout.setOnClickListener(this);
         ab.setCustomView(linearLayout);
         ab.show();
@@ -63,27 +68,26 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         //restore preferences
         SharedPreferences settings = getSharedPreferences(CaptureActivity.PREFS_NAME, 0);
-        if(!settings.contains(CaptureActivity.TOTAL_COUNT)){
+        if (!settings.contains(CaptureActivity.TOTAL_COUNT)) {
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt(CaptureActivity.TOTAL_COUNT, 0);
             editor.commit();
-            if(!settings.contains(CaptureActivity.NAME_SWITCH_COUNT)){
+            if (!settings.contains(CaptureActivity.NAME_SWITCH_COUNT)) {
                 editor.putInt(CaptureActivity.NAME_SWITCH_COUNT, 0);
                 editor.commit();
             }
-        }else{
+        } else {
             //TODO improve algorithm
-            float total = (float)settings.getInt(CaptureActivity.TOTAL_COUNT,0);
-            float switches = (float)settings.getInt(CaptureActivity.NAME_SWITCH_COUNT,0);
+            float total = (float) settings.getInt(CaptureActivity.TOTAL_COUNT, 0);
+            float switches = (float) settings.getInt(CaptureActivity.NAME_SWITCH_COUNT, 0);
 
-            if((switches/total)>0.6){
+            if ((switches / total) > 0.6) {
                 this.isSwitched = true;
                 String[] parts = TextSplitter.splitName(true, this.values.get(ContactTypes.NAME));
                 String newName = null;
-                if(parts.length > 1){
+                if (parts.length > 1) {
                     newName = parts[1] + " " + parts[0];
-                }
-                else{
+                } else {
                     newName = parts[0];
                 }
                 this.values.put(ContactTypes.NAME.toString(), newName);
@@ -95,39 +99,39 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         //no mobile, hide relating text/input
         EditText etMobile = (EditText) findViewById(R.id.etMobilePhone);
-        if(!this.values.containsKey(ContactTypes.PHONE.toString())){
+        if (!this.values.containsKey(ContactTypes.PHONE.toString())) {
             TextView mobile = (TextView) findViewById(R.id.tvMobilePhone);
             mobile.setVisibility(View.GONE);
             etMobile.setVisibility(View.GONE);
-        }else{
+        } else {
             etMobile.setText(this.values.get(ContactTypes.PHONE.toString()));
             registerForContextMenu(findViewById(R.id.tvMobilePhone));
-            this.finalPairs.put(ContactTypes.PHONE.toString(),etMobile.getId());
+            this.finalPairs.put(ContactTypes.PHONE.toString(), etMobile.getId());
             this.lastInputId = etMobile.getId();
         }
 
         EditText etEmail = (EditText) findViewById(R.id.etPrivateEmail);
-        if(!this.values.containsKey(ContactTypes.PRIVATE_EMAIL.toString())){
+        if (!this.values.containsKey(ContactTypes.PRIVATE_EMAIL.toString())) {
             TextView email = (TextView) findViewById(R.id.tvPrivateEmail);
             email.setVisibility(View.GONE);
             etEmail.setVisibility(View.GONE);
-        }else{
+        } else {
             etEmail.setText(this.values.get(ContactTypes.PRIVATE_EMAIL.toString()));
             registerForContextMenu(findViewById(R.id.tvPrivateEmail));
-            this.finalPairs.put(ContactTypes.PRIVATE_EMAIL.toString(),etEmail.getId());
+            this.finalPairs.put(ContactTypes.PRIVATE_EMAIL.toString(), etEmail.getId());
             this.lastInputId = etEmail.getId();
         }
 
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.addContactLayout);
 
-        for(Map.Entry<String, String> entry : this.values.entrySet()){
-            if(entry.getKey().equalsIgnoreCase(ContactTypes.NAME.toString())){
-                EditText name = (EditText)findViewById(R.id.etName);
+        for (Map.Entry<String, String> entry : this.values.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(ContactTypes.NAME.toString())) {
+                EditText name = (EditText) findViewById(R.id.etName);
                 name.setText(entry.getValue());
                 this.finalPairs.put(ContactTypes.NAME.toString(), name.getId());
                 continue;
             }
-            if(!entry.getKey().equalsIgnoreCase(ContactTypes.PRIVATE_EMAIL.toString()) && !entry.getKey().equalsIgnoreCase(ContactTypes.PHONE.toString())){
+            if (!entry.getKey().equalsIgnoreCase(ContactTypes.PRIVATE_EMAIL.toString()) && !entry.getKey().equalsIgnoreCase(ContactTypes.PHONE.toString())) {
                 View viewToAdd = addUnknownItem(this, entry.getValue(), randomId.getIdFromKey(entry.getKey()), this.lastItemId);
                 registerForContextMenu(viewToAdd);
                 this.lastItemId = viewToAdd.getId();
@@ -143,7 +147,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
             @Override
             public void onClick(View v) {
                 // Creating an intent to open Android's Contacts List
-                Intent contacts = new Intent(Intent.ACTION_VIEW,ContactsContract.Contacts.CONTENT_URI);
+                Intent contacts = new Intent(Intent.ACTION_VIEW, ContactsContract.Contacts.CONTENT_URI);
 
                 // Starting the activity
                 startActivity(contacts);
@@ -162,21 +166,21 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(view.getContext(),"item clicked in: "+view.getId(),Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "item clicked in: " + view.getId());
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.switch_names:
                 SharedPreferences settings = getSharedPreferences(CaptureActivity.PREFS_NAME, 0);
-                if(!settings.contains(CaptureActivity.NAME_SWITCH_COUNT)){
-                    int value = settings.getInt(CaptureActivity.NAME_SWITCH_COUNT,0);
+                if (!settings.contains(CaptureActivity.NAME_SWITCH_COUNT)) {
+                    int value = settings.getInt(CaptureActivity.NAME_SWITCH_COUNT, 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putInt(CaptureActivity.NAME_SWITCH_COUNT, ++value);
                     editor.commit();
                 }
-            break;
+                break;
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -193,41 +197,42 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         //menu.setHeaderTitle("Context Menu");
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tvName:
-                menu.add(0,v.getId(),0,"Switch first name and last name");
+                menu.add(0, v.getId(), 0, "Switch first name and last name");
                 break;
             case R.id.tvMobilePhone:
             case R.id.tvPrivateEmail:
             default:
-                menu.add(0,v.getId(),0, R.string.mobilePhone);
-                menu.add(0,v.getId(),0, R.string.workEmail);
-                menu.add(0,v.getId(),0, R.string.privateEmail);
-                menu.add(0,v.getId(),0, R.string.privateNumber);
-                menu.add(0,v.getId(),0, R.string.company);
-                menu.add(0,v.getId(),0, R.string.address);
-                menu.add(0,v.getId(),0, R.string.city);
-                menu.add(0,v.getId(),0, R.string.country);
+                menu.add(0, v.getId(), 0, R.string.mobilePhone);
+                menu.add(0, v.getId(), 0, R.string.workEmail);
+                menu.add(0, v.getId(), 0, R.string.privateEmail);
+                menu.add(0, v.getId(), 0, R.string.privateNumber);
+                menu.add(0, v.getId(), 0, R.string.company);
+                menu.add(0, v.getId(), 0, R.string.address);
+                menu.add(0, v.getId(), 0, R.string.city);
+                menu.add(0, v.getId(), 0, R.string.country);
         }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         super.onContextItemSelected(item);
-        Toast.makeText(AddContact.this, "title: "+item.getTitle()+" id: "+item.getItemId(),Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "title: " + item.getTitle() + " id: " + item.getItemId());
         String text = null;
+
         View toRemove = findViewById(item.getItemId());
-        if(toRemove instanceof TextView) {
+        if (toRemove instanceof TextView) {
             text = ((TextView) toRemove).getText().toString();
         }
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.addContactLayout);
         relativeLayout.removeView(toRemove);
-        int spacerBelowId = createInputPair(AddContact.this,this.lastInputId,item.getItemId(),item.getTitle().toString(),text);
+        int spacerBelowId = createInputPair(AddContact.this, this.lastInputId, item.getItemId(), item.getTitle().toString(), text);
         String title = item.getTitle().toString().toUpperCase();
-        title = title.replace(" ","_");
-        this.finalPairs.put(ContactTypes.valueOf(title).toString(),spacerBelowId);
+        title = title.replace(" ", "_");
+        this.finalPairs.put(ContactTypes.valueOf(title).toString(), spacerBelowId);
         int spacerId = realignSpacer(spacerBelowId);
-        realignOthers(spacerId,text);
+        realignOthers(spacerId, text);
         return true;
     }
 
@@ -235,8 +240,8 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
     private void realignOthers(int spacerId, String value) {
         //remove the "OTHER" entry from the map and rebuild the GUI
         String key = null;
-        for(Map.Entry<String, String> entry : this.values.entrySet()){
-            if(entry.getValue().equalsIgnoreCase(value)){
+        for (Map.Entry<String, String> entry : this.values.entrySet()) {
+            if (entry.getValue().equalsIgnoreCase(value)) {
                 key = entry.getKey();
             }
         }
@@ -245,39 +250,39 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         List<View> viewsToRemove = new ArrayList<View>();
 
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.addContactLayout);
-        for(int i=0;i<relativeLayout.getChildCount();i++){
+        for (int i = 0; i < relativeLayout.getChildCount(); i++) {
             View view = relativeLayout.getChildAt(i);
-            if(view instanceof TextView){
-                for(Map.Entry<String, String> entry : this.values.entrySet()){
-                    if(!entry.getKey().equalsIgnoreCase(ContactTypes.PRIVATE_EMAIL.toString())
+            if (view instanceof TextView) {
+                for (Map.Entry<String, String> entry : this.values.entrySet()) {
+                    if (!entry.getKey().equalsIgnoreCase(ContactTypes.PRIVATE_EMAIL.toString())
                             && !entry.getKey().equalsIgnoreCase(ContactTypes.NAME.toString())
                             && !entry.getKey().equalsIgnoreCase(ContactTypes.PHONE.toString())
-                            && entry.getValue().equalsIgnoreCase(((TextView) view).getText().toString())){
+                            && entry.getValue().equalsIgnoreCase(((TextView) view).getText().toString())) {
                         viewsToRemove.add(view);
                     }
                 }
             }
         }
-        for(View v : viewsToRemove){
+        for (View v : viewsToRemove) {
             relativeLayout.removeView(v);
         }
 
-        for(Map.Entry<String,Integer> entry : randomId.getEntries()){
-           View v = findViewById(entry.getValue());
-           if(v != null){
-            relativeLayout.removeView(v);
-           }else{
-               break;
-           }
+        for (Map.Entry<String, Integer> entry : randomId.getEntries()) {
+            View v = findViewById(entry.getValue());
+            if (v != null) {
+                relativeLayout.removeView(v);
+            } else {
+                break;
+            }
         }
 
         this.lastItemId = spacerId;
 
-        for(Map.Entry<String, String> entry : this.values.entrySet()){
-            if(entry.getKey().equalsIgnoreCase(ContactTypes.NAME.toString())){
+        for (Map.Entry<String, String> entry : this.values.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(ContactTypes.NAME.toString())) {
                 continue;
             }
-            if(!entry.getKey().equalsIgnoreCase(ContactTypes.PRIVATE_EMAIL.toString()) && !entry.getKey().equalsIgnoreCase(ContactTypes.PHONE.toString())){
+            if (!entry.getKey().equalsIgnoreCase(ContactTypes.PRIVATE_EMAIL.toString()) && !entry.getKey().equalsIgnoreCase(ContactTypes.PHONE.toString())) {
                 View viewToAdd = addUnknownItem(this, entry.getValue(), randomId.getIdFromKey(entry.getKey()), this.lastItemId);
                 registerForContextMenu(viewToAdd);
                 this.lastItemId = viewToAdd.getId();
@@ -288,8 +293,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
     }
 
 
-
-    private int createInputPair(Context ctx, int belowId, int id, String header, String text){
+    private int createInputPair(Context ctx, int belowId, int id, String header, String text) {
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.addContactLayout);
 
         RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -313,36 +317,36 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         params1.addRule(RelativeLayout.BELOW, belowId);
 
         EditText et = new EditText(ctx);
-        et.setId(id+1);
+        et.setId(id + 1);
         et.setText(text);
         params2.addRule(RelativeLayout.BELOW, id);
         params2.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
-        relativeLayout.addView(tv,params1);
-        relativeLayout.addView(et,params2);
+        relativeLayout.addView(tv, params1);
+        relativeLayout.addView(et, params2);
 
         this.lastInputId = et.getId();
 
         return et.getId();
     }
 
-    private View addUnknownItem(Context ctx, String text, int id, int belowId){
+    private View addUnknownItem(Context ctx, String text, int id, int belowId) {
         TextView tv = new TextView(ctx);
         //id must not be unique - http://stackoverflow.com/questions/8460680/how-can-i-assign-an-id-to-a-view-programmatically
         tv.setId(id);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         tv.setTextSize(22);
-        tv.setPadding(7,0,0,0);
+        tv.setPadding(7, 0, 0, 0);
         params.addRule(RelativeLayout.BELOW, belowId);
         tv.setText(text);
         tv.setLayoutParams(params);
         return tv;
     }
 
-    private int realignSpacer(int belowId){
+    private int realignSpacer(int belowId) {
         TextView spacer = (TextView) findViewById(R.id.tvSpacer);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.BELOW, belowId);
         spacer.setLayoutParams(params);
         return spacer.getId();
@@ -356,39 +360,39 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         String[] nameParts = TextSplitter.splitName(!this.isSwitched, name.getText().toString());
         String firstName = nameParts[0];
         String lastName = null;
-        if(nameParts.length > 1)
+        if (nameParts.length > 1)
             lastName = nameParts[1];
 
-        String displayName = firstName + " " +lastName;
+        String displayName = firstName + " " + lastName;
 
         // Getting reference to Mobile EditText
         EditText mobilePhone = null;
-        if(finalPairs.get(ContactTypes.PHONE.toString()) != null)
+        if (finalPairs.get(ContactTypes.PHONE.toString()) != null)
             mobilePhone = (EditText) findViewById(finalPairs.get(ContactTypes.PHONE.toString()));
 
         // Getting reference to HomePhone EditText
         EditText privatePhone = null;
-        if(finalPairs.get(ContactTypes.PRIVATE_PHONE.toString())!= null)
+        if (finalPairs.get(ContactTypes.PRIVATE_PHONE.toString()) != null)
             privatePhone = (EditText) findViewById(finalPairs.get(ContactTypes.PRIVATE_PHONE.toString()));
 
         // Getting reference to HomeEmail EditText
         EditText homeEmail = null;
-        if(finalPairs.get(ContactTypes.PRIVATE_EMAIL.toString()) != null)
-        homeEmail = (EditText) findViewById(finalPairs.get(ContactTypes.PRIVATE_EMAIL.toString()));
+        if (finalPairs.get(ContactTypes.PRIVATE_EMAIL.toString()) != null)
+            homeEmail = (EditText) findViewById(finalPairs.get(ContactTypes.PRIVATE_EMAIL.toString()));
 
         // Getting reference to WorkEmail EditText
         EditText workEmail = null;
-        if(finalPairs.get(ContactTypes.WORK_EMAIL.toString()) != null)
-        workEmail = (EditText) findViewById(finalPairs.get(ContactTypes.WORK_EMAIL.toString()));
+        if (finalPairs.get(ContactTypes.WORK_EMAIL.toString()) != null)
+            workEmail = (EditText) findViewById(finalPairs.get(ContactTypes.WORK_EMAIL.toString()));
 
         EditText address = null;
-        if(finalPairs.get(ContactTypes.ADDRESS.toString()) != null)
-        address = (EditText) findViewById(finalPairs.get(ContactTypes.ADDRESS.toString()));
+        if (finalPairs.get(ContactTypes.ADDRESS.toString()) != null)
+            address = (EditText) findViewById(finalPairs.get(ContactTypes.ADDRESS.toString()));
 
 
         EditText company = null;
-        if(finalPairs.get(ContactTypes.COMPANY.toString()) != null)
-        company = (EditText) findViewById(finalPairs.get(ContactTypes.COMPANY.toString()));
+        if (finalPairs.get(ContactTypes.COMPANY.toString()) != null)
+            company = (EditText) findViewById(finalPairs.get(ContactTypes.COMPANY.toString()));
 
 
         ArrayList<ContentProviderOperation> ops =
@@ -414,7 +418,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         // Adding insert operation to operations list
         // to insert Mobile Number in the table ContactsContract.Data
-        if(mobilePhone != null)
+        if (mobilePhone != null)
             ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
                     .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
@@ -424,7 +428,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         // Adding insert operation to operations list
         // to  insert Home Phone Number in the table ContactsContract.Data
-        if(privatePhone != null)
+        if (privatePhone != null)
             ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
                     .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
@@ -434,7 +438,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         // Adding insert operation to operations list
         // to insert Home Email in the table ContactsContract.Data
-        if(homeEmail != null)
+        if (homeEmail != null)
             ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
                     .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.Intents.Insert.COMPANY)
@@ -444,7 +448,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         // Adding insert operation to operations list
         // to insert Work Email in the table ContactsContract.Data
-        if(workEmail != null)
+        if (workEmail != null)
             ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
                     .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
@@ -454,7 +458,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         // Adding insert operation to operations list
         // to insert address in the table ContactsContract.Data
-        if(address != null)
+        if (address != null)
             ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
                     .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE)
@@ -463,26 +467,26 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         // Adding insert operation to operations list
         // to insert company in the table ContactsContract.Data
-        if(company != null)
+        if (company != null)
             ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
                     .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
                     .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, company.getText().toString())
                     .build());
 
-        try{
+        try {
             // Executing all the insert operations as a single database transaction
             getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-            Toast.makeText(getBaseContext(), "Contact is successfully added", Toast.LENGTH_SHORT).show();
-        }catch (RemoteException e) {
+            Log.d(TAG,"Contact is successfully added");
+        } catch (RemoteException e) {
             e.printStackTrace();
-        }catch (OperationApplicationException e) {
+        } catch (OperationApplicationException e) {
             e.printStackTrace();
         }
 
-        SharedPreferences settings = getSharedPreferences(CaptureActivity.PREFS_NAME,0);
-        if(!settings.contains(CaptureActivity.TOTAL_COUNT)){
-            int total = settings.getInt(CaptureActivity.TOTAL_COUNT,0);
+        SharedPreferences settings = getSharedPreferences(CaptureActivity.PREFS_NAME, 0);
+        if (!settings.contains(CaptureActivity.TOTAL_COUNT)) {
+            int total = settings.getInt(CaptureActivity.TOTAL_COUNT, 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt(CaptureActivity.TOTAL_COUNT, ++total);
             editor.commit();
@@ -490,11 +494,10 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         Intent result = new Intent();
         result.putExtra(CONTACT_NAME, name.getText().toString());
-        if(homeEmail != null || workEmail != null){
-            if(homeEmail != null){
+        if (homeEmail != null || workEmail != null) {
+            if (homeEmail != null) {
                 result.putExtra(CONTACT_MAIL, homeEmail.getText().toString());
-            }
-            else{
+            } else {
                 result.putExtra(CONTACT_MAIL, workEmail.getText().toString());
             }
         }

@@ -89,7 +89,6 @@ final class CameraConfigurationManager {
     initializeTorch(parameters, prefs);
     String focusMode = null;
     if (prefs.getBoolean(PreferencesActivity.KEY_AUTO_FOCUS, true)) {
-      //TODO fix this
       focusMode = findSettableValue(parameters.getSupportedFocusModes(),
               Camera.Parameters.FOCUS_MODE_AUTO);
 //      if (prefs.getBoolean(PreferencesActivity.KEY_DISABLE_CONTINUOUS_FOCUS, false)) {
