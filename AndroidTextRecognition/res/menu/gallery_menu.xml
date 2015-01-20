@@ -27,4 +27,8 @@
           android:title="@string/MultiLocation"
           android:orderInCategory="100"
           android:showAsAction="never" />
+    <item android:id="@+id/action_configure_card"
+          android:title="Configure your business card"
+          android:orderInCategory="100"
+          android:showAsAction="never" />
 </menu>

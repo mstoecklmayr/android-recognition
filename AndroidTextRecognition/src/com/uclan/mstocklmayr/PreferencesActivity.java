@@ -102,6 +102,9 @@ public class PreferencesActivity extends PreferenceActivity implements
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 boolean result = ShowcaseView.resetShotState(PreferencesActivity.this,singleShotIdList);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(KEY_MY_BUSINESS_CARD, CaptureActivity.DEFAULT_MY_BUSINESS_CARD);
+                editor.commit();
                 if(result)
                     Toast.makeText(PreferencesActivity.this, "Hints have been reset",Toast.LENGTH_SHORT).show();
                 else
@@ -172,7 +175,7 @@ public class PreferencesActivity extends PreferenceActivity implements
             editor.putString(KEY_MY_BUSINESS_CARD, imagePath);
             editor.commit();
 
-            Toast.makeText(PreferencesActivity.this,imagePath,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(PreferencesActivity.this,imagePath,Toast.LENGTH_SHORT).show();
             preferenceMyBusinessCard.setSummary(MY_BUSINESS_CARD_SELECTED);
         }
     }

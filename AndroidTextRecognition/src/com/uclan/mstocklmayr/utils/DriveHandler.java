@@ -78,7 +78,7 @@ public class DriveHandler {
     final ResultCallback<DriveFolder.DriveFolderResult> folderCallback = new ResultCallback<DriveFolder.DriveFolderResult>() {
         @Override
         public void onResult(DriveFolder.DriveFolderResult result) {
-            Toast.makeText(ctx, "drive result: "+result.getStatus(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(ctx, "drive result: "+result.getStatus(), Toast.LENGTH_LONG).show();
             Drive.DriveApi.newDriveContents(mGoogleApiClient)
                     .setResultCallback(driveContentsCallback);
         }

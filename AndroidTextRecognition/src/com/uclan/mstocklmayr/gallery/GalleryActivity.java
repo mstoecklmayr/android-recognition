@@ -51,9 +51,8 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
 
         new ShowcaseView.Builder(this)
                 .setTarget(target)
-                .setContentTitle("Enabled when \n\"My business card\" is configured in settings\n(dots on photo screen)!")
+                .setContentTitle("Send YOUR business card to one of your contacts! \n\nClick on the dots next to the icon to configure it!")
                 .singleShot(300)
-                .hideOnTouchOutside()
                 .build();
 
         ActionBar ab = getActionBar();
@@ -106,6 +105,9 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
                 case R.id.action_send_my_card:
                     sendMyBusinessCard();
                     return true;
+                case R.id.action_configure_card:
+                    configureMyCard();
+                    return true;
                 default:
                     return super.onOptionsItemSelected(item);
             }
@@ -138,7 +140,7 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:")); // only email apps should handle this
         if (email != null)
-            intent.putExtra(Intent.EXTRA_EMAIL, email);
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
         intent.putExtra(Intent.EXTRA_SUBJECT, "My business card");
         intent.putExtra(Intent.EXTRA_STREAM, uriToImage);
         if (intent.resolveActivity(getPackageManager()) != null) {
@@ -210,6 +212,11 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
             }
         }
         Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+    }
+
+    private void configureMyCard() {
+        Intent intent = new Intent().setClass(this, PreferencesActivity.class);
         startActivity(intent);
     }
 

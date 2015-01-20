@@ -19,6 +19,7 @@ import android.view.*;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.uclan.mstocklmayr.CaptureActivity;
 import com.uclan.mstocklmayr.PreferencesActivity;
 import com.uclan.mstocklmayr.R;
 import com.uclan.mstocklmayr.utils.JSONHandler;
@@ -65,9 +66,9 @@ public class GalleryFragment extends Fragment {
         }
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        String cardPath = settings.getString(PreferencesActivity.KEY_MY_BUSINESS_CARD, "null");
+        String cardPath = settings.getString(PreferencesActivity.KEY_MY_BUSINESS_CARD, CaptureActivity.DEFAULT_MY_BUSINESS_CARD);
 
-        if (cardPath.equals("null")) {
+        if (cardPath.equals(CaptureActivity.DEFAULT_MY_BUSINESS_CARD)) {
             MenuItem item = menu.findItem(R.id.action_send_my_card);
             Drawable icon = getResources().getDrawable(R.drawable.ic_action_email);
             item.setIcon(Util.convertDrawableToGrayScale(icon));

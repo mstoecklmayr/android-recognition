@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2008 ZXing authors
  * Copyright 2011 Robert Theis
+ * Copyright 2015 Michael Stöcklmayr
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -771,10 +772,8 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         viewfinderView.setVisibility(View.GONE);
         resultView.setVisibility(View.VISIBLE);
 
-
-        //TODO to remove the word boundings
-        //lastBitmap = ocrResult.getBitmapWithoutBounding();
-        lastBitmap = ocrResult.getBitmap();
+        lastBitmap = ocrResult.getBitmapWithoutBounding();
+        //lastBitmap = ocrResult.getBitmap();
 
         ImageView bitmapImageView = (ImageView) findViewById(R.id.image_view);
         if (lastBitmap == null) {
@@ -1237,10 +1236,8 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                         }
 
                         String mail = data.getStringExtra(AddContact.CONTACT_MAIL);
-                        //String name = data.getStringExtra(AddContact.CONTACT_NAME);
-                        String filePath = data.getStringExtra(FILE_PATH);
                         if (mail != null)
-                            JSONHandler.addRecordForFile(CaptureActivity.this, filePath, JSONHandler.EMAIL, mail);
+                            JSONHandler.addRecordForFile(CaptureActivity.this, fileName, JSONHandler.EMAIL, mail);
 
                     }
                 }

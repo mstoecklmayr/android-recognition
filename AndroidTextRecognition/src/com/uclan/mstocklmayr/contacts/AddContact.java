@@ -49,9 +49,8 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         new ShowcaseView.Builder(this)
-                .setContentTitle("Long press on the text to \n add it to a category.")
+                .setContentTitle("Click on the text below for a second to \n add it to a category.")
                  .singleShot(200)
-                .hideOnTouchOutside()
                 .build();
 
         ActionBar ab = getActionBar();
@@ -84,7 +83,6 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
                 editor.commit();
             }
         } else {
-            //TODO improve algorithm
             float total = (float) settings.getInt(CaptureActivity.TOTAL_COUNT, 0);
             float switches = (float) settings.getInt(CaptureActivity.NAME_SWITCH_COUNT, 0);
 
@@ -234,12 +232,24 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         }
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.addContactLayout);
         relativeLayout.removeView(toRemove);
-        int spacerBelowId = createInputPair(AddContact.this, this.lastInputId, item.getItemId(), item.getTitle().toString(), text);
+
         String title = item.getTitle().toString().toUpperCase();
-        title = title.replace(" ", "_");
-        this.finalPairs.put(ContactTypes.valueOf(title).toString(), spacerBelowId);
-        int spacerId = realignSpacer(spacerBelowId);
-        realignOthers(spacerId, text);
+        if(this.finalPairs.containsKey(ContactTypes.valueOf(title).toString())){
+            Integer id = this.finalPairs.get(ContactTypes.valueOf(title).toString());
+            View view = findViewById(id);
+            EditText et = (EditText)view;
+            et.setText(et.getText()+"\n"+text);
+            int spacerId = realignSpacer(id);
+            realignOthers(spacerId, text);
+        }else{
+            int spacerBelowId = createInputPair(AddContact.this, this.lastInputId, item.getItemId(), item.getTitle().toString(), text);
+            title = title.replace(" ", "_");
+            this.finalPairs.put(ContactTypes.valueOf(title).toString(), spacerBelowId);
+
+            int spacerId = realignSpacer(spacerBelowId);
+            realignOthers(spacerId, text);
+        }
+
         return true;
     }
 
@@ -299,7 +309,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
     }
 
-
+    //creates input pair and returns its ID
     private int createInputPair(Context ctx, int belowId, int id, String header, String text) {
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.addContactLayout);
 
