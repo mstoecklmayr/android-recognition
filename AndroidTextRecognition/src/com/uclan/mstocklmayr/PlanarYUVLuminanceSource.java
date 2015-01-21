@@ -16,8 +16,9 @@
  */
 package com.uclan.mstocklmayr;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.*;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * This object extends LuminanceSource around an array of YUV data returned from the camera driver,
@@ -142,15 +143,10 @@ public final class PlanarYUVLuminanceSource extends LuminanceSource {
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 
-
         return bitmap;
     }
 
-    private static Bitmap toBitmap(int[] pixels, int width, int height) {
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-        return bitmap;
-    }
+
 
     private void reverseHorizontal(int width, int height) {
         byte[] yuvData = this.yuvData;

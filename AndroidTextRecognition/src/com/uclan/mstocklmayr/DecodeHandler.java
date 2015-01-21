@@ -55,13 +55,6 @@ final class DecodeHandler extends Handler {
             return;
         }
         switch (message.what) {
-            case R.id.ocr_continuous_decode:
-                // Only request a decode if a request is not already pending.
-                if (!isDecodePending) {
-                    isDecodePending = true;
-                    ocrContinuousDecode((byte[]) message.obj, message.arg1, message.arg2);
-                }
-                break;
             case R.id.ocr_decode:
                 ocrDecode((byte[]) message.obj, message.arg1, message.arg2);
                 break;
@@ -77,7 +70,7 @@ final class DecodeHandler extends Handler {
     }
 
     /**
-     * Launch an AsyncTask to perform an OCR decode for single-shot mode.
+     * Launch an AsyncTask to perform an OCR decode
      *
      * @param data   Image data
      * @param width  Image width
@@ -89,51 +82,6 @@ final class DecodeHandler extends Handler {
 
         // Launch OCR asynchronously, so we get the dialog box displayed immediately
         new OcrRecognizeAsyncTask(activity, baseApi, data, width, height, this.filePath).execute();
-    }
-
-    //TODO remove realtime stuff
-
-    /**
-     * Perform an OCR decode for realtime recognition mode.
-     *
-     * @param data   Image data
-     * @param width  Image width
-     * @param height Image height
-     */
-    private void ocrContinuousDecode(byte[] data, int width, int height) {
-        PlanarYUVLuminanceSource source = activity.getCameraManager().buildLuminanceSource(data, width, height);
-        if (source == null) {
-            sendContinuousOcrFailMessage();
-            return;
-        }
-        bitmap = source.renderCroppedGreyscaleBitmap();
-
-        OcrResult ocrResult = getOcrResult();
-        Handler handler = activity.getHandler();
-        if (handler == null) {
-            return;
-        }
-
-        if (ocrResult == null) {
-            try {
-                sendContinuousOcrFailMessage();
-            } catch (NullPointerException e) {
-                activity.stopHandler();
-            } finally {
-                bitmap.recycle();
-                baseApi.clear();
-            }
-            return;
-        }
-
-        try {
-            Message message = Message.obtain(handler, R.id.ocr_continuous_decode_succeeded, ocrResult);
-            message.sendToTarget();
-        } catch (NullPointerException e) {
-            activity.stopHandler();
-        } finally {
-            baseApi.clear();
-        }
     }
 
     @SuppressWarnings("unused")
