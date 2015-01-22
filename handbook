@@ -1,3 +1,9 @@
+22.01.2015
+Start of the user survey. Fixed minor bugs.
+If address consists of more than one part, it can be added a few times now.
+Added focus mode "infinity" for tablet tests. Also removed the auto adding of flash light (I got errors with the tablets because they have no flashlight)
+
+
 20.01.2015
 I fetched business cards from the city. Better results with them in comparison to the printed ones.
 Updated the ShowcaseView hints after talk with Jake (first tester)
