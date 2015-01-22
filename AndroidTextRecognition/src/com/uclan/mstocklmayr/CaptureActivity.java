@@ -184,6 +184,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     private OnSharedPreferenceChangeListener listener;
     private ProgressDialog dialog; // for initOcr - language download & unzip
     private ProgressDialog indeterminateDialog; // also for initOcr - init OCR engine
+    private Dialog playServiceDialog;
     private boolean isEngineReady;
     public static Map<String, String> textResultMap; //map containing the split up text
 
@@ -1212,7 +1213,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
                         // Getting Google Play availability status
                         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
-                        // Showing status
+                        //fing status
                         if (!mGoogleApiClient.isConnected() || status != ConnectionResult.SUCCESS) { // Google Play Services are not available
 
                             requestCode = 10;
@@ -1321,9 +1322,13 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         } else {
             /*
              * If no resolution is available, display a dialog to the
-             * user with the error.
+             * user with the error. Dismiss an old one first!
              */
-            GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this, 0).show();
+            if(playServiceDialog != null){
+                playServiceDialog.dismiss();
+            }
+            playServiceDialog = GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this, 0);
+            playServiceDialog.show();
         }
     }
 

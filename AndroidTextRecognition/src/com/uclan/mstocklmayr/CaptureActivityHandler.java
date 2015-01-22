@@ -86,7 +86,7 @@ final class CaptureActivityHandler extends Handler {
         restartOcrPreview();
         break;
       case R.id.ocr_continuous_decode_failed:
-        DecodeHandler.resetDecodeState();        
+        DecodeHandler.resetDecodeState();
         try {
           activity.handleOcrContinuousDecode((OcrResultFailure) message.obj);
         } catch (NullPointerException e) {
@@ -132,7 +132,7 @@ final class CaptureActivityHandler extends Handler {
     removeMessages(R.id.ocr_decode);
     removeMessages(R.id.ocr_continuous_decode_failed);
     removeMessages(R.id.ocr_continuous_decode_succeeded); // TODO are these removeMessages() calls doing anything?
-    
+
     // Freeze the view displayed to the user.
 //    CameraManager.get().stopPreview();
   }

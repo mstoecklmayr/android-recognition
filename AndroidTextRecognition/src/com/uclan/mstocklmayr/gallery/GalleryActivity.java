@@ -111,6 +111,9 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
                 default:
                     return super.onOptionsItemSelected(item);
             }
+        }else if(item.getItemId() == R.id.action_all_location){
+            configureMyCard();
+            return true;
         }
         Toast.makeText(this, "No image available!", Toast.LENGTH_SHORT).show();
         return false;

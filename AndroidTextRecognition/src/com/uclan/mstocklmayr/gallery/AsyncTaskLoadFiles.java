@@ -34,9 +34,11 @@ public class AsyncTaskLoadFiles extends AsyncTask<Void, String, Void> {
     protected Void doInBackground(Void... params) {
 
         File[] files = targetDirector.listFiles();
-        for (File file : files) {
-            publishProgress(file.getAbsolutePath());
-            if (isCancelled()) break;
+        if(files != null){
+            for (File file : files) {
+                publishProgress(file.getAbsolutePath());
+                if (isCancelled()) break;
+            }
         }
         return null;
     }
