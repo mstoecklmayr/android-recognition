@@ -234,6 +234,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
         relativeLayout.removeView(toRemove);
 
         String title = item.getTitle().toString().toUpperCase();
+        title = title.replace(" ", "_");
         if(this.finalPairs.containsKey(ContactTypes.valueOf(title).toString())){
             Integer id = this.finalPairs.get(ContactTypes.valueOf(title).toString());
             View view = findViewById(id);
@@ -243,7 +244,6 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
             realignOthers(spacerId, text);
         }else{
             int spacerBelowId = createInputPair(AddContact.this, this.lastInputId, item.getItemId(), item.getTitle().toString(), text);
-            title = title.replace(" ", "_");
             this.finalPairs.put(ContactTypes.valueOf(title).toString(), spacerBelowId);
 
             int spacerId = realignSpacer(spacerBelowId);
