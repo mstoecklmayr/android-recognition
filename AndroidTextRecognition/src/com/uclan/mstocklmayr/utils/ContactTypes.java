@@ -8,6 +8,7 @@ public enum ContactTypes {
     NAME,
     EMAIL,
     PHONE,
+    MOBILE_PHONE,
     WORK_EMAIL,
     PRIVATE_EMAIL,
     COMPANY,
