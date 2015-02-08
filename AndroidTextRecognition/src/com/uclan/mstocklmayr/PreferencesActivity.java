@@ -34,18 +34,9 @@ import com.github.amlcurran.showcaseview.ShowcaseView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Class to handle preferences that are saved across sessions of the app. Shows
- * a hierarchy of preferences to the user, organized into sections. These
- * preferences are displayed in the options menu that is shown when the user
- * presses the MENU button.
- * <p/>
- * The code for this class was adapted from the ZXing project: http://code.google.com/p/zxing
- */
 public class PreferencesActivity extends PreferenceActivity implements
         OnSharedPreferenceChangeListener {
 
-    // Preference keys not carried over from ZXing project
     public static final String KEY_SOURCE_LANGUAGE_PREFERENCE = "sourceLanguageCodeOcrPref";
     public static final String KEY_CONTINUOUS_PREVIEW = "preference_capture_continuous";
     public static final String KEY_PAGE_SEGMENTATION_MODE = "preference_page_segmentation_mode";
@@ -55,8 +46,6 @@ public class PreferencesActivity extends PreferenceActivity implements
     // Preference keys carried over from ZXing project
     public static final String KEY_AUTO_FOCUS = "preferences_auto_focus";
     public static final String KEY_REVERSE_IMAGE = "preferences_reverse_image";
-    public static final String KEY_PLAY_BEEP = "preferences_play_beep";
-
 
     public static final String KEY_MY_BUSINESS_CARD = "preferences_my_business_card";
     public static final String KEY_RESET_HINTS = "preferences_reset_hints";
@@ -88,7 +77,6 @@ public class PreferencesActivity extends PreferenceActivity implements
         singleShotIdList.add(300);
 
 
-        //TODO could be changed to PreferenceFragment
         preferenceMyBusinessCard = findPreference(KEY_MY_BUSINESS_CARD);
         preferenceMyBusinessCard.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
@@ -112,6 +100,7 @@ public class PreferencesActivity extends PreferenceActivity implements
                     Toast.makeText(PreferencesActivity.this, "Hints have been reset",Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(PreferencesActivity.this, "Error while resetting hints!",Toast.LENGTH_SHORT).show();
+
                 return result;
             }
         });

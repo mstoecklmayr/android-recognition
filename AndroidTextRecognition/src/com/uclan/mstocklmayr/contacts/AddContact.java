@@ -49,7 +49,7 @@ public class AddContact extends Activity implements AdapterView.OnItemSelectedLi
 
         new ShowcaseView.Builder(this)
                 .setContentTitle("Click on the text below for a second to \n add it to a category.")
-                 .singleShot(200)
+                .singleShot(200)
                 .build();
 
         ActionBar ab = getActionBar();

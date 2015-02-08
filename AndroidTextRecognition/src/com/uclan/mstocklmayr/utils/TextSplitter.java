@@ -37,7 +37,6 @@ public class TextSplitter {
 
         for(int j=1; j<partList.size();j++){
             String part = partList.get(j);
-            //TODO what if there are more phone numbers or more emails?
             if(part.contains("@")){
                 this.result.put(ContactTypes.PRIVATE_EMAIL.toString(), part);
                 continue;

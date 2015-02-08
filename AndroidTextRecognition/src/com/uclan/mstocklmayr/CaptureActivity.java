@@ -170,7 +170,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     private OcrResult lastResult;
     private Bitmap lastBitmap;
     private boolean hasSurface;
-    private BeepManager beepManager;
     private TessBaseAPI baseApi; // Java interface for the Tesseract OCR engine
     private String sourceLanguageCodeOcr; // ISO 639-3 language code
     private String sourceLanguageReadable; // Language name, for example, "English"
@@ -189,7 +188,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     private boolean isEngineReady;
     public static Map<String, String> textResultMap; //map containing the split up text
 
-    //TODO encapsulate field
     public LocationClient mLocationClient;
     public GoogleApiClient mGoogleApiClient;
     public static final String PREFS_NAME = "RecognitionPrefs";
@@ -249,7 +247,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         handler = null;
         lastResult = null;
         hasSurface = false;
-        beepManager = new BeepManager(this);
 
         // Camera shutter button & history button
         if (DISPLAY_SHUTTER_BUTTON) {
@@ -1067,7 +1064,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
         prefs.registerOnSharedPreferenceChangeListener(listener);
 
-        beepManager.updatePrefs();
     }
 
     /**

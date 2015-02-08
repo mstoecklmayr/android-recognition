@@ -179,13 +179,7 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
             double latitude = Double.valueOf(location.getLatitude());
             double longitude = Double.valueOf(location.getLongitude());
             String label = location.getProvider();
-//            String uriBegin = "geo:" + latitude + "," + longitude;
-//            String query = latitude + "," + longitude + "(" + label + ")";
-//            String encodedQuery = Uri.encode(query);
-//            String uriString = uriBegin + "?q=" + encodedQuery + "&z=16";
-//            Uri uri = Uri.parse(uriString);
-//            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-//            startActivity(intent);
+
             MapLocation loc = new MapLocation(latitude, longitude, label);
             if (this.mapLocations != null) {
                 this.mapLocations.clear();
