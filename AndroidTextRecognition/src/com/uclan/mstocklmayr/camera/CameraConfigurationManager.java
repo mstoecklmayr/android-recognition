@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2010 ZXing authors
  * Copyright 2011 Robert Theis
+ * Copyright 2015 Michael Stöcklmayr
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,26 +89,13 @@ final class CameraConfigurationManager {
 
     initializeTorch(parameters, prefs);
     String focusMode = null;
-//    if (prefs.getBoolean(PreferencesActivity.KEY_AUTO_FOCUS, true)) {
-//      focusMode = findSettableValue(parameters.getSupportedFocusModes(),
-//              Camera.Parameters.FOCUS_MODE_AUTO);
-////      if (prefs.getBoolean(PreferencesActivity.KEY_DISABLE_CONTINUOUS_FOCUS, false)) {
-////        focusMode = findSettableValue(parameters.getSupportedFocusModes(),
-////            Camera.Parameters.FOCUS_MODE_AUTO);
-////      } else {
-////        focusMode = findSettableValue(parameters.getSupportedFocusModes(),
-////            "continuous-video", // Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO in 4.0+
-////            "continuous-picture", // Camera.Paramters.FOCUS_MODE_CONTINUOUS_PICTURE in 4.0+
-////            Camera.Parameters.FOCUS_MODE_AUTO);
-////      }
-//    }
     if (prefs.getBoolean(PreferencesActivity.KEY_AUTO_FOCUS, true)) {
 
         focusMode = findSettableValue(parameters.getSupportedFocusModes(),
                 "auto",
                 "continuous-video", // Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO in 4.0+
                 "continuous-picture", // Camera.Paramters.FOCUS_MODE_CONTINUOUS_PICTURE in 4.0+
-                "infinity", // test for tablets
+                "infinity", // focus mode for tablets
                 Camera.Parameters.FOCUS_MODE_AUTO);
 
     }
@@ -122,7 +110,6 @@ final class CameraConfigurationManager {
     }
 
     parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
-    //parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
     camera.setParameters(parameters);
   }
 
@@ -132,19 +119,6 @@ final class CameraConfigurationManager {
 
   Point getScreenResolution() {
     return screenResolution;
-  }
-
-  void setTorch(Camera camera, boolean newSetting) {
-    Camera.Parameters parameters = camera.getParameters();
-    doSetTorch(parameters, newSetting);
-    camera.setParameters(parameters);
-    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-    boolean currentSetting = prefs.getBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, false);
-    if (currentSetting != newSetting) {
-      SharedPreferences.Editor editor = prefs.edit();
-      editor.putBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, newSetting);
-      editor.commit();
-    }
   }
 
   private static void initializeTorch(Camera.Parameters parameters, SharedPreferences prefs) {
@@ -168,7 +142,6 @@ final class CameraConfigurationManager {
   }
 
   private Point findBestPreviewSizeValue(Camera.Parameters parameters, Point screenResolution) {
-
     // Sort by size, descending
     List<Camera.Size> supportedPreviewSizes = new ArrayList<Camera.Size>(parameters.getSupportedPreviewSizes());
     Collections.sort(supportedPreviewSizes, new Comparator<Camera.Size>() {

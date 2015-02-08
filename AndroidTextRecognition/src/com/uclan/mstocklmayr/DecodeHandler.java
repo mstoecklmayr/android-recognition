@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2010 ZXing authors
  * Copyright 2011 Robert Theis
+ * Copyright 2015 Michael Stöcklmayr
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,10 +113,6 @@ final class DecodeHandler extends Handler {
             // presses the shutter button, in addition to maybe wanting to draw boxes/words during the
             // continuous mode recognition.
             ocrResult.setWordBoundingBoxes(baseApi.getWords().getBoxRects());
-
-//      if (ViewfinderView.DRAW_CHARACTER_BOXES || ViewfinderView.DRAW_CHARACTER_TEXT) {
-//        ocrResult.setCharacterBoundingBoxes(baseApi.getCharacters().getBoxRects());
-//      }
         } catch (RuntimeException e) {
             Log.e("OcrRecognizeAsyncTask", "Caught RuntimeException in request to Tesseract. Setting state to CONTINUOUS_STOPPED.");
             e.printStackTrace();
@@ -133,15 +130,6 @@ final class DecodeHandler extends Handler {
         ocrResult.setRecognitionTimeRequired(timeRequired);
         return ocrResult;
     }
-
-    private void sendContinuousOcrFailMessage() {
-        Handler handler = activity.getHandler();
-        if (handler != null) {
-            Message message = Message.obtain(handler, R.id.ocr_continuous_decode_failed, new OcrResultFailure(timeRequired));
-            message.sendToTarget();
-        }
-    }
-
 }
 
 

@@ -618,7 +618,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
      */
     private boolean setSourceLanguage(String languageCode) {
         sourceLanguageCodeOcr = languageCode;
-        sourceLanguageReadable = LanguageCodeHelper.getOcrLanguageName(this, languageCode);
+        sourceLanguageReadable = "english";
         return true;
     }
 

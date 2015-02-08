@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015 Michael Stöcklmayr
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.uclan.mstocklmayr.gallery;
 
 import android.app.ActionBar;
@@ -54,7 +69,6 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
                 .build();
 
         ActionBar ab = getActionBar();
-        //ab.show();
         ab.setDisplayShowHomeEnabled(false);
         ab.setDisplayShowTitleEnabled(false);
         ab.setDisplayUseLogoEnabled(false);
@@ -151,7 +165,6 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
 
     private void deleteImage() {
         String path = adapter.imagePathList.get(this.currentImageIndex);
-        //Toast.makeText(this, path + "deleted ", Toast.LENGTH_LONG).show();
 
         //delete json entry for this image
         JSONHandler.removeJSONObject(this, path.substring(path.lastIndexOf("/") + 1));
@@ -159,9 +172,7 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
         if (path != null) {
             File file = new File(path);
             file.delete();
-            int before = adapter.getCount();
             adapter.imagePathList.remove(this.currentImageIndex);
-            int after = adapter.getCount();
 
             adapter.notifyDataSetChanged();
             pager.invalidate();

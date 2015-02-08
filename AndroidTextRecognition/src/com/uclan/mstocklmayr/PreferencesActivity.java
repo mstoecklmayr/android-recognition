@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2008 ZXing authors
  * Copyright 2011 Robert Theis
+ * Copyright 2015 Michael Stöcklmayr
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +35,7 @@ import com.github.amlcurran.showcaseview.ShowcaseView;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class PreferencesActivity extends PreferenceActivity implements
         OnSharedPreferenceChangeListener {
 
@@ -167,7 +169,6 @@ public class PreferencesActivity extends PreferenceActivity implements
             editor.putString(KEY_MY_BUSINESS_CARD, imagePath);
             editor.commit();
 
-            //Toast.makeText(PreferencesActivity.this,imagePath,Toast.LENGTH_SHORT).show();
             preferenceMyBusinessCard.setSummary(MY_BUSINESS_CARD_SELECTED);
         }
     }
