@@ -94,20 +94,11 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     //Whether to use autofocus by default
     public static final boolean DEFAULT_TOGGLE_AUTO_FOCUS = true;
 
-    // Whether to beep by default when the shutter button is pressed.
-    public static final boolean DEFAULT_TOGGLE_BEEP = false;
-
     // Whether to initially show a looping, real-time OCR display.
     public static final boolean DEFAULT_TOGGLE_CONTINUOUS = false;
 
     // Whether the light should be initially activated by default.
     public static final boolean DEFAULT_TOGGLE_LIGHT = false;
-
-    // Flag to display the real-time recognition results at the top of the scanning screen.
-    private static final boolean CONTINUOUS_DISPLAY_RECOGNIZED_TEXT = true;
-
-    // Flag to display recognition-related statistics on the scanning screen.
-    private static final boolean CONTINUOUS_DISPLAY_METADATA = true;
 
     // Flag to enable display of the on-screen shutter button.
     private static final boolean DISPLAY_SHUTTER_BUTTON = true;
@@ -781,69 +772,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
     }
 
     /**
-     * Displays information relating to the results of a successful real-time OCR request.
-     *
-     * @param ocrResult Object representing successful OCR results
-     */
-    void handleOcrContinuousDecode(OcrResult ocrResult) {
-
-        lastResult = ocrResult;
-
-        // Send an OcrResultText object to the ViewfinderView for text rendering
-        viewfinderView.addResultText(new OcrResultText(ocrResult.getText(),
-                ocrResult.getWordConfidences(),
-                ocrResult.getMeanConfidence(),
-                ocrResult.getBitmapDimensions(),
-                ocrResult.getRegionBoundingBoxes(),
-                ocrResult.getTextlineBoundingBoxes(),
-                ocrResult.getStripBoundingBoxes(),
-                ocrResult.getWordBoundingBoxes(),
-                ocrResult.getCharacterBoundingBoxes()));
-
-        Integer meanConfidence = ocrResult.getMeanConfidence();
-
-        if (CONTINUOUS_DISPLAY_RECOGNIZED_TEXT) {
-            // Display the recognized text on the screen
-            statusViewTop.setText(ocrResult.getText());
-            int scaledSize = Math.max(22, 32 - ocrResult.getText().length() / 4);
-            statusViewTop.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaledSize);
-            statusViewTop.setTextColor(Color.BLACK);
-            statusViewTop.setBackgroundResource(R.color.status_top_text_background);
-
-            statusViewTop.getBackground().setAlpha(meanConfidence * (255 / 100));
-        }
-
-        if (CONTINUOUS_DISPLAY_METADATA) {
-            // Display recognition-related metadata at the bottom of the screen
-            long recognitionTimeRequired = ocrResult.getRecognitionTimeRequired();
-            statusViewBottom.setTextSize(14);
-            statusViewBottom.setText("OCR: " + sourceLanguageReadable + " - Mean confidence: " +
-                    meanConfidence.toString() + " - Time required: " + recognitionTimeRequired + " ms");
-        }
-    }
-
-    /**
-     * Version of handleOcrContinuousDecode for failed OCR requests. Displays a failure message.
-     *
-     * @param obj Metadata for the failed OCR request.
-     */
-    void handleOcrContinuousDecode(OcrResultFailure obj) {
-        lastResult = null;
-        viewfinderView.removeResultText();
-
-        // Reset the text in the recognized text box.
-        statusViewTop.setText("");
-
-        if (CONTINUOUS_DISPLAY_METADATA) {
-            // Color text delimited by '-' as red.
-            statusViewBottom.setTextSize(14);
-            CharSequence cs = setSpanBetweenTokens("OCR: " + sourceLanguageReadable + " - OCR failed - Time required: "
-                    + obj.getTimeRequired() + " ms", "-", new ForegroundColorSpan(0xFFFF0000));
-            statusViewBottom.setText(cs);
-        }
-    }
-
-    /**
      * Given either a Spannable String or a regular String and a token, apply
      * the given CharacterStyle to the span between the tokens.
      * <p/>
@@ -905,17 +833,7 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
      */
     private void resetStatusView() {
         resultView.setVisibility(View.GONE);
-        if (CONTINUOUS_DISPLAY_METADATA) {
-            statusViewBottom.setText("");
-            statusViewBottom.setTextSize(14);
-            statusViewBottom.setTextColor(getResources().getColor(R.color.status_text));
-            statusViewBottom.setVisibility(View.VISIBLE);
-        }
-        if (CONTINUOUS_DISPLAY_RECOGNIZED_TEXT) {
-            statusViewTop.setText("");
-            statusViewTop.setTextSize(14);
-            statusViewTop.setVisibility(View.VISIBLE);
-        }
+
         viewfinderView.setVisibility(View.VISIBLE);
         cameraButtonView.setVisibility(View.VISIBLE);
         if (DISPLAY_SHUTTER_BUTTON) {
@@ -925,16 +843,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         viewfinderView.removeResultText();
     }
 
-    /**
-     * Displays an initial message to the user while waiting for the first OCR request to be
-     * completed after starting realtime OCR.
-     */
-    void setStatusViewForContinuous() {
-        viewfinderView.removeResultText();
-        if (CONTINUOUS_DISPLAY_METADATA) {
-            statusViewBottom.setText("OCR: " + sourceLanguageReadable + " - waiting for OCR...");
-        }
-    }
 
     @SuppressWarnings("unused")
     void setButtonVisibility(boolean visible) {

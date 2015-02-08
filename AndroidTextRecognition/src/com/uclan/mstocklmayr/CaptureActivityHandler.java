@@ -58,25 +58,7 @@ final class CaptureActivityHandler extends Handler {
     
     decodeThread = new DecodeThread(activity, filePath);
     decodeThread.start();
-    
-    if (isContinuousModeActive) {
-      state = State.CONTINUOUS;
 
-      // Show the shutter and torch buttons
-      activity.setButtonVisibility(true);
-      
-      // Display a "be patient" message while first recognition request is running
-      activity.setStatusViewForContinuous();
-      
-      restartOcrPreviewAndDecode();
-    } else {
-      state = State.SUCCESS;
-      
-      // Show the shutter and torch buttons
-      activity.setButtonVisibility(true);
-      
-      restartOcrPreview();
-    }
   }
 
   @Override
@@ -85,28 +67,6 @@ final class CaptureActivityHandler extends Handler {
     switch (message.what) {
       case R.id.restart_preview:
         restartOcrPreview();
-        break;
-      case R.id.ocr_continuous_decode_failed:
-        DecodeHandler.resetDecodeState();
-        try {
-          activity.handleOcrContinuousDecode((OcrResultFailure) message.obj);
-        } catch (NullPointerException e) {
-          Log.w(TAG, "got bad OcrResultFailure", e);
-        }
-        if (state == State.CONTINUOUS) {
-          restartOcrPreviewAndDecode();
-        }
-        break;
-      case R.id.ocr_continuous_decode_succeeded:
-        DecodeHandler.resetDecodeState();
-        try {
-          activity.handleOcrContinuousDecode((OcrResult) message.obj);
-        } catch (NullPointerException e) {
-          // Continue
-        }
-        if (state == State.CONTINUOUS) {
-          restartOcrPreviewAndDecode();
-        }
         break;
       case R.id.ocr_decode_succeeded:
         state = State.SUCCESS;
@@ -124,15 +84,9 @@ final class CaptureActivityHandler extends Handler {
   }
   
   void stop() {
-    // TODO See if this should be done by sending a quit message to decodeHandler as is done
-    // below in quitSynchronously().
-    
     Log.d(TAG, "Setting state to CONTINUOUS_PAUSED.");
     state = State.CONTINUOUS_PAUSED;
-    removeMessages(R.id.ocr_continuous_decode);
     removeMessages(R.id.ocr_decode);
-    removeMessages(R.id.ocr_continuous_decode_failed);
-    removeMessages(R.id.ocr_continuous_decode_succeeded); // TODO are these removeMessages() calls doing anything?
 
     // Freeze the view displayed to the user.
 //    CameraManager.get().stopPreview();
