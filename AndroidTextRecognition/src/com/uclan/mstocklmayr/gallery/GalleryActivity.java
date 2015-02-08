@@ -111,7 +111,7 @@ public class GalleryActivity extends FragmentActivity implements ViewPager.OnPag
                 default:
                     return super.onOptionsItemSelected(item);
             }
-        }else if(item.getItemId() == R.id.action_all_location){
+        }else if(item.getItemId() == R.id.action_configure_card){
             configureMyCard();
             return true;
         }

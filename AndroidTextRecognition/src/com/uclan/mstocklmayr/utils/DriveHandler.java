@@ -45,8 +45,7 @@ public class DriveHandler {
                         Toast.makeText(ctx, "Error while trying to create the file", Toast.LENGTH_LONG).show();
                         return;
                     }
-                    Toast.makeText(ctx, "Created a file: " + result.getDriveFile().getDriveId(), Toast.LENGTH_LONG).show();
-
+                    Log.d(TAG, "Created a file: " + result.getDriveFile().getDriveId());
                     new EditContentsAsyncTask(ctx, lastBitmap, mGoogleApiClient).execute(result.getDriveFile());
                 }
             };

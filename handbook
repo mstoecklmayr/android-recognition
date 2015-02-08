@@ -23,7 +23,7 @@ Showcase view added. Reset of hints added.
 
 18.01.2015
 Hide "Notification bar" in order to prevent the actionbar to flatter around (show, hide and then show again).
-Added to all activities.
+Added to a  ll activities.
 
 17.01.2015
 IMPORTANT: do not disconnect the drive api service in onPause/onStop because then when the DriveHandler tries to access it, it gets disconnected before.
