@@ -24,9 +24,10 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.*;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Environment;
@@ -48,7 +49,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.*;
+import com.google.android.gms.drive.Drive;
 import com.google.android.gms.location.LocationClient;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.uclan.mstocklmayr.camera.CameraManager;
@@ -59,11 +60,11 @@ import com.uclan.mstocklmayr.utils.DriveHandler;
 import com.uclan.mstocklmayr.utils.JSONHandler;
 import com.uclan.mstocklmayr.utils.TextSplitter;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -409,8 +410,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
     @Override
     protected void onStop() {
-        //mLocationClient.disconnect();
-        //mGoogleApiClient.disconnect();
         super.onStop();
     }
 
@@ -641,11 +640,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
         }
 
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-
-            // We can read and write the media
-            //    	if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) > 7) {
-            // For Android 2.2 and above
-
             try {
                 return getExternalFilesDir(Environment.MEDIA_MOUNTED);
             } catch (NullPointerException e) {
@@ -653,14 +647,6 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
                 Log.e(TAG, "External storage is unavailable");
                 showErrorMessage("Error", "Required external storage (such as an SD card) is full or unavailable.");
             }
-
-            //        } else {
-            //          // For Android 2.1 and below, explicitly give the path as, for example,
-            //          // "/mnt/sdcard/Android/data/edu.sfsu.cs.orange.ocr/files/"
-            //          return new File(Environment.getExternalStorageDirectory().toString() + File.separator +
-            //                  "Android" + File.separator + "data" + File.separator + getPackageName() +
-            //                  File.separator + "files" + File.separator);
-            //        }
 
         } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
             // We can only read the media
@@ -786,22 +772,12 @@ public final class CaptureActivity extends FragmentActivity implements SurfaceHo
 
 
         // Display the recognized text
-        //small text beneath the image
-//        TextView sourceLanguageTextView = (TextView) findViewById(R.id.source_language_text_view);
-//        sourceLanguageTextView.setText(sourceLanguageReadable);
         TextView ocrResultTextView = (TextView) findViewById(R.id.ocr_result_text_view);
         ocrResultTextView.setText(ocrResult.getText());
         // Crudely scale betweeen 22 and 32 -- bigger font for shorter text
         int scaledSize = Math.max(22, 32 - ocrResult.getText().length() / 4);
         ocrResultTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaledSize);
 
-//        TextView translationLanguageLabelTextView = (TextView) findViewById(R.id.translation_language_label_text_view);
-//        TextView translationLanguageTextView = (TextView) findViewById(R.id.translation_language_text_view);
-//        TextView translationTextView = (TextView) findViewById(R.id.translation_text_view);
-//
-//        translationLanguageLabelTextView.setVisibility(View.GONE);
-//        translationLanguageTextView.setVisibility(View.GONE);
-//        translationTextView.setVisibility(View.GONE);
         progressView.setVisibility(View.GONE);
         setProgressBarVisibility(false);
         return true;

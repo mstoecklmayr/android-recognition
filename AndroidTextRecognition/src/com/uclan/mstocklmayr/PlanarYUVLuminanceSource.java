@@ -16,9 +16,7 @@
  */
 package com.uclan.mstocklmayr;
 
-import android.graphics.*;
-
-import java.io.ByteArrayOutputStream;
+import android.graphics.Bitmap;
 
 /**
  * This object extends LuminanceSource around an array of YUV data returned from the camera driver,

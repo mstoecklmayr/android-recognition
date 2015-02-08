@@ -17,7 +17,6 @@ package com.uclan.mstocklmayr;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.googlecode.tesseract.android.TessBaseAPI;
@@ -28,7 +27,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;

@@ -3,7 +3,6 @@ package com.uclan.mstocklmayr.contacts;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.*;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.ContactsContract;

@@ -26,9 +26,7 @@ import com.uclan.mstocklmayr.map.MapLocation;
 import com.uclan.mstocklmayr.utils.JSONHandler;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class GalleryActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {

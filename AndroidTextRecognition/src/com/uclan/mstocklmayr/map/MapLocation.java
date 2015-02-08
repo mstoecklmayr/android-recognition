@@ -1,7 +1,5 @@
 package com.uclan.mstocklmayr.map;
 
-import com.google.android.gms.maps.model.LatLng;
-
 /**
  * Created by mike on 12/6/14.
  */
